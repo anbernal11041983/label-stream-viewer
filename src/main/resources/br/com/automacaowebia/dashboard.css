@@ -78,5 +78,23 @@
 .search-billing:focused{
 -fx-border-width:2px;
 }
+.close, .minimize, .maximize {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-border-radius: 5;
+    -fx-background-radius: 5;
+}
+
+.close:hover {
+    -fx-background-color: rgba(255, 0, 0, 0.6);
+}
+
+.minimize:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.2);
+}
+
+.maximize:hover {
+    -fx-background-color: rgba(0, 0, 0, 0.2);
+}
 
 

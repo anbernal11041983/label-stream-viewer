@@ -79,7 +79,7 @@ public class LoginController implements Initializable {
             return;
         }
 
-        User user = new User(userInput,passwordInput);
+        User user = new User();
         user.setUsername(userInput);
         user.setPassword(passwordInput);
 

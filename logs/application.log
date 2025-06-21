@@ -244,3 +244,19 @@ java.lang.NullPointerException: null
 	at java.base/java.lang.Thread.run(Thread.java:829) [?:?]
 [2025-06-21 13:52:41] [INFO ] LoginService - Tentando autenticar usuário: admin
 [2025-06-21 13:52:41] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
+[2025-06-21 14:03:35] [INFO ] LoginService - Tentando autenticar usuário: ADMIN
+[2025-06-21 14:03:35] [WARN ] LoginService - Falha na autenticação para o usuário: ADMIN
+[2025-06-21 14:03:43] [INFO ] LoginService - Tentando autenticar usuário: admin
+[2025-06-21 14:03:43] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
+[2025-06-21 14:07:58] [INFO ] LoginService - Tentando autenticar usuário: admin
+[2025-06-21 14:07:58] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
+[2025-06-21 14:18:33] [INFO ] LoginService - Tentando autenticar usuário: admin
+[2025-06-21 14:18:34] [WARN ] LoginService - Falha na autenticação para o usuário: admin
+[2025-06-21 14:18:39] [INFO ] LoginService - Tentando autenticar usuário: admin
+[2025-06-21 14:18:39] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
+[2025-06-21 14:19:35] [INFO ] LoginService - Tentando autenticar usuário: admin
+[2025-06-21 14:19:35] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
+[2025-06-21 14:20:26] [INFO ] LoginService - Tentando autenticar usuário: admin
+[2025-06-21 14:20:26] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
+[2025-06-21 14:21:09] [INFO ] LoginService - Tentando autenticar usuário: admin
+[2025-06-21 14:21:09] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
