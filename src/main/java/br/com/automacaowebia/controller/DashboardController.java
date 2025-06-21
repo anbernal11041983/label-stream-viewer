@@ -1,7 +1,7 @@
-package br.com.automacaowebia;
+package br.com.automacaowebia.controller;
 
 import br.com.automacaowebia.config.Database;
-import br.com.automacaowebia.entity.*;
+import br.com.automacaowebia.model.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -332,7 +332,7 @@ public class DashboardController implements Initializable {
     }
 
     public void setUsername(){
-        user.setText(User.name.toUpperCase());
+        user.setText("Admin");
     }
 
     public void activateDashboard(){
@@ -770,7 +770,7 @@ public class DashboardController implements Initializable {
 
             Customer customer;
             while (resultSet.next()){
-                customer=new Customer(Integer.parseInt(resultSet.getString("id")),resultSet.getString("name"),resultSet.getString("phonenumber"));
+                customer=new Customer(Integer.parseInt(resultSet.getString("id")),resultSet.getString("name"),resultSet.getString("phone_number"));
                 customersList.addAll(customer);
             }
 
@@ -789,7 +789,7 @@ public class DashboardController implements Initializable {
     }
     public boolean checkForCustomerAvailability(){
         connection=Database.getInstance().connectDB();
-        String sql="SELECT * FROM CUSTOMERS WHERE phoneNumber=?";
+        String sql="SELECT * FROM CUSTOMERS WHERE phone_number=?";
         try{
             preparedStatement=connection.prepareStatement(sql);
             preparedStatement.setString(1,cust_field_phone.getText());
@@ -1038,13 +1038,13 @@ public class DashboardController implements Initializable {
     public ObservableList<Purchase> listPurchaseData(){
         ObservableList<Purchase> purchaseList=FXCollections.observableArrayList();
         connection=Database.getInstance().connectDB();
-        String sql="SELECT * FROM Purchase";
+        String sql="SELECT * FROM purchase";
         try{
             statement=connection.createStatement();
             resultSet=statement.executeQuery(sql);
             Purchase purchase;
             while (resultSet.next()){
-                purchase=new Purchase(Integer.parseInt(resultSet.getString("id")),resultSet.getString("invoice"),resultSet.getString("shop and address"),Integer.parseInt(resultSet.getString("total_items")),Double.parseDouble(resultSet.getString("total_amount")),resultSet.getString("date_of_purchase"));
+                purchase=new Purchase(Integer.parseInt(resultSet.getString("id")),resultSet.getString("invoice"),resultSet.getString("shop_and_address"),Integer.parseInt(resultSet.getString("total_items")),Double.parseDouble(resultSet.getString("total_amount")),resultSet.getString("date_of_purchase"));
                 purchaseList.addAll(purchase);
             }
         }catch (Exception err){

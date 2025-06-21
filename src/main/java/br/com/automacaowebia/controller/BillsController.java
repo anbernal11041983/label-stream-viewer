@@ -1,4 +1,4 @@
-package br.com.automacaowebia;
+package br.com.automacaowebia.controller;
 
 import br.com.automacaowebia.config.Database;
 import javafx.fxml.FXML;

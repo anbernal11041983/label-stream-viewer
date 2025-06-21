@@ -11,7 +11,7 @@
 <?import javafx.scene.text.Font?>
 
 
-<AnchorPane fx:id="bills_print_anchor_pane" prefHeight="400.0" prefWidth="600.0" styleClass="billsanchorpane" stylesheets="@bills.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.automacaowebia.BillsController">
+<AnchorPane fx:id="bills_print_anchor_pane" prefHeight="400.0" prefWidth="600.0" styleClass="billsanchorpane" stylesheets="@bills.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.automacaowebia.controller.BillsController">
    <children>
       <Button fx:id="bills_btn_close" layoutX="528.0" layoutY="14.0" mnemonicParsing="false" onAction="#onExit" prefHeight="30.0" prefWidth="58.0" styleClass="close" stylesheets="@bills.css">
          <graphic>

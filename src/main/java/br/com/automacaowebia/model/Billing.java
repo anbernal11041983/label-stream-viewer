@@ -1,4 +1,4 @@
-package br.com.automacaowebia.entity;
+package br.com.automacaowebia.model;
 
 public class Billing {
     private String item_number;

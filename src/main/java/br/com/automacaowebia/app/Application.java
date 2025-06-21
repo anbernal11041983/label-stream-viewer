@@ -1,4 +1,4 @@
-package br.com.automacaowebia;
+package br.com.automacaowebia.app;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -8,8 +8,6 @@ import javafx.stage.StageStyle;
 
 import java.io.IOException;
 
-import static org.burningwave.core.assembler.StaticComponentContainer.Modules;
-
 public class Application extends javafx.application.Application {
 
     private double x;
@@ -17,9 +15,10 @@ public class Application extends javafx.application.Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("login-view.fxml"));
+        //Parent root = FXMLLoader.load(getClass().getResource("login-view.fxml"));
+        Parent root = FXMLLoader.load(getClass().getResource("/br/com/automacaowebia/login-view.fxml"));
         Scene scene = new Scene(root);
-        stage.setTitle("Fashion Club Inventory Management System");
+        stage.setTitle("Label Stream Viewer");
         root.setOnMousePressed((event)->{
             x=event.getSceneX();
             y=event.getSceneY();

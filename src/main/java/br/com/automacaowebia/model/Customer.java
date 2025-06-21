@@ -1,4 +1,4 @@
-package br.com.automacaowebia.entity;
+package br.com.automacaowebia.model;
 
 public class Customer {
     private int id;
