@@ -2,6 +2,7 @@ package br.com.automacaowebia.controller;
 
 import br.com.automacaowebia.config.Database;
 import br.com.automacaowebia.model.*;
+import java.io.File;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -35,6 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import javafx.stage.FileChooser;
 
 import static org.burningwave.core.assembler.StaticComponentContainer.Modules;
 
@@ -100,7 +102,7 @@ public class DashboardController implements Initializable {
     private TextField bill_item;
 
     @FXML
-    private TextField bill_name;
+    private TextField template_nome;
 
     @FXML
     private TextField bill_phone;
@@ -388,22 +390,6 @@ public class DashboardController implements Initializable {
         }
     }
 
-    public void setAutoCompleteItemNumber() {
-        getItemsList();
-        List<String> itemNumberList = productsList.stream().map(Product::getItemNumber).collect(Collectors.toList());
-        ObservableList<String> observableItemList = FXCollections.observableArrayList(itemNumberList);
-        TextFields.bindAutoCompletion(bill_item, observableItemList);
-    }
-
-    public void comboBoxQuantity() {
-        List<String> list = new ArrayList<>();
-        for (String quantity : quantityList) {
-            list.add(quantity);
-        }
-        ObservableList comboList = FXCollections.observableArrayList(list);
-        bill_quantity.setItems(comboList);
-    }
-
     public void checkForPriceandQuantity() {
         if (!bill_price.getText().isBlank() && !bill_quantity.getSelectionModel().isEmpty()) {
             bill_total_amount.setText(String.valueOf(Integer.parseInt(bill_price.getText()) * Integer.parseInt(bill_quantity.getValue().toString())));
@@ -438,38 +424,6 @@ public class DashboardController implements Initializable {
         });
     }
 
-    public void addBillingData() {
-        if (bill_item.getText().isBlank() || bill_quantity.getSelectionModel().isEmpty() || bill_price.getText().isBlank() || bill_total_amount.getText().isBlank()) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Message");
-            alert.setHeaderText(null);
-            alert.setContentText("Please fill the mandatory data such as item number, quantity and price .");
-            alert.showAndWait();
-            return;
-        }
-        connection = Database.getInstance().connectDB();
-        String sql = "INSERT INTO BILLING(item_number,quantity,price,total_amount)VALUES(?,?,?,?)";
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, bill_item.getText());
-            preparedStatement.setString(2, bill_quantity.getValue().toString());
-            preparedStatement.setString(3, bill_price.getText());
-            preparedStatement.setString(4, bill_total_amount.getText());
-            int result = preparedStatement.executeUpdate();
-            if (result > 0) {
-                showBillingData();
-                billClearData();
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error Message");
-                alert.setHeaderText(null);
-                alert.setContentText("Please fill the mandatory data such as item number, quantity and price .");
-                alert.showAndWait();
-            }
-        } catch (Exception err) {
-            err.printStackTrace();
-        }
-    }
 
     public ObservableList<Billing> listBilligData() {
         ObservableList<Billing> billingList = FXCollections.observableArrayList();
@@ -507,34 +461,13 @@ public class DashboardController implements Initializable {
 
     }
 
-    public void showBillingData() {
-        ObservableList<Billing> billingList = listBilligData();
-        col_bill_item_num.setCellValueFactory(new PropertyValueFactory<>("item_number"));
-        col_bill_quantity.setCellValueFactory(new PropertyValueFactory<>("quantity"));
-        col_bill_price.setCellValueFactory(new PropertyValueFactory<>("price"));
-        col_bill_total_amt.setCellValueFactory(new PropertyValueFactory<>("total_amount"));
-
-        billing_table.setItems(billingList);
-        LocalDate date = LocalDate.now();
-        bill_date.setValue(date);
-        if (!billingList.isEmpty()) {
-            calculateFinalAmount();
-        } else {
-            final_amount.setText("0.00");
-        }
-
-    }
-
     public void billClearCustomerData() {
-        bill_name.setText("");
+        template_nome.setText("");
         bill_phone.setText("");
     }
 
-    public void billClearData() {
-        bill_item.clear();
-        bill_quantity.setValue(null);
-        bill_price.setText("");
-        bill_total_amount.setText("");
+    public void limparCampoTemplate() {
+        template_nome.setText("");
     }
 
     public void selectBillingTableData() {
@@ -548,61 +481,8 @@ public class DashboardController implements Initializable {
         bill_total_amount.setText(String.valueOf((int) billingData.getTotal_amount()));
     }
 
-    public void updateSelectedBillingData() {
-        connection = Database.getInstance().connectDB();
-        String sql = "UPDATE billing SET quantity=?,price=?,total_amount=? WHERE item_number=?";
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, bill_quantity.getValue().toString());
-            preparedStatement.setString(2, bill_price.getText());
-            preparedStatement.setString(3, bill_total_amount.getText());
-            preparedStatement.setString(4, bill_item.getText());
-            int result = preparedStatement.executeUpdate();
-            if (result > 0) {
-                showBillingData();
-                billClearData();
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error Message");
-                alert.setHeaderText(null);
-                alert.setContentText("Please fill the mandatory data such as item number, quantity and price .");
-                alert.showAndWait();
-            }
-        } catch (Exception err) {
-            err.printStackTrace();
-        }
-    }
-
-    public void deleteBillingData() {
-        connection = Database.getInstance().connectDB();
-        String sql;
-        try {
-            if (billing_table.getSelectionModel().isEmpty()) {
-                sql = "DELETE FROM BILLING";
-                preparedStatement = connection.prepareStatement(sql);
-            } else {
-                sql = "DELETE FROM BILLING WHERE item_number=?";
-                preparedStatement = connection.prepareStatement(sql);
-                preparedStatement.setString(1, billing_table.getSelectionModel().getSelectedItem().getItem_number());
-            }
-            int result = preparedStatement.executeUpdate();
-            if (result > 0) {
-                showBillingData();
-                billClearData();
-            } else {
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Message");
-                alert.setHeaderText(null);
-                alert.setContentText("No data present in the billing table..");
-                alert.showAndWait();
-            }
-        } catch (Exception err) {
-            err.printStackTrace();
-        }
-    }
-
     public boolean saveCustomerDetails() {
-        if (bill_phone.getText().isBlank() || bill_name.getText().isBlank()) {
+        if (bill_phone.getText().isBlank() || template_nome.getText().isBlank()) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Message");
             alert.setHeaderText(null);
@@ -626,7 +506,7 @@ public class DashboardController implements Initializable {
             } else {
                 String customerSql = "INSERT INTO CUSTOMERS(name,phonenumber) VALUES(?,?)";
                 preparedStatement = connection.prepareStatement(customerSql);
-                preparedStatement.setString(1, bill_name.getText());
+                preparedStatement.setString(1, template_nome.getText());
                 preparedStatement.setString(2, bill_phone.getText());
                 int result = preparedStatement.executeUpdate();
                 if (result > 0) {
@@ -677,8 +557,7 @@ public class DashboardController implements Initializable {
                     count++;
                 }
                 if (count > 0) {
-                    billClearCustomerData();
-                    deleteBillingData();
+                    billClearCustomerData();;
                     showSalesData();
                     setInvoiceNum();
                     showDashboardData();
@@ -715,48 +594,6 @@ public class DashboardController implements Initializable {
         //Save Invoice Details in Sales Table and Reference Customer
         saveInvoiceDetails();
 
-    }
-
-    public void printBill() {
-        connection = Database.getInstance().connectDB();
-        String sql = "SELECT * FROM `sales` s INNER JOIN customers c ON s.cust_id=c.id and s.inv_num=(SELECT MAX(inv_num) as inv_num FROM `sales`)";
-        try {
-            JasperDesign jasperDesign = JRXmlLoader.load(this.getClass().getClassLoader().getResourceAsStream("jasper-reports/Invoice.jrxml"));
-            JRDesignQuery updateQuery = new JRDesignQuery();
-            updateQuery.setText(sql);
-            jasperDesign.setQuery(updateQuery);
-            JasperReport jasperReport = JasperCompileManager.compileReport(jasperDesign);
-            JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, null, connection);
-            JasperViewer.viewReport(jasperPrint, false);
-        } catch (Exception err) {
-            err.printStackTrace();
-        }
-    }
-
-    public void searchForBills() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("bills.fxml"));
-            Scene scene = new Scene(root);
-            Stage stage = new Stage();
-            root.setOnMousePressed((event) -> {
-                x = event.getSceneX();
-                y = event.getSceneY();
-            });
-            root.setOnMouseDragged((event) -> {
-                stage.setX(event.getScreenX() - x);
-                stage.setY(event.getScreenY() - y);
-            });
-            stage.initStyle(StageStyle.TRANSPARENT);
-            stage.setScene(scene);
-            stage.show();
-        } catch (Exception err) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeight(500);
-            alert.setTitle("Error Message");
-            alert.setHeaderText(null);
-            alert.setContentText(err.getMessage());
-            alert.showAndWait();
-        }
     }
 
     public void customerClearData() {
@@ -1230,6 +1067,31 @@ public class DashboardController implements Initializable {
 
     }
 
+    public void loadTemplate() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Selecionar Template ZPL");
+
+        // Filtrar para mostrar apenas arquivos .zpl ou todos os arquivos
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Arquivos ZPL", "*.zpl"),
+                new FileChooser.ExtensionFilter("Todos os Arquivos", "*.*")
+        );
+
+        // Abrir a janela de seleção
+        File selectedFile = fileChooser.showOpenDialog(new Stage());
+
+        if (selectedFile != null) {
+            System.out.println("Arquivo selecionado: " + selectedFile.getAbsolutePath());
+
+            // Aqui você pode ler o conteúdo do arquivo se quiser
+            // Exemplo:
+            // String content = new String(Files.readAllBytes(selectedFile.toPath()));
+            // System.out.println(content);
+        } else {
+            System.out.println("Nenhum arquivo selecionado.");
+        }
+    }
+
     @FXML
     public void onMinimize() {
         Stage stage = (Stage) billing_btn.getScene().getWindow();
@@ -1252,12 +1114,6 @@ public class DashboardController implements Initializable {
 
 //      DASHBOARD PANE
         showDashboardData();
-
-//      BILLING PANE
-        setAutoCompleteItemNumber();
-        comboBoxQuantity();
-        setInvoiceNum();
-        showBillingData();
 
 //      CUSTOMER PANE
         showCustomerData();

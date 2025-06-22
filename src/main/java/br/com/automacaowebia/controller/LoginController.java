@@ -72,9 +72,9 @@ public class LoginController implements Initializable {
 
         if (userInput.isEmpty() || passwordInput.isEmpty()) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Message");
+            alert.setTitle("Alerta");
             alert.setHeaderText(null);
-            alert.setContentText("Please fill in username and password");
+            alert.setContentText("Usuário e senha obrigatório.");
             alert.showAndWait();
             return;
         }
@@ -86,11 +86,11 @@ public class LoginController implements Initializable {
         boolean authenticated = loginService.autenticar(user);
 
         if (authenticated) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Success Message");
-            alert.setHeaderText(null);
-            alert.setContentText("Login Successful!");
-            alert.showAndWait();
+            //Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            //alert.setTitle("Success Message");
+            //alert.setHeaderText(null);
+            //alert.setContentText("Login Successful!");
+            //alert.showAndWait();
 
             login_btn.getScene().getWindow().hide();
 
@@ -117,9 +117,9 @@ public class LoginController implements Initializable {
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Error Message");
+            alert.setTitle("Alerta");
             alert.setHeaderText(null);
-            alert.setContentText("Wrong Username/Password");
+            alert.setContentText("Usuário ou senha inválido!");
             alert.showAndWait();
         }
     }
