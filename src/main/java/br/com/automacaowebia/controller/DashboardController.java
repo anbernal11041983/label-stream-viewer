@@ -55,7 +55,7 @@ public class DashboardController implements Initializable {
     private Button billing_btn;
 
     @FXML
-    private AnchorPane billing_pane;
+    private AnchorPane template_pane;
 
     @FXML
     private Button customer_btn;
@@ -286,7 +286,7 @@ public class DashboardController implements Initializable {
     public void activateAnchorPane() {
         dashboard_btn.setOnMouseClicked(mouseEvent -> {
             dasboard_pane.setVisible(true);
-            billing_pane.setVisible(false);
+            template_pane.setVisible(false);
             customer_pane.setVisible(false);
             sales_pane.setVisible(false);
             purchase_pane.setVisible(false);
@@ -298,7 +298,7 @@ public class DashboardController implements Initializable {
         });
         billing_btn.setOnMouseClicked(mouseEvent -> {
             dasboard_pane.setVisible(false);
-            billing_pane.setVisible(true);
+            template_pane.setVisible(true);
             customer_pane.setVisible(false);
             sales_pane.setVisible(false);
             purchase_pane.setVisible(false);
@@ -310,7 +310,7 @@ public class DashboardController implements Initializable {
         });
         customer_btn.setOnMouseClicked(mouseEvent -> {
             dasboard_pane.setVisible(false);
-            billing_pane.setVisible(false);
+            template_pane.setVisible(false);
             customer_pane.setVisible(true);
             sales_pane.setVisible(false);
             purchase_pane.setVisible(false);
@@ -322,7 +322,7 @@ public class DashboardController implements Initializable {
         });
         sales_btn.setOnMouseClicked(mouseEvent -> {
             dasboard_pane.setVisible(false);
-            billing_pane.setVisible(false);
+            template_pane.setVisible(false);
             customer_pane.setVisible(false);
             sales_pane.setVisible(true);
             purchase_pane.setVisible(false);
@@ -334,7 +334,7 @@ public class DashboardController implements Initializable {
         });
         purchase_btn.setOnMouseClicked(mouseEvent -> {
             dasboard_pane.setVisible(false);
-            billing_pane.setVisible(false);
+            template_pane.setVisible(false);
             customer_pane.setVisible(false);
             sales_pane.setVisible(false);
             purchase_pane.setVisible(true);
@@ -353,7 +353,7 @@ public class DashboardController implements Initializable {
 
     public void activateDashboard() {
         dasboard_pane.setVisible(true);
-        billing_pane.setVisible(false);
+        template_pane.setVisible(false);
         customer_pane.setVisible(false);
         sales_pane.setVisible(false);
         purchase_pane.setVisible(false);
@@ -976,7 +976,8 @@ public class DashboardController implements Initializable {
     public void signOut() {
         signout_btn.getScene().getWindow().hide();
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("login-view.fxml"));
+            //Parent root = FXMLLoader.load(getClass().getResource("login-view.fxml"));
+            Parent root = FXMLLoader.load(getClass().getResource("/br/com/automacaowebia/login-view.fxml"));
             Scene scene = new Scene(root);
             Stage stage = new Stage();
             root.setOnMousePressed((event) -> {

@@ -9,6 +9,7 @@
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
 <AnchorPane prefHeight="694.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.automacaowebia.controller.DashboardController">
@@ -86,7 +87,7 @@
                         </Button>
                         <AnchorPane layoutX="-2.0" prefHeight="47.0" prefWidth="648.0">
                             <children>
-                                <Label layoutX="26.0" layoutY="4.0" prefHeight="42.0" prefWidth="530.0" text="Templates">
+                                <Label layoutX="26.0" layoutY="4.0" prefHeight="42.0" prefWidth="530.0" text="Label Stream Viewer">
                                     <font>
                                         <Font name="Cooper Black" size="24.0" />
                                     </font>
@@ -95,94 +96,81 @@
                         </AnchorPane>
                         <AnchorPane fx:id="dasboard_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" visible="false">
                             <children>
-                                <Pane layoutX="44.0" layoutY="47.0" prefHeight="200.0" prefWidth="227.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
+                                <Pane layoutX="80.0" layoutY="65.0" prefHeight="200.0" prefWidth="267.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
                                     <children>
-                                        <Label layoutX="43.0" layoutY="31.0" text="TOTAL STOCKS" textFill="WHITE">
-                                            <font>
-                                                <Font name="Arial Rounded MT Bold" size="18.0" />
-                                            </font>
-                                        </Label>
-                                        <Label fx:id="dash_total_stocks" alignment="CENTER" layoutX="20.0" layoutY="78.0" prefHeight="36.0" prefWidth="191.0" text="32" textFill="WHITE">
-                                            <font>
-                                                <Font name="Arial Rounded MT Bold" size="30.0" />
-                                            </font>
-                                        </Label>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="267.0" spacing="20.0">
+                                 <children>
+                                              <Label alignment="CENTER" prefHeight="27.0" prefWidth="256.0" text="TOTAL MODELOS" textFill="WHITE">
+                                                  <font>
+                                                      <Font name="Arial Rounded MT Bold" size="18.0" />
+                                                  </font>
+                                              </Label>
+                                              <Label fx:id="dash_total_stocks" alignment="CENTER" prefHeight="46.0" prefWidth="253.0" text="32" textFill="WHITE">
+                                                  <font>
+                                                      <Font name="Arial Rounded MT Bold" size="30.0" />
+                                                  </font>
+                                              </Label>
+                                 </children>
+                              </VBox>
                                     </children>
                                 </Pane>
-                                <Pane layoutX="310.0" layoutY="47.0" prefHeight="200.0" prefWidth="227.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
+                                <Pane layoutX="450.0" layoutY="65.0" prefHeight="200.0" prefWidth="280.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
                                     <children>
-                                        <Label layoutX="26.0" layoutY="32.0" text="TOTAL ITEMS SOLD" textFill="WHITE">
-                                            <font>
-                                                <Font name="Arial Rounded MT Bold" size="18.0" />
-                                            </font>
-                                        </Label>
-                                        <Label fx:id="dash_total_sold" alignment="CENTER" layoutX="22.0" layoutY="82.0" prefHeight="36.0" prefWidth="191.0" text="18" textFill="WHITE">
-                                            <font>
-                                                <Font name="Arial Rounded MT Bold" size="30.0" />
-                                            </font>
-                                        </Label>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="280.0" spacing="20.0">
+                                 <children>
+                                              <Label alignment="CENTER" prefHeight="27.0" prefWidth="281.0" text="IMPRESSÕES DIÁRIA" textFill="WHITE">
+                                                  <font>
+                                                      <Font name="Arial Rounded MT Bold" size="18.0" />
+                                                  </font>
+                                              </Label>
+                                              <Label fx:id="dash_total_sold" alignment="CENTER" prefHeight="46.0" prefWidth="280.0" text="18" textFill="WHITE">
+                                                  <font>
+                                                      <Font name="Arial Rounded MT Bold" size="30.0" />
+                                                  </font>
+                                              </Label>
+                                 </children>
+                              </VBox>
                                     </children>
                                 </Pane>
-                                <Pane layoutX="569.0" layoutY="47.0" prefHeight="200.0" prefWidth="227.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
+                                <Pane layoutX="450.0" layoutY="350.0" prefHeight="200.0" prefWidth="280.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
                                     <children>
-                                        <Label layoutX="11.0" layoutY="31.0" text="TOTAL ITEMS BOUGHT" textFill="WHITE">
-                                            <font>
-                                                <Font name="Arial Rounded MT Bold" size="18.0" />
-                                            </font>
-                                        </Label>
-                                        <Label fx:id="dash_total_purchase" alignment="CENTER" layoutX="17.0" layoutY="82.0" prefHeight="36.0" prefWidth="200.0" text="50" textFill="WHITE">
-                                            <font>
-                                                <Font name="Arial Rounded MT Bold" size="30.0" />
-                                            </font>
-                                        </Label>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="280.0" spacing="20.0">
+                                 <children>
+                                              <Label alignment="CENTER" contentDisplay="TOP" prefHeight="27.0" prefWidth="278.0" text="IMPRESSÕES MENSAIS" textFill="WHITE">
+                                                  <font>
+                                                      <Font name="Arial Rounded MT Bold" size="18.0" />
+                                                  </font>
+                                              </Label>
+                                              <Label fx:id="dash_total_purchase" alignment="CENTER" prefHeight="46.0" prefWidth="297.0" text="50" textFill="WHITE">
+                                                  <font>
+                                                      <Font name="Arial Rounded MT Bold" size="30.0" />
+                                                  </font>
+                                              </Label>
+                                 </children>
+                              </VBox>
                                     </children>
                                 </Pane>
-                                <Pane layoutX="134.0" layoutY="347.0" prefHeight="200.0" prefWidth="294.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
+                                <Pane layoutX="80.0" layoutY="350.0" prefHeight="200.0" prefWidth="280.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
                                     <children>
-                                        <Label alignment="CENTER" layoutX="35.0" layoutY="21.0" prefHeight="22.0" prefWidth="220.0" text="SALES THIS MONTH" textFill="WHITE">
-                                            <font>
-                                                <Font name="Arial Rounded MT Bold" size="18.0" />
-                                            </font>
-                                        </Label>
-                                        <Label fx:id="dash_total_sales_this_month" layoutX="97.0" layoutY="71.0" prefHeight="36.0" prefWidth="191.0" text="15000" textFill="WHITE">
-                                            <font>
-                                                <Font name="Arial Rounded MT Bold" size="30.0" />
-                                            </font>
-                                        </Label>
-                                        <Label fx:id="dash_total_sales_this_month_name" alignment="CENTER" layoutX="71.0" layoutY="127.0" prefHeight="28.0" prefWidth="156.0" text="MAY" textFill="WHITE">
-                                            <font>
-                                                <Font name="Arial Rounded MT Bold" size="24.0" />
-                                            </font>
-                                        </Label>
-                                        <Label layoutX="71.0" layoutY="67.0" prefHeight="45.0" prefWidth="26.0" text="₹ " textFill="WHITE">
-                                            <font>
-                                                <Font size="30.0" />
-                                            </font>
-                                        </Label>
-                                    </children>
-                                </Pane>
-                                <Pane layoutX="467.0" layoutY="347.0" prefHeight="200.0" prefWidth="287.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
-                                    <children>
-                                        <Label alignment="CENTER" layoutX="16.0" layoutY="23.0" prefHeight="22.0" prefWidth="247.0" text="ITEMS SOLD THIS MONTH" textFill="WHITE">
-                                            <font>
-                                                <Font name="Arial Rounded MT Bold" size="18.0" />
-                                            </font>
-                                        </Label>
-                                        <Label fx:id="dash_total_items_sold_this_month" alignment="CENTER" layoutX="13.0" layoutY="64.0" prefHeight="36.0" prefWidth="247.0" text="9" textFill="WHITE">
-                                            <font>
-                                                <Font name="Arial Rounded MT Bold" size="30.0" />
-                                            </font>
-                                        </Label>
-                                        <Label fx:id="dash_total_sales_items_this_month_name" alignment="CENTER" layoutX="68.0" layoutY="122.0" prefHeight="28.0" prefWidth="149.0" text="MAY" textFill="WHITE">
-                                            <font>
-                                                <Font name="Arial Rounded MT Bold" size="24.0" />
-                                            </font>
-                                        </Label>
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="280.0" spacing="20.0">
+                                 <children>
+                                              <Label alignment="CENTER" prefHeight="27.0" prefWidth="282.0" text="IMPRESSÕES ANUAL" textFill="WHITE">
+                                                  <font>
+                                                      <Font name="Arial Rounded MT Bold" size="18.0" />
+                                                  </font>
+                                              </Label>
+                                              <Label fx:id="dash_total_sales_this_month" alignment="CENTER" prefHeight="46.0" prefWidth="277.0" text="15000" textFill="WHITE">
+                                                  <font>
+                                                      <Font name="Arial Rounded MT Bold" size="30.0" />
+                                                  </font>
+                                              </Label>
+                                 </children>
+                              </VBox>
                                     </children>
                                 </Pane>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="billing_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css">
+                        <AnchorPane fx:id="template_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="false">
                             <children>
                                 <Label fx:id="inv_num" layoutX="151.0" layoutY="352.0" prefHeight="32.0" prefWidth="102.0" />
                                 <TableView fx:id="lista_template" layoutX="13.0" layoutY="33.0" prefHeight="271.0" prefWidth="794.0" stylesheets="@dashboard.css">
