@@ -1,30 +1,38 @@
 package br.com.automacaowebia.config;
 
 import java.io.InputStream;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import java.util.Properties;
 
 public class AppProperties {
-    private static String CONFIG_FILE="application.properties";
-    private static AppProperties appProperties=new AppProperties();
-    public static AppProperties getInstance()
-    {
-        if (appProperties== null)
-            appProperties= new AppProperties();
-        return appProperties;
+
+    private static final String CONFIG_FILE = "application.properties";
+    private static AppProperties instance = new AppProperties();
+    private Properties properties;
+
+    private AppProperties() {
+        properties = new Properties();
+        try {
+            InputStream input = this.getClass().getClassLoader().getResourceAsStream(CONFIG_FILE);
+            if (input != null) {
+                properties.load(input);
+            } else {
+                throw new RuntimeException("Arquivo " + CONFIG_FILE + " não encontrado no classpath.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new RuntimeException("Erro ao carregar o arquivo " + CONFIG_FILE, e);
+        }
     }
-    public Connection connectDB(){
-        Properties dbConfig=new Properties();
-      try{
-          InputStream input=this.getClass().getClassLoader().getResourceAsStream(CONFIG_FILE);
-          dbConfig.load(input);
-          Class.forName(dbConfig.getProperty("javafx.jdbc.driver"));
-          Connection connection=DriverManager.getConnection(dbConfig.getProperty("javafx.datasource.url"),dbConfig.getProperty("javafx.datasource.username"), dbConfig.getProperty("javafx.datasource.password"));
-          return connection;
-      }catch (Exception exception){
-        exception.printStackTrace();
-      }
-      return null;
+
+    public static AppProperties getInstance() {
+        return instance;
+    }
+
+    public String get(String key) {
+        return properties.getProperty(key);
+    }
+
+    public String getOrDefault(String key, String defaultValue) {
+        return properties.getProperty(key, defaultValue);
     }
 }

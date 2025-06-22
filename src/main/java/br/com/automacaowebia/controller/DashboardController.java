@@ -1,6 +1,6 @@
 package br.com.automacaowebia.controller;
 
-import br.com.automacaowebia.config.AppProperties;
+import br.com.automacaowebia.config.Database;
 import br.com.automacaowebia.model.*;
 import br.com.automacaowebia.service.TemplateZPLService;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -381,7 +381,7 @@ public class DashboardController implements Initializable {
 
     public List<Product> getItemsList() {
         productsList = new ArrayList<>();
-        connection = AppProperties.getInstance().connectDB();
+        connection = Database.getInstance().connectDB();
         String sql = "SELECT * FROM PRODUCTS";
         try {
             statement = connection.createStatement();
@@ -403,7 +403,7 @@ public class DashboardController implements Initializable {
     }
 
     public void setInvoiceNum() {
-        connection = AppProperties.getInstance().connectDB();
+        connection = Database.getInstance().connectDB();
         String sql = "SELECT MAX(inv_num) AS inv_num FROM sales";
 
         try {
@@ -462,7 +462,7 @@ public class DashboardController implements Initializable {
 
     public ObservableList<Billing> listBilligData() {
         ObservableList<Billing> billingList = FXCollections.observableArrayList();
-        connection = AppProperties.getInstance().connectDB();
+        connection = Database.getInstance().connectDB();
         String sql = "SELECT * FROM BILLING";
         try {
             statement = connection.createStatement();
@@ -481,7 +481,7 @@ public class DashboardController implements Initializable {
     }
 
     public void calculateFinalAmount() {
-        connection = AppProperties.getInstance().connectDB();
+        connection = Database.getInstance().connectDB();
         String sql = "SELECT SUM(total_amount) AS final_amount FROM billing";
         try {
             statement = connection.createStatement();
@@ -514,7 +514,7 @@ public class DashboardController implements Initializable {
             alert.showAndWait();
             return false;
         }
-        connection = AppProperties.getInstance().connectDB();
+        connection = Database.getInstance().connectDB();
         String sql = "SELECT * FROM CUSTOMERS WHERE phonenumber=?";
         try {
             preparedStatement = connection.prepareStatement(sql);
@@ -558,7 +558,7 @@ public class DashboardController implements Initializable {
 
     public ObservableList<Customer> listCustomerData() {
         ObservableList<Customer> customersList = FXCollections.observableArrayList();
-        connection = AppProperties.getInstance().connectDB();
+        connection = Database.getInstance().connectDB();
         String sql = "SELECT * FROM Customers";
         try {
             statement = connection.createStatement();
@@ -585,7 +585,7 @@ public class DashboardController implements Initializable {
     }
 
     public boolean checkForCustomerAvailability() {
-        connection = AppProperties.getInstance().connectDB();
+        connection = Database.getInstance().connectDB();
         String sql = "SELECT * FROM CUSTOMERS WHERE phone_number=?";
         try {
             preparedStatement = connection.prepareStatement(sql);
@@ -612,7 +612,7 @@ public class DashboardController implements Initializable {
         if (!checkForCustomerAvailability()) {
             return;
         }
-        connection = AppProperties.getInstance().connectDB();
+        connection = Database.getInstance().connectDB();
         String sql = "INSERT INTO CUSTOMERS(name,phonenumber)VALUES(?,?)";
         try {
             preparedStatement = connection.prepareStatement(sql);
@@ -654,7 +654,7 @@ public class DashboardController implements Initializable {
             alert.showAndWait();
             return;
         }
-        connection = AppProperties.getInstance().connectDB();
+        connection = Database.getInstance().connectDB();
         String sql = "UPDATE CUSTOMERS SET name=? WHERE phonenumber=?";
         try {
             preparedStatement = connection.prepareStatement(sql);
@@ -685,7 +685,7 @@ public class DashboardController implements Initializable {
             alert.showAndWait();
             return;
         }
-        connection = AppProperties.getInstance().connectDB();
+        connection = Database.getInstance().connectDB();
         String sql = "DELETE FROM CUSTOMERS WHERE phonenumber=?";
         try {
             preparedStatement = connection.prepareStatement(sql);
@@ -712,7 +712,7 @@ public class DashboardController implements Initializable {
     }
 
     public void printCustomersDetails() {
-        connection = AppProperties.getInstance().connectDB();
+        connection = Database.getInstance().connectDB();
         String sql = "SELECT * FROM customers";
         try {
             JasperDesign jasperDesign = JRXmlLoader.load(this.getClass().getClassLoader().getResourceAsStream("jasper-reports/customers.jrxml"));
@@ -728,7 +728,7 @@ public class DashboardController implements Initializable {
     }
 
     public void getTotalSalesAmount() {
-        connection = AppProperties.getInstance().connectDB();
+        connection = Database.getInstance().connectDB();
         String sql = "SELECT SUM(total_amount) as total_sale_amount FROM sales";
         try {
             statement = connection.createStatement();
@@ -754,7 +754,7 @@ public class DashboardController implements Initializable {
 
     public ObservableList<Sales> listSalesData() {
         ObservableList<Sales> salesList = FXCollections.observableArrayList();
-        connection = AppProperties.getInstance().connectDB();
+        connection = Database.getInstance().connectDB();
         String sql = "SELECT * FROM SALES s INNER JOIN CUSTOMERS c ON s.cust_id=c.id";
         try {
             statement = connection.createStatement();
@@ -786,7 +786,7 @@ public class DashboardController implements Initializable {
     }
 
     public void printSalesDetails() {
-        connection = AppProperties.getInstance().connectDB();
+        connection = Database.getInstance().connectDB();
         String sql = "SELECT * FROM sales s INNER JOIN customers c ON s.cust_id=c.id";
         try {
             JasperDesign jasperDesign = JRXmlLoader.load(this.getClass().getClassLoader().getResourceAsStream("jasper-reports/sales_report.jrxml"));
@@ -802,7 +802,7 @@ public class DashboardController implements Initializable {
     }
 
     public void getTotalPurchaseAmount() {
-        connection = AppProperties.getInstance().connectDB();
+        connection = Database.getInstance().connectDB();
         String sql = "SELECT SUM(total_amount) as total_purchase_amount FROM purchase";
         try {
             statement = connection.createStatement();
@@ -827,7 +827,7 @@ public class DashboardController implements Initializable {
     }
 
     public void printPurchaseDetails() {
-        connection = AppProperties.getInstance().connectDB();
+        connection = Database.getInstance().connectDB();
         String sql = "SELECT * FROM purchase";
         try {
             JasperDesign jasperDesign = JRXmlLoader.load(this.getClass().getClassLoader().getResourceAsStream("jasper-reports/purchase_report.jrxml"));
@@ -844,7 +844,7 @@ public class DashboardController implements Initializable {
 
     public ObservableList<Purchase> listPurchaseData() {
         ObservableList<Purchase> purchaseList = FXCollections.observableArrayList();
-        connection = AppProperties.getInstance().connectDB();
+        connection = Database.getInstance().connectDB();
         String sql = "SELECT * FROM purchase";
         try {
             statement = connection.createStatement();
@@ -873,7 +873,7 @@ public class DashboardController implements Initializable {
     }
 
     public void getTotalPurchase() {
-        connection = AppProperties.getInstance().connectDB();
+        connection = Database.getInstance().connectDB();
         String sql = "SELECT SUM(total_items) as total_purchase FROM PURCHASE";
         try {
             statement = connection.createStatement();
@@ -898,7 +898,7 @@ public class DashboardController implements Initializable {
     }
 
     public void getTotalSales() {
-        connection = AppProperties.getInstance().connectDB();
+        connection = Database.getInstance().connectDB();
         String sql = "SELECT SUM(quantity) as total_sale FROM sales";
         try {
             statement = connection.createStatement();
@@ -932,7 +932,7 @@ public class DashboardController implements Initializable {
     public void getSalesDetailsOfThisMonth() {
         LocalDate date = LocalDate.now();
         String monthName = date.getMonth().toString();
-        connection = AppProperties.getInstance().connectDB();
+        connection = Database.getInstance().connectDB();
         String sql = "SELECT SUM(total_amount) as total_sales_this_month FROM SALES WHERE MONTHNAME(DATE)=?";
         try {
             preparedStatement = connection.prepareStatement(sql);
@@ -960,7 +960,7 @@ public class DashboardController implements Initializable {
     public void getItemSoldThisMonth() {
         LocalDate date = LocalDate.now();
         String monthName = date.getMonth().toString();
-        connection = AppProperties.getInstance().connectDB();
+        connection = Database.getInstance().connectDB();
         String sql = "SELECT SUM(quantity) as total_items_sold_this_month FROM SALES WHERE MONTHNAME(DATE)=?";
         try {
             preparedStatement = connection.prepareStatement(sql);
@@ -1185,7 +1185,15 @@ public class DashboardController implements Initializable {
         ObservableList<TemplateZPL> lista = templateService.getTemplateList();
         lista_template.setItems(lista);
     }
-    
+
+    public ObservableList<String> getListaSkuMock() {
+        ObservableList<String> lista = FXCollections.observableArrayList();
+        for (int i = 1; i <= 100; i++) {
+            lista.add(String.format("SKU-%04d", i));
+        }
+        return lista;
+    }
+
     @FXML
     private void imprimirZpl() {
         String template = comboTemplate.getValue();
@@ -1262,6 +1270,8 @@ public class DashboardController implements Initializable {
 
         setUsername();
         activateDashboard();
+
+        comboSku.setItems(getListaSkuMock());
 
 //      DASHBOARD PANE
         showDashboardData();

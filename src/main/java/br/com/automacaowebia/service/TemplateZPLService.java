@@ -1,6 +1,6 @@
 package br.com.automacaowebia.service;
 
-import br.com.automacaowebia.config.AppProperties;
+import br.com.automacaowebia.config.Database;
 import br.com.automacaowebia.model.TemplateZPL;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -20,7 +20,7 @@ public class TemplateZPLService {
     private ResultSet resultSet;
 
     public TemplateZPLService() {
-        connection = AppProperties.getInstance().connectDB();
+        connection = Database.getInstance().connectDB();
     }
 
     /**
