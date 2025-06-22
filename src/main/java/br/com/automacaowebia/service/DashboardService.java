@@ -7,7 +7,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
 import java.sql.*;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -152,7 +151,4 @@ public class DashboardService {
         }
         return false;
     }
-
-    // ➕ Você pode criar métodos semelhantes para Customers, Sales, Purchase
-    // Seguindo exatamente o mesmo padrão!
 }

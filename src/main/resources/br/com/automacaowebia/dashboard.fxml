@@ -185,10 +185,11 @@
                         <AnchorPane fx:id="billing_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css">
                             <children>
                                 <Label fx:id="inv_num" layoutX="151.0" layoutY="352.0" prefHeight="32.0" prefWidth="102.0" />
-                                <TableView fx:id="billing_table" layoutX="13.0" layoutY="33.0" onMouseClicked="#selectBillingTableData" prefHeight="271.0" prefWidth="794.0" stylesheets="@dashboard.css">
+                                <TableView fx:id="lista_template" layoutX="13.0" layoutY="33.0" prefHeight="271.0" prefWidth="794.0" stylesheets="@dashboard.css">
                                     <columns>
-                                        <TableColumn fx:id="col_bill_item_num" prefWidth="384.0" text="Template" />
-                                        <TableColumn fx:id="col_bill_quantity" prefWidth="402.40008544921875" text="Tipo" />
+                                        <TableColumn fx:id="col_template_nome" prefWidth="300.0" text="Template" />
+                                        <TableColumn fx:id="col_template_tipo" prefWidth="250.0" text="Tipo" />
+                                        <TableColumn fx:id="col_template_criado" prefWidth="237.60003662109375" text="Criado em" />
                                     </columns>
                                 </TableView>
                                 <Separator layoutX="11.0" layoutY="331.0" prefHeight="0.0" prefWidth="794.0" />
@@ -198,7 +199,7 @@
                                         <Font name="Dubai Bold" size="15.0" />
                                     </font>
                                 </Label>
-                                <Button fx:id="bill_save" alignment="CENTER" layoutX="685.0" layoutY="563.0" mnemonicParsing="false" onMouseClicked="#billSave" prefHeight="38.0" prefWidth="91.0" styleClass="save" stylesheets="@dashboard.css" text=" Salvar">
+                                <Button fx:id="btn_salvar_template" alignment="CENTER" layoutX="685.0" layoutY="563.0" mnemonicParsing="false" onAction="#salvarTemplate" onMouseClicked="#salvarTemplate" prefHeight="38.0" prefWidth="91.0" styleClass="save" stylesheets="@dashboard.css" text=" Salvar">
                                     <graphic>
                                         <FontAwesomeIconView fill="WHITE" glyphName="SAVE" size="18.0" text="" />
                                     </graphic>
@@ -314,7 +315,7 @@
                         </AnchorPane>
                         <AnchorPane fx:id="purchase_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" visible="false">
                             <children>
-                                <TableView fx:id="purchase_table" layoutX="13.0" layoutY="68.0" onMouseClicked="#selectBillingTableData" prefHeight="558.0" prefWidth="794.0" stylesheets="@dashboard.css">
+                                <TableView fx:id="purchase_table" layoutX="13.0" layoutY="68.0" prefHeight="558.0" prefWidth="794.0" stylesheets="@dashboard.css">
                                     <columns>
                                         <TableColumn fx:id="purchase_col_id" prefWidth="69.60000610351562" text="Id" />
                                         <TableColumn fx:id="purchase_col_invoice" prefWidth="161.5999755859375" text="invoice" />

@@ -2,6 +2,7 @@ package br.com.automacaowebia.controller;
 
 import br.com.automacaowebia.config.Database;
 import br.com.automacaowebia.model.*;
+import br.com.automacaowebia.service.TemplateZPLService;
 import java.io.File;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -37,6 +38,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javafx.stage.FileChooser;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static org.burningwave.core.assembler.StaticComponentContainer.Modules;
 
@@ -117,13 +120,13 @@ public class DashboardController implements Initializable {
     private ComboBox<?> bill_quantity;
 
     @FXML
-    private Button bill_save;
+    private Button btn_salvar_template;
 
     @FXML
     private TextField bill_total_amount;
 
     @FXML
-    private TableView<Billing> billing_table;
+    private TableView<TemplateZPL> lista_template;
 
     @FXML
     private TextField billing_table_search;
@@ -136,13 +139,16 @@ public class DashboardController implements Initializable {
     private String quantityList[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
 
     @FXML
-    private TableColumn<?, ?> col_bill_item_num;
+    private TableColumn<?, ?> col_template_nome;
+
+    @FXML
+    private TableColumn<?, ?> col_template_tipo;
+
+    @FXML
+    private TableColumn<?, ?> col_template_criado;
 
     @FXML
     private TableColumn<?, ?> col_bill_price;
-
-    @FXML
-    private TableColumn<?, ?> col_bill_quantity;
 
     @FXML
     private TableColumn<?, ?> col_bill_total_amt;
@@ -262,6 +268,10 @@ public class DashboardController implements Initializable {
     private Button signout_btn;
 
     List<Product> productsList;
+
+    private final TemplateZPLService templateService = new TemplateZPLService();
+    private String conteudoTemplate; // Para guardar o conteúdo carregado
+    private static final Logger logger = LogManager.getLogger(DashboardController.class);
 
     public void onExit() {
         System.exit(0);
@@ -424,7 +434,6 @@ public class DashboardController implements Initializable {
         });
     }
 
-
     public ObservableList<Billing> listBilligData() {
         ObservableList<Billing> billingList = FXCollections.observableArrayList();
         connection = Database.getInstance().connectDB();
@@ -468,17 +477,6 @@ public class DashboardController implements Initializable {
 
     public void limparCampoTemplate() {
         template_nome.setText("");
-    }
-
-    public void selectBillingTableData() {
-        int num = billing_table.getSelectionModel().getSelectedIndex();
-        Billing billingData = billing_table.getSelectionModel().getSelectedItem();
-        if (num - 1 < -1) {
-            return;
-        }
-        bill_item.setText(billingData.getItem_number());
-        bill_price.setText(String.valueOf((int) billingData.getPrice()));
-        bill_total_amount.setText(String.valueOf((int) billingData.getTotal_amount()));
     }
 
     public boolean saveCustomerDetails() {
@@ -525,75 +523,6 @@ public class DashboardController implements Initializable {
             err.printStackTrace();
         }
         return false;
-    }
-
-    public void saveInvoiceDetails() {
-        // GET CUSTOMER ID FOR MAPPING INVOICE RECORDS
-        connection = Database.getInstance().connectDB();
-        String sql = "SELECT id FROM CUSTOMERS WHERE PHONENUMBER=?";
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, bill_phone.getText());
-            resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                String custId = resultSet.getString("id");
-                // GET BILLING TABLE DETAILS
-                String getBillingDetails = "SELECT * FROM BILLING";
-                preparedStatement = connection.prepareStatement(getBillingDetails);
-                resultSet = preparedStatement.executeQuery();
-                // SAVE INVOICE DETAILS ALONG WITH CUSTOMER ID AND DATE IN SALES TABLE
-                int count = 0;
-                while (resultSet.next()) {
-                    String salesDetailsSQL = "INSERT INTO sales(inv_num,item_number,cust_id,price,quantity,total_amount,date) VALUES(?,?,?,?,?,?,?)";
-                    preparedStatement = connection.prepareStatement(salesDetailsSQL);
-                    preparedStatement.setString(1, inv_num.getText());
-                    preparedStatement.setString(2, resultSet.getString("item_number"));
-                    preparedStatement.setString(3, custId);
-                    preparedStatement.setString(4, resultSet.getString("price"));
-                    preparedStatement.setString(5, resultSet.getString("quantity"));
-                    preparedStatement.setString(6, resultSet.getString("total_amount"));
-                    preparedStatement.setString(7, bill_date.getValue().toString());
-                    preparedStatement.executeUpdate();
-                    count++;
-                }
-                if (count > 0) {
-                    billClearCustomerData();;
-                    showSalesData();
-                    setInvoiceNum();
-                    showDashboardData();
-                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                    alert.setTitle("Message");
-                    alert.setHeaderText(null);
-                    alert.setContentText("Data is successfully saved in the sales tables. ");
-                    alert.showAndWait();
-                } else {
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error Message");
-                    alert.setHeaderText(null);
-                    alert.setContentText("No Data saved in the sales table. ");
-                    alert.showAndWait();
-                }
-            } else {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error Message");
-                alert.setHeaderText(null);
-                alert.setContentText("Kindly fill Customer Details such as Name and Phone Number correctly.");
-                alert.showAndWait();
-            }
-        } catch (Exception err) {
-            err.printStackTrace();
-        }
-
-    }
-
-    public void billSave() {
-        // Save Customer Details
-        if (!saveCustomerDetails()) {
-            return;
-        }
-        //Save Invoice Details in Sales Table and Reference Customer
-        saveInvoiceDetails();
-
     }
 
     public void customerClearData() {
@@ -1068,28 +997,97 @@ public class DashboardController implements Initializable {
     }
 
     public void loadTemplate() {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Selecionar Template ZPL");
+        logger.info("Abrindo seletor de arquivos para carregar template.");
 
-        // Filtrar para mostrar apenas arquivos .zpl ou todos os arquivos
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Selecionar Template TXT");
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Arquivos ZPL", "*.zpl"),
-                new FileChooser.ExtensionFilter("Todos os Arquivos", "*.*")
+                new FileChooser.ExtensionFilter("Arquivos TXT", "*.txt")
         );
 
-        // Abrir a janela de seleção
         File selectedFile = fileChooser.showOpenDialog(new Stage());
 
         if (selectedFile != null) {
-            System.out.println("Arquivo selecionado: " + selectedFile.getAbsolutePath());
+            try {
+                conteudoTemplate = java.nio.file.Files.readString(selectedFile.toPath());
+                //template_nome.setText(selectedFile.getName().replace(".txt", ""));
 
-            // Aqui você pode ler o conteúdo do arquivo se quiser
-            // Exemplo:
-            // String content = new String(Files.readAllBytes(selectedFile.toPath()));
-            // System.out.println(content);
+                logger.info("Template '{}' carregado com sucesso.", selectedFile.getAbsolutePath());
+
+            } catch (Exception e) {
+                logger.error("Erro ao carregar arquivo: {}", e.getMessage(), e);
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setHeight(500);
+                alert.setTitle("Alerta");
+                alert.setHeaderText(null);
+                alert.setContentText("Erro ao carregar o arquivo.");
+                alert.showAndWait();
+            }
         } else {
-            System.out.println("Nenhum arquivo selecionado.");
+            logger.warn("Nenhum arquivo selecionado.");
         }
+    }
+
+    public void salvarTemplate() {
+        String nome = template_nome.getText();
+
+        logger.info("Tentando salvar template com nome '{}'.", nome);
+
+        if (nome == null || nome.isBlank()) {
+            logger.warn("Nome do template não preenchido.");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeight(500);
+            alert.setTitle("Atenção");
+            alert.setHeaderText(null);
+            alert.setContentText("O nome do template é obrigatório.");
+            alert.showAndWait();
+            return;
+        }
+
+        if (conteudoTemplate == null || conteudoTemplate.isBlank()) {
+            logger.warn("Nenhum conteúdo de template carregado para salvar.");
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setHeight(500);
+            alert.setTitle("Atenção");
+            alert.setHeaderText(null);
+            alert.setContentText("Nenhum arquivo foi carregado");
+            alert.showAndWait();
+            return;
+        }
+
+        TemplateZPL template = new TemplateZPL(nome, "TXT", conteudoTemplate);
+
+        boolean sucesso = templateService.insertTemplate(template);
+        if (sucesso) {
+            logger.info("Template '{}' salvo com sucesso.", nome);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeight(500);
+            alert.setTitle("Sucesso");
+            alert.setHeaderText(null);
+            alert.setContentText("Template salvo com sucesso.");
+            alert.showAndWait();
+            limparCampoTemplate();
+            carregarListaTemplate();
+        } else {
+            logger.error("Erro ao salvar template '{}'.", nome);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setHeight(500);
+            alert.setTitle("Erro");
+            alert.setHeaderText(null);
+            alert.setContentText("Erro ao salvar template.");
+            alert.showAndWait();
+            limparCampoTemplate();
+        }
+    }
+
+    public void carregarListaTemplate() {
+        ObservableList<TemplateZPL> lista = templateService.getTemplateList();
+
+        col_template_nome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        col_template_tipo.setCellValueFactory(new PropertyValueFactory<>("tipoArquivo"));
+        col_template_criado.setCellValueFactory(new PropertyValueFactory<>("criadoEm")); // Se tiver campo de data, se não, pode ignorar.
+
+        lista_template.setItems(lista);
     }
 
     @FXML
@@ -1123,5 +1121,8 @@ public class DashboardController implements Initializable {
 
 //      Purchase Pane
         showPurchaseData();
+
+//      Lista de tempates
+        carregarListaTemplate();
     }
 }
