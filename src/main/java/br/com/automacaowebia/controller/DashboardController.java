@@ -3,6 +3,7 @@ package br.com.automacaowebia.controller;
 import br.com.automacaowebia.config.Database;
 import br.com.automacaowebia.model.*;
 import br.com.automacaowebia.service.TemplateZPLService;
+import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.File;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -33,10 +34,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.stage.FileChooser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -139,13 +142,16 @@ public class DashboardController implements Initializable {
     private String quantityList[] = {"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"};
 
     @FXML
-    private TableColumn<?, ?> col_template_nome;
+    private TableColumn<TemplateZPL, String> col_template_nome;
 
     @FXML
-    private TableColumn<?, ?> col_template_tipo;
+    private TableColumn<TemplateZPL, String> col_template_tipo;
 
     @FXML
-    private TableColumn<?, ?> col_template_criado;
+    private TableColumn<TemplateZPL, String> col_template_criado;
+
+    @FXML
+    private TableColumn<TemplateZPL, Void> col_template_acao;
 
     @FXML
     private TableColumn<?, ?> col_bill_price;
@@ -1081,12 +1087,81 @@ public class DashboardController implements Initializable {
     }
 
     public void carregarListaTemplate() {
-        ObservableList<TemplateZPL> lista = templateService.getTemplateList();
-
+        // Configuração das colunas padrão
         col_template_nome.setCellValueFactory(new PropertyValueFactory<>("nome"));
         col_template_tipo.setCellValueFactory(new PropertyValueFactory<>("tipoArquivo"));
-        col_template_criado.setCellValueFactory(new PropertyValueFactory<>("criadoEm")); // Se tiver campo de data, se não, pode ignorar.
+        col_template_criado.setCellValueFactory(cellData -> {
+            var criado = cellData.getValue().getCriadoEm();
+            String dataFormatada = (criado != null)
+                    ? criado.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm"))
+                    : "";
+            return new SimpleStringProperty(dataFormatada);
+        });
 
+        // Adicionar coluna de ações (botão excluir)
+        col_template_acao.setCellFactory(param -> new TableCell<TemplateZPL, Void>() {
+            private final Button btnExcluir = new Button();
+
+            {
+                btnExcluir.getStyleClass().add("delete"); // aplica classe CSS
+                btnExcluir.setPrefWidth(80);
+                btnExcluir.setPrefHeight(28);
+
+                btnExcluir.getStyleClass().add("delete");
+
+                // Ícone no botão (usando FontAwesomeIconView)
+                FontAwesomeIconView icon = new FontAwesomeIconView();
+                icon.setGlyphName("TRASH");
+                icon.setSize("14");
+                icon.setFill(javafx.scene.paint.Color.WHITE);
+
+                btnExcluir.setGraphic(icon);
+                btnExcluir.setText("Excluir");
+                btnExcluir.setOnAction(event -> {
+                    TemplateZPL template = getTableView().getItems().get(getIndex());
+
+                    Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+                    confirm.setTitle("Confirmação");
+                    confirm.setHeaderText(null);
+                    confirm.setContentText("Deseja realmente excluir o template '" + template.getNome() + "'?");
+
+                    var result = confirm.showAndWait();
+                    if (result.isPresent() && result.get() == ButtonType.OK) {
+                        boolean sucesso = templateService.deleteTemplate(template.getId());
+                        if (sucesso) {
+                            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                            alert.setTitle("Sucesso");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Template excluído com sucesso.");
+                            alert.showAndWait();
+                            carregarListaTemplate(); // Atualiza lista
+                        } else {
+                            Alert alert = new Alert(Alert.AlertType.ERROR);
+                            alert.setTitle("Erro");
+                            alert.setHeaderText(null);
+                            alert.setContentText("Erro ao excluir template.");
+                            alert.showAndWait();
+                        }
+                    }
+                });
+
+                // Estilo opcional do botão
+                btnExcluir.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-cursor: hand;");
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(btnExcluir);
+                }
+            }
+        });
+
+        // Carregar os dados da tabela
+        ObservableList<TemplateZPL> lista = templateService.getTemplateList();
         lista_template.setItems(lista);
     }
 
