@@ -1,6 +1,6 @@
 package br.com.automacaowebia.service;
 
-import br.com.automacaowebia.config.Database;
+import br.com.automacaowebia.config.AppProperties;
 import br.com.automacaowebia.model.Billing;
 import br.com.automacaowebia.model.Product;
 import javafx.collections.FXCollections;
@@ -15,7 +15,7 @@ public class BillingService {
     public ObservableList<Billing> getBillingList() {
         ObservableList<Billing> billingList = FXCollections.observableArrayList();
         String sql = "SELECT * FROM BILLING";
-        try (Connection conn = Database.getInstance().connectDB();
+        try (Connection conn = AppProperties.getInstance().connectDB();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
@@ -35,7 +35,7 @@ public class BillingService {
 
     public boolean insertBilling(Billing billing) {
         String sql = "INSERT INTO BILLING(item_number, quantity, price, total_amount) VALUES (?, ?, ?, ?)";
-        try (Connection conn = Database.getInstance().connectDB();
+        try (Connection conn = AppProperties.getInstance().connectDB();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, billing.getItem_number());
@@ -52,7 +52,7 @@ public class BillingService {
 
     public boolean deleteBilling(String itemNumber) {
         String sql = "DELETE FROM BILLING WHERE item_number = ?";
-        try (Connection conn = Database.getInstance().connectDB();
+        try (Connection conn = AppProperties.getInstance().connectDB();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, itemNumber);
@@ -65,7 +65,7 @@ public class BillingService {
 
     public double getFinalAmount() {
         String sql = "SELECT SUM(total_amount) AS final_amount FROM billing";
-        try (Connection conn = Database.getInstance().connectDB();
+        try (Connection conn = AppProperties.getInstance().connectDB();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 

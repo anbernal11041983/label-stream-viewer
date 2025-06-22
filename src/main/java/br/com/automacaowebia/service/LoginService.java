@@ -1,6 +1,6 @@
 package br.com.automacaowebia.service;
 
-import br.com.automacaowebia.config.Database;
+import br.com.automacaowebia.config.AppProperties;
 import br.com.automacaowebia.model.User;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -22,7 +22,7 @@ public class LoginService {
         String sql = "SELECT * FROM users WHERE username = ? AND password = ?";
         logger.info("Tentando autenticar usuário: {}", user.getUsername());
 
-        try (Connection conn = Database.getInstance().connectDB();
+        try (Connection conn = AppProperties.getInstance().connectDB();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, user.getUsername());

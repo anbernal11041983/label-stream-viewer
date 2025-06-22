@@ -1,6 +1,6 @@
 package br.com.automacaowebia.controller;
 
-import br.com.automacaowebia.config.Database;
+import br.com.automacaowebia.config.AppProperties;
 import br.com.automacaowebia.model.*;
 import br.com.automacaowebia.service.TemplateZPLService;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -40,6 +40,8 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.concurrent.Task;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -58,13 +60,13 @@ public class DashboardController implements Initializable {
     private AnchorPane template_pane;
 
     @FXML
-    private Button customer_btn;
+    private Button impressao_btn;
 
     @FXML
     private Button dashboard_btn;
 
     @FXML
-    private AnchorPane customer_pane;
+    private AnchorPane impressao_zpl;
 
     @FXML
     private AnchorPane dasboard_pane;
@@ -136,6 +138,24 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Label final_amount;
+
+    @FXML
+    private ProgressBar progressPrint;
+
+    @FXML
+    private Button btnPrint;
+
+    @FXML
+    private ComboBox<String> comboTemplate;
+
+    @FXML
+    private ComboBox<String> comboSku;
+
+    @FXML
+    private ImageView imgPreview;
+
+    @FXML
+    private Label lblPreviewPlaceholder;
 
     private String invoiceList[] = {"BX123456", "ZX123456", "AX123456"};
 
@@ -287,60 +307,60 @@ public class DashboardController implements Initializable {
         dashboard_btn.setOnMouseClicked(mouseEvent -> {
             dasboard_pane.setVisible(true);
             template_pane.setVisible(false);
-            customer_pane.setVisible(false);
+            impressao_zpl.setVisible(false);
             sales_pane.setVisible(false);
             purchase_pane.setVisible(false);
             dashboard_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.7),  rgba(255,106,239,0.7))");
             billing_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
-            customer_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
+            impressao_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
             sales_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
             purchase_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
         });
         billing_btn.setOnMouseClicked(mouseEvent -> {
             dasboard_pane.setVisible(false);
             template_pane.setVisible(true);
-            customer_pane.setVisible(false);
+            impressao_zpl.setVisible(false);
             sales_pane.setVisible(false);
             purchase_pane.setVisible(false);
             dashboard_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
             billing_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.7),  rgba(255,106,239,0.7))");
-            customer_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
+            impressao_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
             sales_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
             purchase_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
         });
-        customer_btn.setOnMouseClicked(mouseEvent -> {
+        impressao_btn.setOnMouseClicked(mouseEvent -> {
             dasboard_pane.setVisible(false);
             template_pane.setVisible(false);
-            customer_pane.setVisible(true);
+            impressao_zpl.setVisible(true);
             sales_pane.setVisible(false);
             purchase_pane.setVisible(false);
             dashboard_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
             billing_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
-            customer_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.7),  rgba(255,106,239,0.7))");
+            impressao_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.7),  rgba(255,106,239,0.7))");
             sales_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
             purchase_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
         });
         sales_btn.setOnMouseClicked(mouseEvent -> {
             dasboard_pane.setVisible(false);
             template_pane.setVisible(false);
-            customer_pane.setVisible(false);
+            impressao_zpl.setVisible(false);
             sales_pane.setVisible(true);
             purchase_pane.setVisible(false);
             dashboard_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
             billing_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
-            customer_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
+            impressao_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
             sales_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.7),  rgba(255,106,239,0.7))");
             purchase_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
         });
         purchase_btn.setOnMouseClicked(mouseEvent -> {
             dasboard_pane.setVisible(false);
             template_pane.setVisible(false);
-            customer_pane.setVisible(false);
+            impressao_zpl.setVisible(false);
             sales_pane.setVisible(false);
             purchase_pane.setVisible(true);
             dashboard_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
             billing_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
-            customer_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
+            impressao_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
             sales_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
             purchase_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.7),  rgba(255,106,239,0.7))");
         });
@@ -354,14 +374,14 @@ public class DashboardController implements Initializable {
     public void activateDashboard() {
         dasboard_pane.setVisible(true);
         template_pane.setVisible(false);
-        customer_pane.setVisible(false);
+        impressao_zpl.setVisible(false);
         sales_pane.setVisible(false);
         purchase_pane.setVisible(false);
     }
 
     public List<Product> getItemsList() {
         productsList = new ArrayList<>();
-        connection = Database.getInstance().connectDB();
+        connection = AppProperties.getInstance().connectDB();
         String sql = "SELECT * FROM PRODUCTS";
         try {
             statement = connection.createStatement();
@@ -383,7 +403,7 @@ public class DashboardController implements Initializable {
     }
 
     public void setInvoiceNum() {
-        connection = Database.getInstance().connectDB();
+        connection = AppProperties.getInstance().connectDB();
         String sql = "SELECT MAX(inv_num) AS inv_num FROM sales";
 
         try {
@@ -442,7 +462,7 @@ public class DashboardController implements Initializable {
 
     public ObservableList<Billing> listBilligData() {
         ObservableList<Billing> billingList = FXCollections.observableArrayList();
-        connection = Database.getInstance().connectDB();
+        connection = AppProperties.getInstance().connectDB();
         String sql = "SELECT * FROM BILLING";
         try {
             statement = connection.createStatement();
@@ -461,7 +481,7 @@ public class DashboardController implements Initializable {
     }
 
     public void calculateFinalAmount() {
-        connection = Database.getInstance().connectDB();
+        connection = AppProperties.getInstance().connectDB();
         String sql = "SELECT SUM(total_amount) AS final_amount FROM billing";
         try {
             statement = connection.createStatement();
@@ -494,7 +514,7 @@ public class DashboardController implements Initializable {
             alert.showAndWait();
             return false;
         }
-        connection = Database.getInstance().connectDB();
+        connection = AppProperties.getInstance().connectDB();
         String sql = "SELECT * FROM CUSTOMERS WHERE phonenumber=?";
         try {
             preparedStatement = connection.prepareStatement(sql);
@@ -538,7 +558,7 @@ public class DashboardController implements Initializable {
 
     public ObservableList<Customer> listCustomerData() {
         ObservableList<Customer> customersList = FXCollections.observableArrayList();
-        connection = Database.getInstance().connectDB();
+        connection = AppProperties.getInstance().connectDB();
         String sql = "SELECT * FROM Customers";
         try {
             statement = connection.createStatement();
@@ -565,7 +585,7 @@ public class DashboardController implements Initializable {
     }
 
     public boolean checkForCustomerAvailability() {
-        connection = Database.getInstance().connectDB();
+        connection = AppProperties.getInstance().connectDB();
         String sql = "SELECT * FROM CUSTOMERS WHERE phone_number=?";
         try {
             preparedStatement = connection.prepareStatement(sql);
@@ -592,7 +612,7 @@ public class DashboardController implements Initializable {
         if (!checkForCustomerAvailability()) {
             return;
         }
-        connection = Database.getInstance().connectDB();
+        connection = AppProperties.getInstance().connectDB();
         String sql = "INSERT INTO CUSTOMERS(name,phonenumber)VALUES(?,?)";
         try {
             preparedStatement = connection.prepareStatement(sql);
@@ -634,7 +654,7 @@ public class DashboardController implements Initializable {
             alert.showAndWait();
             return;
         }
-        connection = Database.getInstance().connectDB();
+        connection = AppProperties.getInstance().connectDB();
         String sql = "UPDATE CUSTOMERS SET name=? WHERE phonenumber=?";
         try {
             preparedStatement = connection.prepareStatement(sql);
@@ -665,7 +685,7 @@ public class DashboardController implements Initializable {
             alert.showAndWait();
             return;
         }
-        connection = Database.getInstance().connectDB();
+        connection = AppProperties.getInstance().connectDB();
         String sql = "DELETE FROM CUSTOMERS WHERE phonenumber=?";
         try {
             preparedStatement = connection.prepareStatement(sql);
@@ -692,7 +712,7 @@ public class DashboardController implements Initializable {
     }
 
     public void printCustomersDetails() {
-        connection = Database.getInstance().connectDB();
+        connection = AppProperties.getInstance().connectDB();
         String sql = "SELECT * FROM customers";
         try {
             JasperDesign jasperDesign = JRXmlLoader.load(this.getClass().getClassLoader().getResourceAsStream("jasper-reports/customers.jrxml"));
@@ -708,7 +728,7 @@ public class DashboardController implements Initializable {
     }
 
     public void getTotalSalesAmount() {
-        connection = Database.getInstance().connectDB();
+        connection = AppProperties.getInstance().connectDB();
         String sql = "SELECT SUM(total_amount) as total_sale_amount FROM sales";
         try {
             statement = connection.createStatement();
@@ -734,7 +754,7 @@ public class DashboardController implements Initializable {
 
     public ObservableList<Sales> listSalesData() {
         ObservableList<Sales> salesList = FXCollections.observableArrayList();
-        connection = Database.getInstance().connectDB();
+        connection = AppProperties.getInstance().connectDB();
         String sql = "SELECT * FROM SALES s INNER JOIN CUSTOMERS c ON s.cust_id=c.id";
         try {
             statement = connection.createStatement();
@@ -766,7 +786,7 @@ public class DashboardController implements Initializable {
     }
 
     public void printSalesDetails() {
-        connection = Database.getInstance().connectDB();
+        connection = AppProperties.getInstance().connectDB();
         String sql = "SELECT * FROM sales s INNER JOIN customers c ON s.cust_id=c.id";
         try {
             JasperDesign jasperDesign = JRXmlLoader.load(this.getClass().getClassLoader().getResourceAsStream("jasper-reports/sales_report.jrxml"));
@@ -782,7 +802,7 @@ public class DashboardController implements Initializable {
     }
 
     public void getTotalPurchaseAmount() {
-        connection = Database.getInstance().connectDB();
+        connection = AppProperties.getInstance().connectDB();
         String sql = "SELECT SUM(total_amount) as total_purchase_amount FROM purchase";
         try {
             statement = connection.createStatement();
@@ -807,7 +827,7 @@ public class DashboardController implements Initializable {
     }
 
     public void printPurchaseDetails() {
-        connection = Database.getInstance().connectDB();
+        connection = AppProperties.getInstance().connectDB();
         String sql = "SELECT * FROM purchase";
         try {
             JasperDesign jasperDesign = JRXmlLoader.load(this.getClass().getClassLoader().getResourceAsStream("jasper-reports/purchase_report.jrxml"));
@@ -824,7 +844,7 @@ public class DashboardController implements Initializable {
 
     public ObservableList<Purchase> listPurchaseData() {
         ObservableList<Purchase> purchaseList = FXCollections.observableArrayList();
-        connection = Database.getInstance().connectDB();
+        connection = AppProperties.getInstance().connectDB();
         String sql = "SELECT * FROM purchase";
         try {
             statement = connection.createStatement();
@@ -853,7 +873,7 @@ public class DashboardController implements Initializable {
     }
 
     public void getTotalPurchase() {
-        connection = Database.getInstance().connectDB();
+        connection = AppProperties.getInstance().connectDB();
         String sql = "SELECT SUM(total_items) as total_purchase FROM PURCHASE";
         try {
             statement = connection.createStatement();
@@ -878,7 +898,7 @@ public class DashboardController implements Initializable {
     }
 
     public void getTotalSales() {
-        connection = Database.getInstance().connectDB();
+        connection = AppProperties.getInstance().connectDB();
         String sql = "SELECT SUM(quantity) as total_sale FROM sales";
         try {
             statement = connection.createStatement();
@@ -912,7 +932,7 @@ public class DashboardController implements Initializable {
     public void getSalesDetailsOfThisMonth() {
         LocalDate date = LocalDate.now();
         String monthName = date.getMonth().toString();
-        connection = Database.getInstance().connectDB();
+        connection = AppProperties.getInstance().connectDB();
         String sql = "SELECT SUM(total_amount) as total_sales_this_month FROM SALES WHERE MONTHNAME(DATE)=?";
         try {
             preparedStatement = connection.prepareStatement(sql);
@@ -940,7 +960,7 @@ public class DashboardController implements Initializable {
     public void getItemSoldThisMonth() {
         LocalDate date = LocalDate.now();
         String monthName = date.getMonth().toString();
-        connection = Database.getInstance().connectDB();
+        connection = AppProperties.getInstance().connectDB();
         String sql = "SELECT SUM(quantity) as total_items_sold_this_month FROM SALES WHERE MONTHNAME(DATE)=?";
         try {
             preparedStatement = connection.prepareStatement(sql);
@@ -1164,6 +1184,63 @@ public class DashboardController implements Initializable {
         // Carregar os dados da tabela
         ObservableList<TemplateZPL> lista = templateService.getTemplateList();
         lista_template.setItems(lista);
+    }
+    
+    @FXML
+    private void imprimirZpl() {
+        String template = comboTemplate.getValue();
+        String sku = comboSku.getValue();
+
+        if (template == null || sku == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Atenção");
+            alert.setHeaderText(null);
+            alert.setContentText("Selecione um Template e um SKU para imprimir.");
+            alert.showAndWait();
+            return;
+        }
+
+        progressPrint.setVisible(true);
+        progressPrint.setProgress(0);
+
+        int total = 10; // Simulação para 10 mil impressões
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                for (int i = 1; i <= total; i++) {
+                    // Simula envio de impressão
+                    Thread.sleep(5); // Aqui você colocaria a chamada real para impressora
+
+                    // Atualiza progresso
+                    updateProgress(i, total);
+                }
+                return null;
+            }
+        };
+
+        task.setOnSucceeded(event -> {
+            progressPrint.setVisible(false);
+            progressPrint.setProgress(0);
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Impressão Finalizada");
+            alert.setHeaderText(null);
+            alert.setContentText("Todas as impressões foram concluídas com sucesso!");
+            alert.showAndWait();
+        });
+
+        task.setOnFailed(event -> {
+            progressPrint.setVisible(false);
+            progressPrint.setProgress(0);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText(null);
+            alert.setContentText("Ocorreu um erro durante a impressão.");
+            alert.showAndWait();
+        });
+
+        progressPrint.progressProperty().bind(task.progressProperty());
+
+        new Thread(task).start();
     }
 
     @FXML

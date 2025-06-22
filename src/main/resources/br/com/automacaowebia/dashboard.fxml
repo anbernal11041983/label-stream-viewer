@@ -1,13 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
@@ -60,7 +66,7 @@
                                 <FontAwesomeIconView fill="WHITE" glyphName="COG" size="1.2em" />
                             </graphic>
                         </Button>
-                        <Button fx:id="customer_btn" layoutX="39.0" layoutY="353.0" mnemonicParsing="false" onAction="#activateDashboard" onMouseClicked="#activateAnchorPane" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="IMPRESSÃO" textFill="WHITE">
+                        <Button fx:id="impressao_btn" layoutX="39.0" layoutY="353.0" mnemonicParsing="false" onAction="#activateDashboard" onMouseClicked="#activateAnchorPane" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="IMPRESSÃO" textFill="WHITE">
                             <font>
                                 <Font size="16.0" />
                             </font>
@@ -98,74 +104,74 @@
                             <children>
                                 <Pane layoutX="80.0" layoutY="65.0" prefHeight="200.0" prefWidth="267.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
                                     <children>
-                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="267.0" spacing="20.0">
-                                 <children>
-                                              <Label alignment="CENTER" prefHeight="27.0" prefWidth="256.0" text="TOTAL MODELOS" textFill="WHITE">
-                                                  <font>
-                                                      <Font name="Arial Rounded MT Bold" size="18.0" />
-                                                  </font>
-                                              </Label>
-                                              <Label fx:id="dash_total_stocks" alignment="CENTER" prefHeight="46.0" prefWidth="253.0" text="32" textFill="WHITE">
-                                                  <font>
-                                                      <Font name="Arial Rounded MT Bold" size="30.0" />
-                                                  </font>
-                                              </Label>
-                                 </children>
-                              </VBox>
+                                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="267.0" spacing="20.0">
+                                            <children>
+                                                <Label alignment="CENTER" prefHeight="27.0" prefWidth="256.0" text="TOTAL MODELOS" textFill="WHITE">
+                                                    <font>
+                                                        <Font name="Arial Rounded MT Bold" size="18.0" />
+                                                    </font>
+                                                </Label>
+                                                <Label fx:id="dash_total_stocks" alignment="CENTER" prefHeight="46.0" prefWidth="253.0" text="32" textFill="WHITE">
+                                                    <font>
+                                                        <Font name="Arial Rounded MT Bold" size="30.0" />
+                                                    </font>
+                                                </Label>
+                                            </children>
+                                        </VBox>
                                     </children>
                                 </Pane>
                                 <Pane layoutX="450.0" layoutY="65.0" prefHeight="200.0" prefWidth="280.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
                                     <children>
-                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="280.0" spacing="20.0">
-                                 <children>
-                                              <Label alignment="CENTER" prefHeight="27.0" prefWidth="281.0" text="IMPRESSÕES DIÁRIA" textFill="WHITE">
-                                                  <font>
-                                                      <Font name="Arial Rounded MT Bold" size="18.0" />
-                                                  </font>
-                                              </Label>
-                                              <Label fx:id="dash_total_sold" alignment="CENTER" prefHeight="46.0" prefWidth="280.0" text="18" textFill="WHITE">
-                                                  <font>
-                                                      <Font name="Arial Rounded MT Bold" size="30.0" />
-                                                  </font>
-                                              </Label>
-                                 </children>
-                              </VBox>
+                                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="280.0" spacing="20.0">
+                                            <children>
+                                                <Label alignment="CENTER" prefHeight="27.0" prefWidth="281.0" text="IMPRESSÕES DIÁRIA" textFill="WHITE">
+                                                    <font>
+                                                        <Font name="Arial Rounded MT Bold" size="18.0" />
+                                                    </font>
+                                                </Label>
+                                                <Label fx:id="dash_total_sold" alignment="CENTER" prefHeight="46.0" prefWidth="280.0" text="18" textFill="WHITE">
+                                                    <font>
+                                                        <Font name="Arial Rounded MT Bold" size="30.0" />
+                                                    </font>
+                                                </Label>
+                                            </children>
+                                        </VBox>
                                     </children>
                                 </Pane>
                                 <Pane layoutX="450.0" layoutY="350.0" prefHeight="200.0" prefWidth="280.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
                                     <children>
-                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="280.0" spacing="20.0">
-                                 <children>
-                                              <Label alignment="CENTER" contentDisplay="TOP" prefHeight="27.0" prefWidth="278.0" text="IMPRESSÕES MENSAIS" textFill="WHITE">
-                                                  <font>
-                                                      <Font name="Arial Rounded MT Bold" size="18.0" />
-                                                  </font>
-                                              </Label>
-                                              <Label fx:id="dash_total_purchase" alignment="CENTER" prefHeight="46.0" prefWidth="297.0" text="50" textFill="WHITE">
-                                                  <font>
-                                                      <Font name="Arial Rounded MT Bold" size="30.0" />
-                                                  </font>
-                                              </Label>
-                                 </children>
-                              </VBox>
+                                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="280.0" spacing="20.0">
+                                            <children>
+                                                <Label alignment="CENTER" contentDisplay="TOP" prefHeight="27.0" prefWidth="278.0" text="IMPRESSÕES MENSAIS" textFill="WHITE">
+                                                    <font>
+                                                        <Font name="Arial Rounded MT Bold" size="18.0" />
+                                                    </font>
+                                                </Label>
+                                                <Label fx:id="dash_total_purchase" alignment="CENTER" prefHeight="46.0" prefWidth="297.0" text="50" textFill="WHITE">
+                                                    <font>
+                                                        <Font name="Arial Rounded MT Bold" size="30.0" />
+                                                    </font>
+                                                </Label>
+                                            </children>
+                                        </VBox>
                                     </children>
                                 </Pane>
                                 <Pane layoutX="80.0" layoutY="350.0" prefHeight="200.0" prefWidth="280.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
                                     <children>
-                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="280.0" spacing="20.0">
-                                 <children>
-                                              <Label alignment="CENTER" prefHeight="27.0" prefWidth="282.0" text="IMPRESSÕES ANUAL" textFill="WHITE">
-                                                  <font>
-                                                      <Font name="Arial Rounded MT Bold" size="18.0" />
-                                                  </font>
-                                              </Label>
-                                              <Label fx:id="dash_total_sales_this_month" alignment="CENTER" prefHeight="46.0" prefWidth="277.0" text="15000" textFill="WHITE">
-                                                  <font>
-                                                      <Font name="Arial Rounded MT Bold" size="30.0" />
-                                                  </font>
-                                              </Label>
-                                 </children>
-                              </VBox>
+                                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="280.0" spacing="20.0">
+                                            <children>
+                                                <Label alignment="CENTER" prefHeight="27.0" prefWidth="282.0" text="IMPRESSÕES ANUAL" textFill="WHITE">
+                                                    <font>
+                                                        <Font name="Arial Rounded MT Bold" size="18.0" />
+                                                    </font>
+                                                </Label>
+                                                <Label fx:id="dash_total_sales_this_month" alignment="CENTER" prefHeight="46.0" prefWidth="277.0" text="15000" textFill="WHITE">
+                                                    <font>
+                                                        <Font name="Arial Rounded MT Bold" size="30.0" />
+                                                    </font>
+                                                </Label>
+                                            </children>
+                                        </VBox>
                                     </children>
                                 </Pane>
                             </children>
@@ -334,6 +340,72 @@
                                         <Font name="Dubai Bold" size="18.0" />
                                     </font>
                                 </Label>
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="impressao_zpl" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0"
+                                    stylesheets="@dashboard.css" visible="true"
+                                    xmlns="http://javafx.com/javafx/23.0.1"
+                                    xmlns:fx="http://javafx.com/fxml/1">
+                            <children>
+                                <VBox alignment="TOP_LEFT" prefHeight="639.0" prefWidth="820.0" spacing="15.0">
+                                    <padding>
+                                        <Insets top="20" right="20" bottom="20" left="20" />
+                                    </padding>
+
+                                    <!-- Linha de seleção de Template e SKU -->
+                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                        <children>
+                                            <Label styleClass="label-bold" text="Template:" />
+                                            <ComboBox fx:id="comboTemplate" prefWidth="250.0" promptText="Selecione o template"/>
+
+                                            <Label styleClass="label-bold" text="SKU:" />
+                                            <ComboBox fx:id="comboSku" prefWidth="200.0" promptText="Selecione o SKU"/>
+
+                                            <Button fx:id="btnRefreshTemplates" prefHeight="32.0" prefWidth="32.0" styleClass="refresh">
+                                                <graphic>
+                                                    <FontAwesomeIconView fill="WHITE" glyphName="REFRESH" size="14.0"/>
+                                                </graphic>
+                                            </Button>
+                                        </children>
+                                    </HBox>
+
+                                    <Separator/>
+
+                                    <!-- Área de preview -->
+                                    <HBox spacing="20.0">
+                                        <children>
+                                            <VBox spacing="10.0">
+                                                <children>
+                                                    <Label styleClass="label-bold" text="Preview"/>
+                                                    <Pane prefHeight="400.0" prefWidth="350.0" styleClass="preview-container">
+                                                        <children>
+                                                            <ImageView fx:id="imgPreview" fitHeight="400.0" fitWidth="350.0" preserveRatio="true"/>
+                                                            <Label fx:id="lblPreviewPlaceholder" alignment="CENTER"
+                                                                   prefHeight="400.0" prefWidth="350.0"
+                                                                   text="Selecione um template e um SKU para visualizar"
+                                                                   textFill="#888888" wrapText="true"/>
+                                                        </children>
+                                                    </Pane>
+                                                </children>
+                                            </VBox>
+                                        </children>
+                                    </HBox>
+
+                                    <Separator/>
+
+                                    <!-- Barra de progresso e botão imprimir -->
+                                    <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                                        <children>
+                                            <ProgressBar fx:id="progressPrint" prefWidth="200.0" progress="0.0" visible="false"/>
+                                            <Button fx:id="btnPrint" prefHeight="36.0" prefWidth="120.0" styleClass="print" text="Imprimir">
+                                                <graphic>
+                                                    <FontAwesomeIconView fill="WHITE" glyphName="PRINT" size="18.0"/>
+                                                </graphic>
+                                            </Button>
+                                        </children>
+                                    </HBox>
+
+                                </VBox>
                             </children>
                         </AnchorPane>
                         <Separator layoutX="14.0" layoutY="49.0" prefHeight="0.0" prefWidth="794.0" />

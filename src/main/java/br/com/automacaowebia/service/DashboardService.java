@@ -1,6 +1,6 @@
 package br.com.automacaowebia.service;
 
-import br.com.automacaowebia.config.Database;
+import br.com.automacaowebia.config.AppProperties;
 import br.com.automacaowebia.model.Billing;
 import br.com.automacaowebia.model.Product;
 import javafx.collections.FXCollections;
@@ -18,7 +18,7 @@ public class DashboardService {
     private ResultSet resultSet;
 
     public DashboardService() {
-        connection = Database.getInstance().connectDB();
+        connection = AppProperties.getInstance().connectDB();
     }
 
     public List<Product> getProducts() {

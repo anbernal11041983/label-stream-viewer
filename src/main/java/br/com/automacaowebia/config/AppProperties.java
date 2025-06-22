@@ -5,14 +5,14 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.util.Properties;
 
-public class Database {
+public class AppProperties {
     private static String CONFIG_FILE="application.properties";
-    private static Database database=new Database();
-    public static Database getInstance()
+    private static AppProperties appProperties=new AppProperties();
+    public static AppProperties getInstance()
     {
-        if (database== null)
-            database= new Database();
-        return database;
+        if (appProperties== null)
+            appProperties= new AppProperties();
+        return appProperties;
     }
     public Connection connectDB(){
         Properties dbConfig=new Properties();

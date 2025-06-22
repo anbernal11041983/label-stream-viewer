@@ -1,6 +1,6 @@
 package br.com.automacaowebia.controller;
 
-import br.com.automacaowebia.config.Database;
+import br.com.automacaowebia.config.AppProperties;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
@@ -48,7 +48,7 @@ public class BillsController implements Initializable {
     }
 
     public void searchAndPrintBillDetails(){
-        connection= Database.getInstance().connectDB();
+        connection= AppProperties.getInstance().connectDB();
         String sql="SELECT * FROM `sales` s INNER JOIN customers c ON s.cust_id=c.id and s.inv_num='" +bills_search_invoice_number.getText() + "'";
         try{
             JasperDesign jasperDesign= JRXmlLoader.load(this.getClass().getClassLoader().getResourceAsStream("jasper-reports/Invoice.jrxml"));
