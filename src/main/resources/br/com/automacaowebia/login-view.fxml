@@ -71,6 +71,11 @@
                               </LinearGradient>
                            </textFill>
                         </Label>
+                        <Label fx:id="lblVersao" alignment="CENTER" layoutX="2.0" layoutY="667.0" prefHeight="18.0" prefWidth="264.0" text="Versão 1.0.0" textAlignment="CENTER" textFill="WHITE">
+                           <font>
+                              <Font size="10.0" />
+                           </font>
+                        </Label>
                      </children>
                   </AnchorPane>
                </children>

@@ -1,5 +1,6 @@
 package br.com.automacaowebia.controller;
 
+import br.com.automacaowebia.config.AppInfo;
 import br.com.automacaowebia.config.Database;
 import br.com.automacaowebia.model.*;
 import br.com.automacaowebia.service.ImpressaoZPLService;
@@ -315,6 +316,9 @@ public class DashboardController implements Initializable {
     private final ImpressaoZPLService impressaoZPLService = new ImpressaoZPLService();
     private String conteudoTemplate; // Para guardar o conteúdo carregado
     private static final Logger logger = LogManager.getLogger(DashboardController.class);
+    
+    @FXML
+    private Label lblVersao;
 
     public void onExit() {
         System.exit(0);
@@ -1315,6 +1319,8 @@ public class DashboardController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         // Exports all modules to other modules
         Modules.exportAllToAll();
+        
+        lblVersao.setText("Versão: " + AppInfo.getVersion());
 
         setupQuantidadeField();
         setUsername();

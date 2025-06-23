@@ -1,5 +1,6 @@
 package br.com.automacaowebia.controller;
 
+import br.com.automacaowebia.config.AppInfo;
 import br.com.automacaowebia.model.User;
 import br.com.automacaowebia.service.LoginService;
 import javafx.fxml.FXML;
@@ -40,6 +41,8 @@ public class LoginController implements Initializable {
 
     @FXML
     private AnchorPane login_form;
+    @FXML
+    private Label lblVersao;
 
     private double x;
     private double y;
@@ -127,5 +130,6 @@ public class LoginController implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         dropShowAffect();
+        lblVersao.setText("Versão: " + AppInfo.getVersion());
     }
 }

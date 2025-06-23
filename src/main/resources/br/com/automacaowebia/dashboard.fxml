@@ -74,7 +74,7 @@
                                 <FontAwesomeIconView fill="WHITE" glyphName="PRINT" size="1.2em" />
                             </graphic>
                         </Button>
-                        <Button fx:id="signout_btn" layoutX="14.0" layoutY="641.0" mnemonicParsing="false" onAction="#signOut" prefHeight="38.0" prefWidth="115.0" styleClass="navbutton" stylesheets="@dashboard.css" text="SAIR" textFill="WHITE">
+                        <Button fx:id="signout_btn" layoutX="39.0" layoutY="614.0" mnemonicParsing="false" onAction="#signOut" prefHeight="38.0" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="SAIR" textFill="WHITE">
                             <font>
                                 <Font size="16.0" />
                             </font>
@@ -82,11 +82,15 @@
                                 <FontAwesomeIconView fill="WHITE" glyphName="SIGN_OUT" size="1.2em" />
                             </graphic>
                         </Button>
+                  <Label fx:id="lblVersao" alignment="CENTER" layoutX="7.0" layoutY="669.0" prefHeight="18.0" prefWidth="256.0" text="Versão: 1.0.0" textFill="WHITE">
+                     <font>
+                        <Font size="10.0" />
+                     </font></Label>
                     </children>
                 </AnchorPane>
                 <AnchorPane layoutX="275.0" prefHeight="694.0" prefWidth="808.0">
                     <children>
-                        <Button alignment="CENTER" contentDisplay="RIGHT" layoutX="743.0" layoutY="9.0" mnemonicParsing="false" onMouseClicked="#onExit" onMouseDragged="#onExit" prefHeight="29.0" prefWidth="50.0" styleClass="close" stylesheets="@dashboard.css">
+                        <Button alignment="CENTER" contentDisplay="RIGHT" layoutX="743.0" layoutY="9.0" mnemonicParsing="false" onMouseClicked="#onExit" onMouseDragged="#onExit" prefHeight="29.0" prefWidth="50.0" styleClass="print" stylesheets="@dashboard.css">
                             <graphic>
                                 <FontAwesomeIconView fill="WHITE" glyphName="CLOSE" size="16.0" text="" />
                             </graphic>
