@@ -46,6 +46,7 @@ import javafx.concurrent.Task;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
+import javafx.stage.Modality;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -1078,63 +1079,6 @@ public class DashboardController implements Initializable {
         return lista;
     }
 
-    @FXML
-    private void imprimirZpl() {
-        String template = comboTemplate.getValue();
-        String sku = comboSku.getValue();
-
-        if (template == null || sku == null) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Atenção");
-            alert.setHeaderText(null);
-            alert.setContentText("Selecione um Template e um SKU para imprimir.");
-            alert.showAndWait();
-            return;
-        }
-
-        progressPrint.setVisible(true);
-        progressPrint.setProgress(0);
-
-        int total = 10; // Simulação para 10 mil impressões
-        Task<Void> task = new Task<>() {
-            @Override
-            protected Void call() throws Exception {
-                for (int i = 1; i <= total; i++) {
-                    // Simula envio de impressão
-                    Thread.sleep(5); // Aqui você colocaria a chamada real para impressora
-
-                    // Atualiza progresso
-                    updateProgress(i, total);
-                }
-                return null;
-            }
-        };
-
-        task.setOnSucceeded(event -> {
-            progressPrint.setVisible(false);
-            progressPrint.setProgress(0);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Impressão Finalizada");
-            alert.setHeaderText(null);
-            alert.setContentText("Todas as impressões foram concluídas com sucesso!");
-            alert.showAndWait();
-        });
-
-        task.setOnFailed(event -> {
-            progressPrint.setVisible(false);
-            progressPrint.setProgress(0);
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro");
-            alert.setHeaderText(null);
-            alert.setContentText("Ocorreu um erro durante a impressão.");
-            alert.showAndWait();
-        });
-
-        progressPrint.progressProperty().bind(task.progressProperty());
-
-        new Thread(task).start();
-    }
-
     public void carregarComboTemplate() {
         ObservableList<String> templates = templateService.getTemplateList()
                 .stream()
@@ -1289,6 +1233,70 @@ public class DashboardController implements Initializable {
 
         logger.info("Gerando cacheKey: {}", chave);
         return chave;
+    }
+
+    @FXML
+    public void abrirDialogoImpressao() {
+        try {
+            // Validar se os campos estão preenchidos
+            String template = comboTemplate.getValue();
+            String sku = comboSku.getValue();
+            String qtdTxt = txtQuantidade.getText();
+            String widthTxt = txtWidth.getText();
+            String heightTxt = txtHeight.getText();
+            String unidade = comboUnidade.getValue();
+
+            if (template == null || sku == null || qtdTxt.isBlank()
+                    || widthTxt.isBlank() || heightTxt.isBlank() || unidade == null) {
+
+                Alert alert = new Alert(Alert.AlertType.WARNING);
+                alert.setTitle("Atenção");
+                alert.setHeaderText("Campos obrigatórios não preenchidos.");
+                alert.setContentText("Preencha Template, SKU, Quantidade e Tamanho.");
+                alert.showAndWait();
+                return;
+            }
+
+            // Conversão segura
+            int quantidade = Integer.parseInt(qtdTxt);
+            double largura = Double.parseDouble(widthTxt.replace(",", "."));
+            double altura = Double.parseDouble(heightTxt.replace(",", "."));
+
+            String cacheKey = gerarCacheKey(template, sku, largura, altura, unidade);
+
+            String zpl = ZplCacheService.getZpl(cacheKey);
+            Image preview = ZplCacheService.getPreview(cacheKey);
+
+            if (zpl == null || preview == null) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Erro");
+                alert.setHeaderText(null);
+                alert.setContentText("Gere o preview antes de imprimir.");
+                alert.showAndWait();
+                return;
+            }
+
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/com/automacaowebia/print-dialog.fxml"));
+            Parent root = loader.load();
+
+            PrintDialogController controller = loader.getController();
+            controller.initData(template, sku, largura, altura, unidade, quantidade, preview, cacheKey);
+
+            Stage stage = new Stage();
+            stage.setTitle("Impressão de Etiqueta");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL); // 🔒 Bloqueia tela principal
+            stage.setResizable(false);
+            stage.showAndWait();
+
+        } catch (Exception e) {
+            logger.error("Erro ao abrir o diálogo de impressão", e);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText(null);
+            alert.setContentText("Erro ao abrir o diálogo de impressão.");
+            alert.showAndWait();
+        }
     }
 
     @FXML

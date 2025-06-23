@@ -7,7 +7,6 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ProgressBar?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
@@ -403,8 +402,12 @@
                                     </font></Label>
                                             <Pane prefHeight="400.0" prefWidth="748.0" styleClass="preview-container">
                                                 <children>
-                                                    <ImageView fx:id="imgPreview" fitHeight="400.0" fitWidth="780.0" preserveRatio="true" />
-                                                    <Label fx:id="lblPreviewPlaceholder" alignment="CENTER" contentDisplay="CENTER" prefHeight="400.0" prefWidth="780.0" text="Selecione um template para visualizar" textAlignment="CENTER" textFill="#888888" wrapText="true" />
+                                       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                          <children>
+                                                          <ImageView fx:id="imgPreview" fitHeight="400.0" fitWidth="780.0" preserveRatio="true" />
+                                                          <Label fx:id="lblPreviewPlaceholder" alignment="CENTER" contentDisplay="CENTER" prefHeight="400.0" prefWidth="780.0" text="Selecione um template para visualizar" textAlignment="CENTER" textFill="#888888" wrapText="true" />
+                                          </children>
+                                       </HBox>
                                                 </children>
                                             </Pane>
                                         </children>
@@ -415,8 +418,7 @@
                                     <!-- Barra de progresso e botão de impressão -->
                                     <HBox alignment="CENTER_RIGHT" spacing="10.0">
                                         <children>
-                                            <ProgressBar fx:id="progressPrint" prefHeight="18.0" prefWidth="641.0" progress="0.0" visible="false" />
-                                            <Button fx:id="btnPrint" onAction="#imprimirZpl" prefHeight="36.0" prefWidth="120.0" styleClass="print" text="Imprimir">
+                                            <Button fx:id="btnPrint" onAction="#abrirDialogoImpressao" prefHeight="36.0" prefWidth="120.0" styleClass="print" text="Imprimir">
                                                 <graphic>
                                                     <FontAwesomeIconView fill="WHITE" glyphName="PRINT" size="18.0" />
                                                 </graphic>

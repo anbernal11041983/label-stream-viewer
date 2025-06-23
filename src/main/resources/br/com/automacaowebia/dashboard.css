@@ -113,3 +113,18 @@
     -fx-background-color: #B71C1C;
 }
 
+.label-info {
+    -fx-background-color: linear-gradient(to bottom,#efefef,#eee);
+    -fx-border-color: linear-gradient(to bottom right, #2f466b, #662d60);
+    -fx-border-radius: 4px;
+    -fx-padding: 4px 8px;
+    -fx-text-fill: #333;
+    -fx-font-weight: bold;
+    -fx-font-family: "Tahoma";
+}
+
+.preview-container {
+    -fx-background-color: white;
+    -fx-border-color: linear-gradient(to bottom right, #2f466b, #662d60);
+    -fx-border-radius: 8px;
+}

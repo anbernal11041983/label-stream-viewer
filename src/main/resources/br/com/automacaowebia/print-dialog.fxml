@@ -1,435 +1,113 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
-<?import java.lang.String?>
-<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.control.Separator?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
-<?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="694.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="br.com.automacaowebia.controller.DashboardController">
-    <children>
-        <AnchorPane prefHeight="694.0" prefWidth="1080.0">
-            <children>
-                <AnchorPane prefHeight="694.0" prefWidth="275.0" styleClass="navbar" stylesheets="@dashboard.css">
+<BorderPane fx:id="root" prefHeight="526.0" prefWidth="505.0" stylesheets="@dashboard.css" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/23.0.1" fx:controller="br.com.automacaowebia.controller.PrintDialogController">
+
+    <top>
+        <Label style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: black;" text="Impressão da Etiqueta" BorderPane.alignment="CENTER" />
+    </top>
+
+    <center>
+        <VBox spacing="12" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="20" left="20" right="20" top="20" />
+            </padding>
+            <HBox alignment="CENTER" prefHeight="194.0" prefWidth="466.0">
+                <children>
+                    <Pane prefHeight="133.0" prefWidth="466.0" styleClass="preview-container">
+                        <children>
+                            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
+                                <children>
+                  
+                                    <!-- Mini-preview -->
+                                    <ImageView fx:id="imgMiniPreview" fitHeight="192.0" fitWidth="345.0" preserveRatio="true">
+                                        <HBox.margin>
+                                            <Insets top="5.0" />
+                                        </HBox.margin>
+                                    </ImageView>
+                                </children>
+                            </HBox>
+                        </children>
+                    </Pane>
+                </children>
+            </HBox>
+
+            <!-- Dados principais -->
+            <GridPane hgap="10" vgap="10">
+                <columnConstraints>
+                    <ColumnConstraints percentWidth="35" />
+                    <ColumnConstraints percentWidth="65" />
+                </columnConstraints>
+
+                <Label text="Template:" GridPane.rowIndex="0" />
+                <Label fx:id="lblTemplate" styleClass="label-info" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                <Label text="SKU:" GridPane.rowIndex="1" />
+                <Label fx:id="lblSku" styleClass="label-info" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                <Label text="Quantidade:" GridPane.rowIndex="2" />
+                <Label fx:id="lblQtd" styleClass="label-info" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                <Label text="Tamanho (L x A):" GridPane.rowIndex="3" />
+                <HBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="3">
                     <children>
-                        <Button fx:id="dashboard_btn" alignment="CENTER" layoutX="39.0" layoutY="266.0" mnemonicParsing="false" onAction="#activateDashboard" onMouseClicked="#activateAnchorPane" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="DASHBOARD" textFill="WHITE">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                            <graphic>
-                                <FontAwesomeIconView fill="WHITE" glyphName="COGS" size="1.2em" text="" />
-                            </graphic>
-                        </Button>
-                        <Label alignment="CENTER" layoutX="49.0" layoutY="65.0" prefHeight="30.0" prefWidth="180.0" text="Bem Vindo" textFill="WHITE">
-                            <font>
-                                <Font name="Arial Black" size="20.0" />
-                            </font>
-                        </Label>
-                        <Label fx:id="user" alignment="CENTER" layoutX="72.0" layoutY="96.0" prefHeight="30.0" prefWidth="134.0" text="Admin" textFill="WHITE">
-                            <font>
-                                <Font name="Arial Black" size="20.0" />
-                            </font>
-                        </Label>
-                        <Button fx:id="sales_btn" layoutX="39.0" layoutY="396.0" mnemonicParsing="false" onAction="#activateDashboard" onMouseClicked="#activateAnchorPane" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="SALES" textFill="WHITE">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                            <graphic>
-                                <FontAwesomeIconView fill="WHITE" glyphName="LOCK" size="1.2em" />
-                            </graphic>
-                        </Button>
-                        <Button fx:id="billing_btn" layoutX="39.0" layoutY="310.0" mnemonicParsing="false" onAction="#activateDashboard" onMouseClicked="#activateAnchorPane" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="TEMPLATES" textFill="WHITE">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                            <graphic>
-                                <FontAwesomeIconView fill="WHITE" glyphName="UPLOAD" size="1.2em" />
-                            </graphic>
-                        </Button>
-                        <Button fx:id="purchase_btn" layoutX="39.0" layoutY="440.0" mnemonicParsing="false" onAction="#activateDashboard" onMouseClicked="#activateAnchorPane" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="PURCHASE" textFill="WHITE">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                            <graphic>
-                                <FontAwesomeIconView fill="WHITE" glyphName="COG" size="1.2em" />
-                            </graphic>
-                        </Button>
-                        <Button fx:id="impressao_btn" layoutX="39.0" layoutY="353.0" mnemonicParsing="false" onAction="#activateDashboard" onMouseClicked="#activateAnchorPane" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="IMPRESSÃO" textFill="WHITE">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                            <graphic>
-                                <FontAwesomeIconView fill="WHITE" glyphName="PRINT" size="1.2em" />
-                            </graphic>
-                        </Button>
-                        <Button fx:id="signout_btn" layoutX="14.0" layoutY="641.0" mnemonicParsing="false" onAction="#signOut" prefHeight="38.0" prefWidth="115.0" styleClass="navbutton" stylesheets="@dashboard.css" text="SAIR" textFill="WHITE">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                            <graphic>
-                                <FontAwesomeIconView fill="WHITE" glyphName="SIGN_OUT" size="1.2em" />
-                            </graphic>
-                        </Button>
+                        <Label fx:id="lblLarg" styleClass="label-info" />
+                        <Label text="x" />
+                        <Label fx:id="lblAlt" styleClass="label-info" />
+                        <Label fx:id="lblUnid" styleClass="label-info" />
                     </children>
-                </AnchorPane>
-                <AnchorPane layoutX="275.0" prefHeight="694.0" prefWidth="808.0">
-                    <children>
-                        <Button alignment="CENTER" contentDisplay="RIGHT" layoutX="743.0" layoutY="9.0" mnemonicParsing="false" onMouseClicked="#onExit" onMouseDragged="#onExit" prefHeight="29.0" prefWidth="50.0" styleClass="close" stylesheets="@dashboard.css">
-                            <graphic>
-                                <FontAwesomeIconView fill="WHITE" glyphName="CLOSE" size="16.0" text="" />
-                            </graphic>
-                        </Button>
-                        <AnchorPane layoutX="-2.0" prefHeight="47.0" prefWidth="648.0">
-                            <children>
-                                <Label layoutX="26.0" layoutY="4.0" prefHeight="42.0" prefWidth="530.0" text="Label Stream Viewer">
-                                    <font>
-                                        <Font name="System Bold" size="24.0" />
-                                    </font>
-                                </Label>
-                            </children>
-                        </AnchorPane>
-                        <AnchorPane fx:id="dasboard_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" visible="false">
-                            <children>
-                                <Pane layoutX="80.0" layoutY="65.0" prefHeight="200.0" prefWidth="267.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
-                                    <children>
-                                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="267.0" spacing="20.0">
-                                            <children>
-                                                <Label alignment="CENTER" prefHeight="27.0" prefWidth="256.0" text="TOTAL MODELOS" textFill="WHITE">
-                                                    <font>
-                                                        <Font name="Arial Rounded MT Bold" size="18.0" />
-                                                    </font>
-                                                </Label>
-                                                <Label fx:id="dash_total_stocks" alignment="CENTER" prefHeight="46.0" prefWidth="253.0" text="32" textFill="WHITE">
-                                                    <font>
-                                                        <Font name="Arial Rounded MT Bold" size="30.0" />
-                                                    </font>
-                                                </Label>
-                                            </children>
-                                        </VBox>
-                                    </children>
-                                </Pane>
-                                <Pane layoutX="450.0" layoutY="65.0" prefHeight="200.0" prefWidth="280.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
-                                    <children>
-                                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="280.0" spacing="20.0">
-                                            <children>
-                                                <Label alignment="CENTER" prefHeight="27.0" prefWidth="281.0" text="IMPRESSÕES DIÁRIA" textFill="WHITE">
-                                                    <font>
-                                                        <Font name="Arial Rounded MT Bold" size="18.0" />
-                                                    </font>
-                                                </Label>
-                                                <Label fx:id="dash_total_sold" alignment="CENTER" prefHeight="46.0" prefWidth="280.0" text="18" textFill="WHITE">
-                                                    <font>
-                                                        <Font name="Arial Rounded MT Bold" size="30.0" />
-                                                    </font>
-                                                </Label>
-                                            </children>
-                                        </VBox>
-                                    </children>
-                                </Pane>
-                                <Pane layoutX="450.0" layoutY="350.0" prefHeight="200.0" prefWidth="280.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
-                                    <children>
-                                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="280.0" spacing="20.0">
-                                            <children>
-                                                <Label alignment="CENTER" contentDisplay="TOP" prefHeight="27.0" prefWidth="278.0" text="IMPRESSÕES MENSAIS" textFill="WHITE">
-                                                    <font>
-                                                        <Font name="Arial Rounded MT Bold" size="18.0" />
-                                                    </font>
-                                                </Label>
-                                                <Label fx:id="dash_total_purchase" alignment="CENTER" prefHeight="46.0" prefWidth="297.0" text="50" textFill="WHITE">
-                                                    <font>
-                                                        <Font name="Arial Rounded MT Bold" size="30.0" />
-                                                    </font>
-                                                </Label>
-                                            </children>
-                                        </VBox>
-                                    </children>
-                                </Pane>
-                                <Pane layoutX="80.0" layoutY="350.0" prefHeight="200.0" prefWidth="280.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
-                                    <children>
-                                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="280.0" spacing="20.0">
-                                            <children>
-                                                <Label alignment="CENTER" prefHeight="27.0" prefWidth="282.0" text="IMPRESSÕES ANUAL" textFill="WHITE">
-                                                    <font>
-                                                        <Font name="Arial Rounded MT Bold" size="18.0" />
-                                                    </font>
-                                                </Label>
-                                                <Label fx:id="dash_total_sales_this_month" alignment="CENTER" prefHeight="46.0" prefWidth="277.0" text="15000" textFill="WHITE">
-                                                    <font>
-                                                        <Font name="Arial Rounded MT Bold" size="30.0" />
-                                                    </font>
-                                                </Label>
-                                            </children>
-                                        </VBox>
-                                    </children>
-                                </Pane>
-                            </children>
-                        </AnchorPane>
-                        <AnchorPane fx:id="template_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="false">
-                            <children>
-                                <Label fx:id="inv_num" layoutX="151.0" layoutY="352.0" prefHeight="32.0" prefWidth="102.0" />
-                                <TableView fx:id="lista_template" layoutX="13.0" layoutY="33.0" prefHeight="271.0" prefWidth="794.0" stylesheets="@dashboard.css">
-                                    <columns>
-                                        <TableColumn fx:id="col_template_nome" prefWidth="380.0" text="Template" />
-                                        <TableColumn fx:id="col_template_tipo" prefWidth="150.0" text="Tipo" />
-                                        <TableColumn fx:id="col_template_criado" minWidth="0.0" prefWidth="153.5999755859375" text="Criado em" />
-                                        <TableColumn fx:id="col_template_acao" prefWidth="120.0" text="Ações" />
-                                    </columns>
-                                </TableView>
-                                <Separator layoutX="11.0" layoutY="331.0" prefHeight="0.0" prefWidth="794.0" />
-                                <TextField fx:id="template_nome" layoutX="151.0" layoutY="402.0" prefHeight="26.0" prefWidth="421.0" promptText="Digite no nome do template" styleClass="textfield" stylesheets="@dashboard.css" />
-                                <Label layoutX="28.0" layoutY="402.0" prefHeight="32.0" prefWidth="115.0" text="Nome">
-                                    <font>
-                                        <Font name="Dubai Bold" size="15.0" />
-                                    </font>
-                                </Label>
-                                <Button fx:id="btn_salvar_template" alignment="CENTER" layoutX="685.0" layoutY="563.0" mnemonicParsing="false" onAction="#salvarTemplate" onMouseClicked="#salvarTemplate" prefHeight="38.0" prefWidth="91.0" styleClass="save" stylesheets="@dashboard.css" text=" Salvar">
-                                    <graphic>
-                                        <FontAwesomeIconView fill="WHITE" glyphName="SAVE" size="18.0" text="" />
-                                    </graphic>
-                                    <font>
-                                        <Font name="Dubai Bold" size="16.0" />
-                                    </font>
-                                </Button>
-                                <Button fx:id="bill_clear" layoutX="549.0" layoutY="563.0" mnemonicParsing="false" onAction="#limparCampoTemplate" onMouseClicked="#limparCampoTemplate" prefHeight="38.0" prefWidth="115.0" styleClass="clear" stylesheets="@dashboard.css" text="Limpar">
-                                    <graphic>
-                                        <FontAwesomeIconView fill="WHITE" glyphName="REMOVE" size="18.0" text="" />
-                                    </graphic>
-                                    <font>
-                                        <Font name="Dubai Bold" size="16.0" />
-                                    </font>
-                                </Button>
-                                <Label layoutX="27.0" layoutY="352.0" prefHeight="32.0" prefWidth="267.0" text="Adicionar template">
-                                    <font>
-                                        <Font name="Dubai Bold" size="15.0" />
-                                    </font>
-                                </Label>
-                                <Label layoutX="17.0" prefHeight="32.0" prefWidth="267.0" text="Lista de templates">
-                                    <font>
-                                        <Font name="Dubai Bold" size="15.0" />
-                                    </font>
-                                </Label>
-                                <Button fx:id="btnLoadTemplate" layoutX="591.0" layoutY="402.0" onAction="#loadTemplate" prefHeight="26.0" prefWidth="166.0" styleClass="add" stylesheets="@dashboard.css" text="Carregar Template">
-                                    <graphic>
-                                        <FontAwesomeIconView fill="WHITE" glyphName="TAG" size="18.0" />
-                                    </graphic>
-                                </Button>
-                            </children>
-                        </AnchorPane>
-                        <AnchorPane fx:id="customer_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" visible="false">
-                            <children>
-                                <TableView fx:id="customer_table" layoutX="13.0" layoutY="159.0" onMouseClicked="#selectCustomerTableData" prefHeight="474.0" prefWidth="794.0" stylesheets="@dashboard.css">
-                                    <columns>
-                                        <TableColumn fx:id="cust_col_id" prefWidth="196.79998779296875" text="Id" />
-                                        <TableColumn fx:id="cust_col_name" prefWidth="307.20001220703125" text="Name" />
-                                        <TableColumn fx:id="cust_col_phone" prefWidth="288.00006103515625" text="Phone Number" />
-                                    </columns>
-                                </TableView>
-                                <Button fx:id="cust_btn_add" layoutX="736.0" layoutY="31.0" mnemonicParsing="false" onMouseClicked="#addCustomerData" prefHeight="32.0" prefWidth="50.0" styleClass="add" stylesheets="@dashboard.css">
-                                    <graphic>
-                                        <FontAwesomeIconView fill="WHITE" glyphName="PLUS_CIRCLE" size="18.0" />
-                                    </graphic>
-                                </Button>
-                                <Button fx:id="cust_btn_edit" layoutX="679.0" layoutY="31.0" mnemonicParsing="false" onMouseClicked="#updateCustomerData" prefHeight="32.0" prefWidth="50.0" styleClass="refresh" stylesheets="@dashboard.css">
-                                    <graphic>
-                                        <FontAwesomeIconView fill="WHITE" glyphName="EDIT" size="18.0" />
-                                    </graphic>
-                                </Button>
-                                <Button fx:id="cust_btn_delete" layoutX="620.0" layoutY="32.0" mnemonicParsing="false" onMouseClicked="#deleteCustomerData" prefHeight="32.0" prefWidth="50.0" styleClass="delete" stylesheets="@dashboard.css">
-                                    <graphic>
-                                        <FontAwesomeIconView fill="WHITE" glyphName="MINUS_CIRCLE" size="18.0" wrappingWidth="13.485666275024414" />
-                                    </graphic>
-                                </Button>
-                                <TextField fx:id="customer_search" layoutX="14.0" layoutY="25.0" prefHeight="32.0" prefWidth="230.0" promptText="Search" styleClass="search-billing" stylesheets="@dashboard.css" />
-                                <FontAwesomeIconView glyphName="SEARCH" layoutX="21.0" layoutY="46.0" size="16" />
-                                <TextField fx:id="cust_field_name" layoutX="113.0" layoutY="94.0" prefHeight="32.0" prefWidth="206.0" styleClass="textfield" stylesheets="@dashboard.css" />
-                                <TextField fx:id="cust_field_phone" layoutX="487.0" layoutY="93.0" prefHeight="32.0" prefWidth="200.0" styleClass="textfield" stylesheets="@dashboard.css" />
-                                <Label layoutX="36.0" layoutY="94.0" prefHeight="32.0" prefWidth="65.0" text="Name :">
-                                    <font>
-                                        <Font name="Dubai Bold" size="15.0" />
-                                    </font>
-                                </Label>
-                                <Label layoutX="361.0" layoutY="94.0" prefHeight="32.0" prefWidth="122.0" text="Phone Number :">
-                                    <font>
-                                        <Font name="Dubai Bold" size="15.0" />
-                                    </font>
-                                </Label>
-                                <Button fx:id="cust_btn_print" layoutX="562.0" layoutY="32.0" mnemonicParsing="false" onAction="#printCustomersDetails" prefHeight="32.0" prefWidth="50.0" styleClass="add" stylesheets="@dashboard.css">
-                                    <graphic>
-                                        <FontAwesomeIconView fx:id="customer_print" fill="WHITE" glyphName="PRINT" size="18.0" />
-                                    </graphic>
-                                </Button>
-                            </children>
-                        </AnchorPane>
-                        <AnchorPane fx:id="sales_pane" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" visible="false">
-                            <children>
-                                <TableView fx:id="sales_table" layoutX="13.0" layoutY="74.0" onMouseClicked="#selectCustomerTableData" prefHeight="558.0" prefWidth="794.0" stylesheets="@dashboard.css">
-                                    <columns>
-                                        <TableColumn fx:id="sales_col_id" prefWidth="63.200042724609375" text="Id" />
-                                        <TableColumn fx:id="sales_col_inv_num" prefWidth="122.4000244140625" text="Invoice Number" />
-                                        <TableColumn fx:id="sales_col_item_num" prefWidth="93.60009765625" text="Item Number" />
-                                        <TableColumn fx:id="sales_col_cust_name" prefWidth="133.5999755859375" text="Customer Name" />
-                                        <TableColumn fx:id="sales_col_price" prefWidth="90.4000244140625" text="Price" />
-                                        <TableColumn fx:id="sales_col_quantity" prefWidth="64.0" text="Quantity" />
-                                        <TableColumn fx:id="sales_col_total_amount" prefWidth="117.60003662109375" text="Total Amount" />
-                                        <TableColumn fx:id="sales_col_date_of_sales" prefWidth="99.2000732421875" text="Date Of Sales" />
-                                    </columns>
-                                </TableView>
-                                <Button fx:id="sales_btn_edit" layoutX="687.0" layoutY="16.0" mnemonicParsing="false" prefHeight="32.0" prefWidth="50.0" styleClass="refresh" stylesheets="@dashboard.css">
-                                    <graphic>
-                                        <FontAwesomeIconView fill="WHITE" glyphName="EDIT" size="18.0" />
-                                    </graphic>
-                                </Button>
-                                <Button fx:id="sales_btn_print" layoutX="745.0" layoutY="16.0" mnemonicParsing="false" onAction="#printSalesDetails" prefHeight="32.0" prefWidth="50.0" styleClass="add" stylesheets="@dashboard.css">
-                                    <graphic>
-                                        <FontAwesomeIconView fx:id="customer_print1" fill="WHITE" glyphName="PRINT" size="18.0" />
-                                    </graphic>
-                                </Button>
-                                <Label layoutX="14.0" layoutY="16.0" prefHeight="47.0" prefWidth="206.0" text="Total Sales Amount :">
-                                    <font>
-                                        <Font name="Dubai Bold" size="18.0" />
-                                    </font>
-                                </Label>
-                                <Label fx:id="sales_total_amount" layoutX="180.0" layoutY="16.0" prefHeight="47.0" prefWidth="267.0">
-                                    <font>
-                                        <Font name="Dubai Bold" size="18.0" />
-                                    </font>
-                                </Label>
-                            </children>
-                        </AnchorPane>
-                        <AnchorPane fx:id="purchase_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" visible="false">
-                            <children>
-                                <TableView fx:id="purchase_table" layoutX="13.0" layoutY="68.0" prefHeight="558.0" prefWidth="794.0" stylesheets="@dashboard.css">
-                                    <columns>
-                                        <TableColumn fx:id="purchase_col_id" prefWidth="69.60000610351562" text="Id" />
-                                        <TableColumn fx:id="purchase_col_invoice" prefWidth="161.5999755859375" text="invoice" />
-                                        <TableColumn fx:id="purchase_col_shop_details" prefWidth="163.20001220703125" text="Shop Details" />
-                                        <TableColumn fx:id="purchase_col_total_items" minWidth="0.0" prefWidth="136.0" text="Total Items" />
-                                        <TableColumn fx:id="purchase_col_total_amount" minWidth="0.0" prefWidth="136.0" text="Total Amount" />
-                                        <TableColumn fx:id="purchase_col_date_of_purchase" minWidth="0.0" prefWidth="125.59995117187498" text="Date Of Purchase" />
-                                    </columns>
-                                </TableView>
-                                <Button fx:id="purchase_btn_add" layoutX="744.0" layoutY="22.0" mnemonicParsing="false" onMouseClicked="#addCustomerData" prefHeight="32.0" prefWidth="50.0" styleClass="add" stylesheets="@dashboard.css">
-                                    <graphic>
-                                        <FontAwesomeIconView fill="WHITE" glyphName="PLUS_CIRCLE" size="18.0" />
-                                    </graphic>
-                                </Button>
-                                <Button fx:id="purchase_btn_print" layoutX="687.0" layoutY="22.0" mnemonicParsing="false" onAction="#printPurchaseDetails" prefHeight="32.0" prefWidth="50.0" styleClass="add" stylesheets="@dashboard.css">
-                                    <graphic>
-                                        <FontAwesomeIconView fill="WHITE" glyphName="PRINT" size="18.0" />
-                                    </graphic>
-                                </Button>
-                                <Label layoutX="13.0" layoutY="14.0" prefHeight="47.0" prefWidth="206.0" text="Total Purchase Amount :">
-                                    <font>
-                                        <Font name="Dubai Bold" size="18.0" />
-                                    </font>
-                                </Label>
-                                <Label fx:id="purchase_total_amount" layoutX="230.0" layoutY="14.0" prefHeight="47.0" prefWidth="267.0">
-                                    <font>
-                                        <Font name="Dubai Bold" size="18.0" />
-                                    </font>
-                                </Label>
-                            </children>
-                        </AnchorPane>
-                        <AnchorPane fx:id="impressao_zpl" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="true">
-                            <children>
-                                <VBox alignment="TOP_LEFT" prefHeight="639.0" prefWidth="820.0" spacing="20.0">
-                                    <padding>
-                                        <Insets bottom="20" left="20" right="20" top="20" />
-                                    </padding>
+                </HBox>
 
-                                    <!-- Seção de seleção -->
-                                    <HBox alignment="CENTER_LEFT" spacing="20.0">
-                                        <children>
-                                            <!-- Template -->
-                                            <Label prefHeight="20.0" prefWidth="100.0" styleClass="label-bold" text="Template:" />
-                                            <ComboBox fx:id="comboTemplate" prefHeight="26.0" prefWidth="242.0" promptText="Selecione um template" />
+                <Label text="Impressora:" GridPane.rowIndex="4" />
+                <ComboBox fx:id="cmbImpressora" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <rowConstraints>
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                </rowConstraints>
+            </GridPane>
 
-                                            <!-- SKU -->
-                                            <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="100.0" styleClass="label-bold" text="SKU:" />
-                                            <ComboBox fx:id="comboSku" prefHeight="26.0" prefWidth="284.0" promptText="Selecione um SKU" />
-                                        </children>
-                                    </HBox>
-                           <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="780.0" spacing="20.0">
-                              <children>
+            <!-- Check extra -->
+            <CheckBox fx:id="chkSalvarFlash" text="Salvar template na memória da impressora" />
 
-                                            <!-- Quantidade -->
-                                            <Label prefHeight="20.0" prefWidth="80.0" styleClass="label-bold" text="Qtd:" />
-                                            <TextField fx:id="txtQuantidade" prefWidth="60.0" promptText="Qtd" />
+        </VBox>
+    </center>
 
-                                            <!-- Tamanho da etiqueta -->
-                                            <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="80.0" styleClass="label-bold" text="Tamanho:" />
-                                            <TextField fx:id="txtWidth" prefWidth="50.0" promptText="Largura" />
-                                            <Label text="x" />
-                                            <TextField fx:id="txtHeight" prefWidth="50.0" promptText="Altura" />
-                                 <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="80.0" styleClass="label-bold" text="Und. Medida" />
-                                            <ComboBox fx:id="comboUnidade" prefWidth="90.0" promptText="Unidade">
-                                                <items>
-                                                    <FXCollections fx:factory="observableArrayList">
-                                                        <String fx:value="inches" />
-                                                        <String fx:value="cm" />
-                                                        <String fx:value="mm" />
-                                                    </FXCollections>
-                                                </items>
-                                            </ComboBox>
-                                            <Button fx:id="btnRefreshTemplates" onAction="#refreshTemplates" prefHeight="27.0" prefWidth="122.0" styleClass="refresh" text="Preview">
-                                                <graphic>
-                                                    <FontAwesomeIconView fill="WHITE" glyphName="REFRESH" size="14.0" />
-                                                </graphic>
-                                            </Button>
-                              </children>
-                           </HBox>
+    <bottom>
+        <HBox prefHeight="56.0" prefWidth="506.0" spacing="8" BorderPane.alignment="CENTER_RIGHT">
+            <padding>
+                <Insets bottom="10" left="10" right="10" top="10" />
+            </padding>
 
-                                    <Separator />
+            <ProgressBar fx:id="barStatus" prefWidth="350" visible="false" />
 
-                                    <!-- PREVIEW DA IMAGEM -->
-                                    <VBox spacing="10.0">
-                                        <children>
-                                            <Label styleClass="label-bold" text="Preview da Etiqueta">
-                                    <font>
-                                       <Font name="System Bold" size="12.0" />
-                                    </font></Label>
-                                            <Pane prefHeight="400.0" prefWidth="748.0" styleClass="preview-container">
-                                                <children>
-                                                    <ImageView fx:id="imgPreview" fitHeight="400.0" fitWidth="780.0" preserveRatio="true" />
-                                                    <Label fx:id="lblPreviewPlaceholder" alignment="CENTER" contentDisplay="CENTER" prefHeight="400.0" prefWidth="780.0" text="Selecione um template para visualizar" textAlignment="CENTER" textFill="#888888" wrapText="true" />
-                                                </children>
-                                            </Pane>
-                                        </children>
-                                    </VBox>
+            <Button fx:id="btnConfirmar" onAction="#imprimir"
+                    disable="${barStatus.visible}"
+                    prefHeight="26.0" prefWidth="117.0"
+                    styleClass="print" text="Imprimir">
+                <graphic>
+                    <FontAwesomeIconView fill="WHITE" glyphName="PRINT" />
+                </graphic>
+            </Button>
 
-                                    <Separator />
-
-                                    <!-- Barra de progresso e botão de impressão -->
-                                    <HBox alignment="CENTER_RIGHT" spacing="10.0">
-                                        <children>
-                                            <ProgressBar fx:id="progressPrint" prefHeight="18.0" prefWidth="641.0" progress="0.0" visible="false" />
-                                            <Button fx:id="btnPrint" onAction="#imprimirZpl" prefHeight="36.0" prefWidth="120.0" styleClass="print" text="Imprimir">
-                                                <graphic>
-                                                    <FontAwesomeIconView fill="WHITE" glyphName="PRINT" size="18.0" />
-                                                </graphic>
-                                            </Button>
-                                        </children>
-                                    </HBox>
-                                </VBox>
-                            </children>
-                        </AnchorPane>
-                        <Separator layoutX="14.0" layoutY="49.0" prefHeight="0.0" prefWidth="794.0" />
-                    </children>
-                </AnchorPane>
-            </children>
-        </AnchorPane>
-    </children>
-</AnchorPane>
+            <Button onAction="#fechar" prefHeight="26.0" prefWidth="91.0" text="Cancelar" />
+        </HBox>
+    </bottom>
+</BorderPane>

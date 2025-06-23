@@ -95,4 +95,8 @@ public class ImpressaoZPLService {
         }
     }
 
+    public void imprimirNaZebra(String zpl, String value, boolean selected) {
+        System.out.println("Simulando a Impressora"+value);
+    }
+
 }
