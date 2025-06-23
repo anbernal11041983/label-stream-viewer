@@ -7,14 +7,14 @@
 
     <groupId>br.com.automacaowebia</groupId>
     <artifactId>label-stream-viewer</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0.0</version>
     <name>Label Stream Viewer</name>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
-        <javafx.version>19</javafx.version>
+        <maven.compiler.source>23</maven.compiler.source>
+        <maven.compiler.target>23</maven.compiler.target>
+        <javafx.version>23.0.1</javafx.version>
         <log4j.version>2.22.1</log4j.version>
     </properties>
 
