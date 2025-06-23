@@ -4,6 +4,7 @@ import br.com.automacaowebia.config.Database;
 import br.com.automacaowebia.model.*;
 import br.com.automacaowebia.service.ImpressaoZPLService;
 import br.com.automacaowebia.service.TemplateZPLService;
+import br.com.automacaowebia.service.ZplCacheService;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.File;
 import javafx.collections.FXCollections;
@@ -42,6 +43,7 @@ import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import org.apache.logging.log4j.LogManager;
@@ -297,9 +299,19 @@ public class DashboardController implements Initializable {
     @FXML
     private TextField txtQuantidade;
 
+    @FXML
+    private TextField txtWidth;
+
+    @FXML
+    private TextField txtHeight;
+
+    @FXML
+    private ComboBox<String> comboUnidade;
+
     List<Product> productsList;
 
     private final TemplateZPLService templateService = new TemplateZPLService();
+    private final ImpressaoZPLService impressaoZPLService = new ImpressaoZPLService();
     private String conteudoTemplate; // Para guardar o conteúdo carregado
     private static final Logger logger = LogManager.getLogger(DashboardController.class);
 
@@ -732,7 +744,7 @@ public class DashboardController implements Initializable {
     }
 
     public void getTotalSalesAmount() {
-        
+
     }
 
     public ObservableList<Sales> listSalesData() {
@@ -785,7 +797,7 @@ public class DashboardController implements Initializable {
     }
 
     public void getTotalPurchaseAmount() {
-        
+
     }
 
     public void printPurchaseDetails() {
@@ -835,11 +847,11 @@ public class DashboardController implements Initializable {
     }
 
     public void getTotalPurchase() {
-      
+
     }
 
     public void getTotalSales() {
-      
+
     }
 
     public void getTotalStocks() {
@@ -850,11 +862,11 @@ public class DashboardController implements Initializable {
     }
 
     public void getSalesDetailsOfThisMonth() {
-       
+
     }
 
     public void getItemSoldThisMonth() {
-       
+
     }
 
     public void showDashboardData() {
@@ -1149,9 +1161,134 @@ public class DashboardController implements Initializable {
         });
     }
 
+    public void setupFields() {
+        txtQuantidade.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                txtQuantidade.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+
+        txtWidth.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*(\\.\\d*)?")) {
+                txtWidth.setText(newValue.replaceAll("[^\\d.]", ""));
+            }
+        });
+
+        txtHeight.textProperty().addListener((obs, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*(\\.\\d*)?")) {
+                txtHeight.setText(newValue.replaceAll("[^\\d.]", ""));
+            }
+        });
+    }
+
     @FXML
     public void refreshTemplates() {
-        carregarComboTemplate();
+        logger.info("Iniciando geração de preview da etiqueta.");
+
+        // 1. Coleta dos valores digitados / selecionados pelo usuário
+        String template = comboTemplate.getValue();
+        String sku = comboSku.getValue();
+        String qtdTxt = txtQuantidade.getText();
+        String widthTxt = txtWidth.getText();
+        String heightTxt = txtHeight.getText();
+        String unidade = comboUnidade.getValue();
+
+        // 2. Validação dos campos obrigatórios
+        List<String> faltando = new ArrayList<>();
+
+        if (template == null || template.isBlank()) {
+            faltando.add("Template");
+        }
+        if (sku == null || sku.isBlank()) {
+            faltando.add("SKU");
+        }
+        if (qtdTxt == null || qtdTxt.isBlank()) {
+            faltando.add("Quantidade");
+        }
+        if (widthTxt == null || widthTxt.isBlank()) {
+            faltando.add("Largura");
+        }
+        if (heightTxt == null || heightTxt.isBlank()) {
+            faltando.add("Altura");
+        }
+        if (unidade == null || unidade.isBlank()) {
+            faltando.add("Unidade de medida");
+        }
+
+        if (!faltando.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Campos obrigatórios");
+            alert.setHeaderText("Preencha os campos abaixo antes de continuar:");
+            alert.setContentText(String.join(", ", faltando));
+            alert.showAndWait();
+            logger.warn("Campos obrigatórios não preenchidos: {}", faltando);
+            return;
+        }
+
+        // 3. Conversão segura
+        int quantidade;
+        double largura, altura;
+        try {
+            quantidade = Integer.parseInt(qtdTxt);
+            largura = Double.parseDouble(widthTxt.replace(',', '.'));
+            altura = Double.parseDouble(heightTxt.replace(',', '.'));
+        } catch (NumberFormatException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Valor inválido");
+            alert.setHeaderText(null);
+            alert.setContentText("Quantidade deve ser numérica inteira e tamanho deve ser numérico.");
+            alert.showAndWait();
+            logger.error("Erro de conversão numérica.", ex);
+            return;
+        }
+
+        // 4. Gerar chave do cache
+        String cacheKey = gerarCacheKey(template, sku, largura, altura, unidade);
+        logger.info("CacheKey gerada: {}", cacheKey);
+
+        try {
+            // 5. Montagem do ZPL
+            String zplBruto = getConteudoTemplatePorNome(template);
+            String zplFinal = impressaoZPLService.personalizarZpl(zplBruto, sku);
+
+            // 6. Gerar preview da etiqueta
+            Image preview = impressaoZPLService.gerarPreview(zplFinal, largura, altura, unidade, "image/png");
+
+            if (preview != null) {
+                imgPreview.setImage(preview);
+                lblPreviewPlaceholder.setVisible(false);
+
+                // 7. Salvar no cache (tanto o preview quanto o ZPL final)
+                ZplCacheService.salvarPreview(cacheKey, preview);
+                ZplCacheService.salvarZpl(cacheKey, zplFinal);
+
+                logger.info("Preview e ZPL armazenados no cache com sucesso.");
+            } else {
+                logger.error("Falha ao gerar preview da etiqueta.");
+                lblPreviewPlaceholder.setText("Erro ao gerar preview.");
+                lblPreviewPlaceholder.setVisible(true);
+            }
+
+        } catch (Exception e) {
+            logger.error("Erro durante a geração do preview da etiqueta.", e);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro");
+            alert.setHeaderText(null);
+            alert.setContentText("Ocorreu um erro ao gerar o preview da etiqueta.");
+            alert.showAndWait();
+        }
+    }
+
+    public String gerarCacheKey(String template, String sku, double largura, double altura, String unidade) {
+        String chave = String.format("%s|%s|%.2f|%.2f|%s",
+                template.trim(),
+                sku.trim(),
+                largura,
+                altura,
+                unidade.trim().toLowerCase());
+
+        logger.info("Gerando cacheKey: {}", chave);
+        return chave;
     }
 
     @FXML
@@ -1174,6 +1311,8 @@ public class DashboardController implements Initializable {
         setupQuantidadeField();
         setUsername();
         activateDashboard();
+        setupFields();
+        comboUnidade.getSelectionModel().select("cm");
 
         carregarComboTemplate();
 

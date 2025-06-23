@@ -9,7 +9,7 @@ public class TemplateZPL {
     private String nome;
     private String tipoArquivo;
     private String conteudo;
-    private LocalDateTime criadoEm; // 🔥 Adicionado o campo de data
+    private LocalDateTime criadoEm;
 
     public TemplateZPL() {
     }

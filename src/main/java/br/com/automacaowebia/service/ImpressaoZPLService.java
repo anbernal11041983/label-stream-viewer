@@ -9,6 +9,8 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Locale;
+import javafx.scene.image.Image;
 
 public class ImpressaoZPLService {
 
@@ -16,62 +18,81 @@ public class ImpressaoZPLService {
 
     private static final String ZPL_SERVER_URL = AppProperties.getInstance().get("zpl.server.url");
 
-    /**
-     * Gera uma imagem do ZPL e salva no arquivo indicado.
-     *
-     * @param zplContent Conteúdo do ZPL.
-     * @param outputPath Caminho para salvar a imagem (Ex: etiqueta.png).
-     * @return true se sucesso, false se erro.
-     */
-    public boolean gerarImagemZPL(String zplContent, String outputPath) {
+    public String personalizarZpl(String zplBruto, String sku) {
+        logger.info("Iniciando personalização do ZPL.");
+
+        if (zplBruto == null || zplBruto.isBlank()) {
+            logger.error("O template ZPL está vazio ou nulo.");
+            throw new IllegalArgumentException("O template ZPL não pode ser vazio.");
+        }
+
+        if (sku == null || sku.isBlank()) {
+            logger.error("O SKU está vazio ou nulo.");
+            throw new IllegalArgumentException("O SKU não pode ser vazio.");
+        }
+
+        logger.debug("Substituindo {{SKU}} por '{}'", sku);
+        String zplFinal = zplBruto.replace("{{SKU}}", sku);
+
+        logger.info("Personalização do ZPL concluída.");
+        return zplFinal;
+    }
+
+    public Image gerarPreview(String zplFinal, double largura, double altura, String unidade, String formatoSaida) {
+        logger.info("Iniciando geração do preview da etiqueta.");
+
         try {
-            logger.info("Enviando ZPL para gerar imagem.");
-
-            URL url = new URL(ZPL_SERVER_URL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-
-            conn.setRequestMethod("POST");
-            conn.setRequestProperty("Content-Type", "text/plain");
-            conn.setDoOutput(true);
-
-            // Envia o conteúdo do ZPL
-            try (var os = conn.getOutputStream()) {
-                byte[] input = zplContent.getBytes(StandardCharsets.UTF_8);
-                os.write(input, 0, input.length);
+            // Conversão de unidades (cm, mm, inches) para polegadas
+            double wIn, hIn;
+            switch (unidade.toLowerCase()) {
+                case "cm":
+                    wIn = largura / 2.54;
+                    hIn = altura / 2.54;
+                    break;
+                case "mm":
+                    wIn = largura / 25.4;
+                    hIn = altura / 25.4;
+                    break;
+                default:     // "inches"
+                    wIn = largura;
+                    hIn = altura;
+                    break;
             }
 
-            int responseCode = conn.getResponseCode();
-            logger.info("Response code: {}", responseCode);
+            // Monta a URL com os parâmetros, incluindo formato dinâmico
+            String urlStr = String.format(Locale.ENGLISH,
+                    "%s?dpmm=%d&width=%.2f&height=%.2f&rotation=%d&format=%s",
+                    ZPL_SERVER_URL, 8, wIn, hIn, 0, formatoSaida);
+
+            logger.info("Montando URL para requisição: {}", urlStr);
+
+            HttpURLConnection connection = (HttpURLConnection) new URL(urlStr).openConnection();
+            connection.setRequestMethod("POST");
+            connection.setRequestProperty("Content-Type", "text/plain"); // ✅ Correto
+            connection.setDoOutput(true);
+
+            // Envia o ZPL
+            try (var output = connection.getOutputStream()) {
+                output.write(zplFinal.getBytes(StandardCharsets.UTF_8));
+            }
+
+            int responseCode = connection.getResponseCode();
+            logger.info("Response code do servidor de preview: {}", responseCode);
 
             if (responseCode == HttpURLConnection.HTTP_OK) {
-                // Salva a imagem
-                try (InputStream is = conn.getInputStream();
-                     FileOutputStream fos = new FileOutputStream(outputPath)) {
-
-                    byte[] buffer = new byte[4096];
-                    int bytesRead;
-
-                    while ((bytesRead = is.read(buffer)) != -1) {
-                        fos.write(buffer, 0, bytesRead);
-                    }
-                }
-                logger.info("Imagem salva em {}", outputPath);
-                return true;
+                InputStream inputStream = connection.getInputStream();
+                Image image = new Image(inputStream);
+                logger.info("Preview da etiqueta gerado com sucesso.");
+                return image;
             } else {
-                logger.error("Erro na geração da imagem. Código: {}", responseCode);
-                return false;
+                logger.error("Falha ao gerar o preview da etiqueta. Response code: {}", responseCode);
+                return null;
             }
 
         } catch (Exception e) {
-            logger.error("Erro ao gerar imagem ZPL", e);
-            return false;
+            logger.error("Erro ao gerar preview da etiqueta ZPL.", e);
+            return null;
         }
     }
 
-    /**
-     * Simula a impressão (neste exemplo apenas gera a imagem, você pode adaptar para enviar direto para a impressora).
-     */
-    public boolean imprimir(String zplContent) {
-        return gerarImagemZPL(zplContent, "etiqueta.png");
-    }
 }
