@@ -64,11 +64,11 @@ public class ImpressaoZPLService {
                     "%s?dpmm=%d&width=%.2f&height=%.2f&rotation=%d&format=%s",
                     ZPL_SERVER_URL, 8, wIn, hIn, 0, formatoSaida);
 
-            logger.info("Montando URL para requisição: {}", urlStr);
+            logger.debug("Montando URL para requisição: {}", urlStr);
 
             HttpURLConnection connection = (HttpURLConnection) new URL(urlStr).openConnection();
             connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "text/plain"); // ✅ Correto
+            connection.setRequestProperty("Content-Type", "text/plain");
             connection.setDoOutput(true);
 
             // Envia o ZPL
@@ -77,7 +77,7 @@ public class ImpressaoZPLService {
             }
 
             int responseCode = connection.getResponseCode();
-            logger.info("Response code do servidor de preview: {}", responseCode);
+            logger.debug("Response code do servidor de preview: {}", responseCode);
 
             if (responseCode == HttpURLConnection.HTTP_OK) {
                 InputStream inputStream = connection.getInputStream();

@@ -42,28 +42,12 @@
                                 <Font name="Arial Black" size="20.0" />
                             </font>
                         </Label>
-                        <Button fx:id="sales_btn" layoutX="39.0" layoutY="396.0" mnemonicParsing="false" onAction="#activateDashboard" onMouseClicked="#activateAnchorPane" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="SALES" textFill="WHITE">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                            <graphic>
-                                <FontAwesomeIconView fill="WHITE" glyphName="LOCK" size="1.2em" />
-                            </graphic>
-                        </Button>
                         <Button fx:id="billing_btn" layoutX="39.0" layoutY="310.0" mnemonicParsing="false" onAction="#activateDashboard" onMouseClicked="#activateAnchorPane" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="TEMPLATES" textFill="WHITE">
                             <font>
                                 <Font size="16.0" />
                             </font>
                             <graphic>
                                 <FontAwesomeIconView fill="WHITE" glyphName="UPLOAD" size="1.2em" />
-                            </graphic>
-                        </Button>
-                        <Button fx:id="purchase_btn" layoutX="39.0" layoutY="440.0" mnemonicParsing="false" onAction="#activateDashboard" onMouseClicked="#activateAnchorPane" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="PURCHASE" textFill="WHITE">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                            <graphic>
-                                <FontAwesomeIconView fill="WHITE" glyphName="COG" size="1.2em" />
                             </graphic>
                         </Button>
                         <Button fx:id="impressao_btn" layoutX="39.0" layoutY="353.0" mnemonicParsing="false" onAction="#activateDashboard" onMouseClicked="#activateAnchorPane" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="IMPRESSÃO" textFill="WHITE">
@@ -406,12 +390,8 @@
                                     </font></Label>
                                             <Pane prefHeight="400.0" prefWidth="748.0" styleClass="preview-container">
                                                 <children>
-                                       <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                                          <children>
-                                                          <ImageView fx:id="imgPreview" fitHeight="400.0" fitWidth="780.0" preserveRatio="true" />
-                                                          <Label fx:id="lblPreviewPlaceholder" alignment="CENTER" contentDisplay="CENTER" prefHeight="400.0" prefWidth="780.0" text="Selecione um template para visualizar" textAlignment="CENTER" textFill="#888888" wrapText="true" />
-                                          </children>
-                                       </HBox>
+                                                    <Label fx:id="lblPreviewPlaceholder" alignment="CENTER" contentDisplay="CENTER" prefHeight="400.0" prefWidth="780.0" text="Selecione um template para visualizar" textAlignment="CENTER" textFill="#888888" wrapText="true" />
+                                                    <ImageView fx:id="imgPreview" fitHeight="400.0" fitWidth="780.0" preserveRatio="true" />
                                                 </children>
                                             </Pane>
                                         </children>
