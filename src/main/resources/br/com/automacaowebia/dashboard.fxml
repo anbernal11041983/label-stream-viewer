@@ -9,7 +9,6 @@
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -342,69 +341,60 @@
                                 </Label>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="impressao_zpl" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0"
-                                    stylesheets="@dashboard.css" visible="true"
-                                    xmlns="http://javafx.com/javafx/23.0.1"
-                                    xmlns:fx="http://javafx.com/fxml/1">
+                        <AnchorPane fx:id="impressao_zpl" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="true">
                             <children>
-                                <VBox alignment="TOP_LEFT" prefHeight="639.0" prefWidth="820.0" spacing="15.0">
+                                <VBox alignment="TOP_LEFT" prefHeight="639.0" prefWidth="820.0" spacing="20.0">
                                     <padding>
-                                        <Insets top="20" right="20" bottom="20" left="20" />
+                                        <Insets bottom="20" left="20" right="20" top="20" />
                                     </padding>
 
-                                    <!-- Linha de seleção de Template e SKU -->
-                                    <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                    <!-- Seção de seleção -->
+                                    <HBox alignment="CENTER_LEFT" spacing="20.0">
                                         <children>
                                             <Label styleClass="label-bold" text="Template:" />
-                                            <ComboBox fx:id="comboTemplate" prefWidth="250.0" promptText="Selecione o template"/>
+                                            <ComboBox fx:id="comboTemplate" prefWidth="200.0" promptText="Selecione um template" />
+                                            <Button fx:id="btnRefreshTemplates" onAction="#refreshTemplates" prefHeight="32.0" prefWidth="32.0" styleClass="refresh">
+                                                <graphic>
+                                                    <FontAwesomeIconView fill="WHITE" glyphName="REFRESH" size="14.0" />
+                                                </graphic>
+                                            </Button>
 
                                             <Label styleClass="label-bold" text="SKU:" />
-                                            <ComboBox fx:id="comboSku" prefWidth="200.0" promptText="Selecione o SKU"/>
+                                            <ComboBox fx:id="comboSku" prefWidth="200.0" promptText="Selecione um SKU" />
 
-                                            <Button fx:id="btnRefreshTemplates" prefHeight="32.0" prefWidth="32.0" styleClass="refresh">
-                                                <graphic>
-                                                    <FontAwesomeIconView fill="WHITE" glyphName="REFRESH" size="14.0"/>
-                                                </graphic>
-                                            </Button>
+                                            <Label styleClass="label-bold" text="Quantidade:" />
+                                            <TextField fx:id="txtQuantidade" prefWidth="80.0" promptText="Qtd" />
                                         </children>
                                     </HBox>
 
-                                    <Separator/>
+                                    <Separator />
 
-                                    <!-- Área de preview -->
-                                    <HBox spacing="20.0">
+                                    <!-- PREVIEW DA IMAGEM -->
+                                    <VBox spacing="10.0">
                                         <children>
-                                            <VBox spacing="10.0">
+                                            <Label styleClass="label-bold" text="Preview da Etiqueta" />
+                                            <Pane prefHeight="400.0" prefWidth="748.0" styleClass="preview-container">
                                                 <children>
-                                                    <Label styleClass="label-bold" text="Preview"/>
-                                                    <Pane prefHeight="400.0" prefWidth="350.0" styleClass="preview-container">
-                                                        <children>
-                                                            <ImageView fx:id="imgPreview" fitHeight="400.0" fitWidth="350.0" preserveRatio="true"/>
-                                                            <Label fx:id="lblPreviewPlaceholder" alignment="CENTER"
-                                                                   prefHeight="400.0" prefWidth="350.0"
-                                                                   text="Selecione um template e um SKU para visualizar"
-                                                                   textFill="#888888" wrapText="true"/>
-                                                        </children>
-                                                    </Pane>
+                                                    <ImageView fx:id="imgPreview" fitHeight="400.0" fitWidth="748.0" preserveRatio="true" />
+                                                    <Label fx:id="lblPreviewPlaceholder" alignment="CENTER" prefHeight="400.0" prefWidth="748.0" text="Selecione um template para visualizar" textFill="#888888" wrapText="true" />
                                                 </children>
-                                            </VBox>
+                                            </Pane>
                                         </children>
-                                    </HBox>
+                                    </VBox>
 
-                                    <Separator/>
+                                    <Separator />
 
-                                    <!-- Barra de progresso e botão imprimir -->
+                                    <!-- Barra de progresso e botão de impressão -->
                                     <HBox alignment="CENTER_RIGHT" spacing="10.0">
                                         <children>
-                                            <ProgressBar fx:id="progressPrint" prefWidth="200.0" progress="0.0" visible="false"/>
-                                            <Button fx:id="btnPrint" prefHeight="36.0" prefWidth="120.0" styleClass="print" text="Imprimir">
+                                            <ProgressBar fx:id="progressPrint" prefWidth="200.0" progress="0.0" visible="false" />
+                                            <Button fx:id="btnPrint" onAction="#imprimirZpl" prefHeight="36.0" prefWidth="120.0" styleClass="print" text="Imprimir">
                                                 <graphic>
-                                                    <FontAwesomeIconView fill="WHITE" glyphName="PRINT" size="18.0"/>
+                                                    <FontAwesomeIconView fill="WHITE" glyphName="PRINT" size="18.0" />
                                                 </graphic>
                                             </Button>
                                         </children>
                                     </HBox>
-
                                 </VBox>
                             </children>
                         </AnchorPane>

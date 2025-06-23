@@ -2,6 +2,7 @@ package br.com.automacaowebia.controller;
 
 import br.com.automacaowebia.config.Database;
 import br.com.automacaowebia.model.*;
+import br.com.automacaowebia.service.ImpressaoZPLService;
 import br.com.automacaowebia.service.TemplateZPLService;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.File;
@@ -292,6 +293,9 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Button signout_btn;
+
+    @FXML
+    private TextField txtQuantidade;
 
     List<Product> productsList;
 
@@ -1251,6 +1255,37 @@ public class DashboardController implements Initializable {
         new Thread(task).start();
     }
 
+    public void carregarComboTemplate() {
+        ObservableList<String> templates = templateService.getTemplateList()
+                .stream()
+                .map(TemplateZPL::getNome)
+                .collect(Collectors.toCollection(FXCollections::observableArrayList));
+        comboTemplate.setItems(templates);
+    }
+
+    public String getConteudoTemplatePorNome(String nome) {
+        TemplateZPL template = templateService.getTemplateList()
+                .stream()
+                .filter(t -> t.getNome().equals(nome))
+                .findFirst()
+                .orElse(null);
+
+        return (template != null) ? template.getConteudo() : null;
+    }
+
+    public void setupQuantidadeField() {
+        txtQuantidade.textProperty().addListener((observable, oldValue, newValue) -> {
+            if (!newValue.matches("\\d*")) {
+                txtQuantidade.setText(newValue.replaceAll("[^\\d]", ""));
+            }
+        });
+    }
+
+    @FXML
+    public void refreshTemplates() {
+        carregarComboTemplate();
+    }
+
     @FXML
     public void onMinimize() {
         Stage stage = (Stage) billing_btn.getScene().getWindow();
@@ -1268,8 +1303,11 @@ public class DashboardController implements Initializable {
         // Exports all modules to other modules
         Modules.exportAllToAll();
 
+        setupQuantidadeField();
         setUsername();
         activateDashboard();
+
+        carregarComboTemplate();
 
         comboSku.setItems(getListaSkuMock());
 
