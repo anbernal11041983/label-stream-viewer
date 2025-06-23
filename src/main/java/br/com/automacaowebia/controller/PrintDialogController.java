@@ -1,5 +1,6 @@
 package br.com.automacaowebia.controller;
 
+import br.com.automacaowebia.service.HistoricoImpressaoService;
 import br.com.automacaowebia.service.ImpressaoZPLService;
 import br.com.automacaowebia.service.ZplCacheService;
 import javafx.concurrent.Task;
@@ -7,7 +8,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -41,6 +41,7 @@ public class PrintDialogController {
     private int qtdOriginal;
     private final ImpressaoZPLService impressaoService = new ImpressaoZPLService();
     private static final Logger logger = LogManager.getLogger(PrintDialogController.class);
+    private final HistoricoImpressaoService historicoImpressaoService = new HistoricoImpressaoService();
 
     /**
      * Método chamado ao abrir o modal para preencher os dados.
@@ -77,6 +78,9 @@ public class PrintDialogController {
         barStatus.setVisible(true);
 
         int qtd = qtdOriginal;
+        String modelo = lblTemplate.getText();
+        String sku = lblSku.getText();
+        String impressora = cmbImpressora.getValue();
 
         String zpl = ZplCacheService.getZpl(cacheKey);
         if (zpl == null) {
@@ -105,6 +109,8 @@ public class PrintDialogController {
         t.setOnSucceeded(ev -> {
             logger.info("Impressão concluída com sucesso.");
             barStatus.progressProperty().unbind();
+
+            historicoImpressaoService.salvarHistorico(modelo, sku, qtd, impressora);
             fechar();
         });
 

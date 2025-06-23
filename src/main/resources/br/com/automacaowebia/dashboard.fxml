@@ -89,7 +89,7 @@
                                 </Label>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="dasboard_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" visible="false">
+                        <AnchorPane fx:id="dasboard_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" visible="true">
                             <children>
                                 <Pane layoutX="80.0" layoutY="65.0" prefHeight="200.0" prefWidth="267.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
                                     <children>
@@ -100,7 +100,7 @@
                                                         <Font name="Arial Rounded MT Bold" size="18.0" />
                                                     </font>
                                                 </Label>
-                                                <Label fx:id="dash_total_stocks" alignment="CENTER" prefHeight="46.0" prefWidth="253.0" text="32" textFill="WHITE">
+                                                <Label fx:id="total_modelo_dash" alignment="CENTER" prefHeight="46.0" prefWidth="253.0" text="32" textFill="WHITE">
                                                     <font>
                                                         <Font name="Arial Rounded MT Bold" size="30.0" />
                                                     </font>
@@ -113,12 +113,12 @@
                                     <children>
                                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="280.0" spacing="20.0">
                                             <children>
-                                                <Label alignment="CENTER" prefHeight="27.0" prefWidth="281.0" text="IMPRESSÕES DIÁRIA" textFill="WHITE">
+                                                <Label alignment="CENTER" prefHeight="27.0" prefWidth="281.0" text="IMPRESSÃO DIA" textFill="WHITE">
                                                     <font>
                                                         <Font name="Arial Rounded MT Bold" size="18.0" />
                                                     </font>
                                                 </Label>
-                                                <Label fx:id="dash_total_sold" alignment="CENTER" prefHeight="46.0" prefWidth="280.0" text="18" textFill="WHITE">
+                                                <Label fx:id="total_impressao_dia_dash" alignment="CENTER" prefHeight="46.0" prefWidth="280.0" text="18" textFill="WHITE">
                                                     <font>
                                                         <Font name="Arial Rounded MT Bold" size="30.0" />
                                                     </font>
@@ -131,12 +131,12 @@
                                     <children>
                                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="280.0" spacing="20.0">
                                             <children>
-                                                <Label alignment="CENTER" contentDisplay="TOP" prefHeight="27.0" prefWidth="278.0" text="IMPRESSÕES MENSAIS" textFill="WHITE">
+                                                <Label alignment="CENTER" contentDisplay="TOP" prefHeight="27.0" prefWidth="278.0" text="IMPRESSÃO ANO" textFill="WHITE">
                                                     <font>
                                                         <Font name="Arial Rounded MT Bold" size="18.0" />
                                                     </font>
                                                 </Label>
-                                                <Label fx:id="dash_total_purchase" alignment="CENTER" prefHeight="46.0" prefWidth="297.0" text="50" textFill="WHITE">
+                                                <Label fx:id="total_impressao_ano_dash" alignment="CENTER" prefHeight="46.0" prefWidth="297.0" text="50" textFill="WHITE">
                                                     <font>
                                                         <Font name="Arial Rounded MT Bold" size="30.0" />
                                                     </font>
@@ -149,12 +149,12 @@
                                     <children>
                                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="280.0" spacing="20.0">
                                             <children>
-                                                <Label alignment="CENTER" prefHeight="27.0" prefWidth="282.0" text="IMPRESSÕES ANUAL" textFill="WHITE">
+                                                <Label alignment="CENTER" prefHeight="27.0" prefWidth="282.0" text="IMPRESSÃO MÊS" textFill="WHITE">
                                                     <font>
                                                         <Font name="Arial Rounded MT Bold" size="18.0" />
                                                     </font>
                                                 </Label>
-                                                <Label fx:id="dash_total_sales_this_month" alignment="CENTER" prefHeight="46.0" prefWidth="277.0" text="15000" textFill="WHITE">
+                                                <Label fx:id="total_impressao_mes_dash" alignment="CENTER" prefHeight="46.0" prefWidth="277.0" text="15000" textFill="WHITE">
                                                     <font>
                                                         <Font name="Arial Rounded MT Bold" size="30.0" />
                                                     </font>
@@ -216,7 +216,7 @@
                                 </Button>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="impressao_zpl" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="true">
+                        <AnchorPane fx:id="impressao_zpl" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="false">
                             <children>
                                 <VBox alignment="TOP_LEFT" prefHeight="639.0" prefWidth="820.0" spacing="20.0">
                                     <padding>

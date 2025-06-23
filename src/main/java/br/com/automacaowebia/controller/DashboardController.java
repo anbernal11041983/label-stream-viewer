@@ -2,6 +2,7 @@ package br.com.automacaowebia.controller;
 
 import br.com.automacaowebia.config.AppInfo;
 import br.com.automacaowebia.model.*;
+import br.com.automacaowebia.service.HistoricoImpressaoService;
 import br.com.automacaowebia.service.ImpressaoZPLService;
 import br.com.automacaowebia.service.TemplateZPLService;
 import br.com.automacaowebia.service.ZplCacheService;
@@ -59,8 +60,6 @@ public class DashboardController implements Initializable {
     @FXML
     private AnchorPane dasboard_pane;
 
-
-
     @FXML
     private Label user;
 
@@ -112,13 +111,40 @@ public class DashboardController implements Initializable {
     @FXML
     private Label lblVersao;
 
+    @FXML
+    private Label total_impressao_dia_dash;
+
+    @FXML
+    private Label total_impressao_mes_dash;
+
+    @FXML
+    private Label total_impressao_ano_dash;
+
+    @FXML
+    private Label total_modelo_dash;
+
     private final TemplateZPLService templateService = new TemplateZPLService();
     private final ImpressaoZPLService impressaoZPLService = new ImpressaoZPLService();
+    private final HistoricoImpressaoService historicoImpressaoService = new HistoricoImpressaoService();
     private String conteudoTemplate; // Para guardar o conteúdo carregado
     private static final Logger logger = LogManager.getLogger(DashboardController.class);
 
     public void onExit() {
         System.exit(0);
+    }
+
+    public void carredarDadosDash() {
+
+        int totalHoje = historicoImpressaoService.getTotalDiario();
+        int totalMes = historicoImpressaoService.getTotalMensal();
+        int totalAno = historicoImpressaoService.getTotalAnual();
+        int totalTemplates = templateService.getTotalTemplates();
+
+        total_impressao_dia_dash.setText(String.valueOf(totalHoje));
+        total_impressao_mes_dash.setText(String.valueOf(totalMes));
+        total_impressao_ano_dash.setText(String.valueOf(totalAno));
+        total_modelo_dash.setText(String.valueOf(totalTemplates));
+
     }
 
     public void activateAnchorPane() {
@@ -129,6 +155,7 @@ public class DashboardController implements Initializable {
             dashboard_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.7),  rgba(255,106,239,0.7))");
             template_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
             impressao_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
+            carredarDadosDash();
         });
         template_btn.setOnMouseClicked(mouseEvent -> {
             dasboard_pane.setVisible(false);
@@ -607,5 +634,6 @@ public class DashboardController implements Initializable {
         carregarComboTemplate();
         comboSku.setItems(getListaSkuMock());
         carregarListaTemplate();
+        carredarDadosDash();
     }
 }

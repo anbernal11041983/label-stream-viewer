@@ -123,7 +123,7 @@ public class TemplateZPLService {
                         resultSet.getString("nome"),
                         resultSet.getString("tipo_arquivo"),
                         resultSet.getString("conteudo"),
-                        resultSet.getTimestamp("criado_em").toLocalDateTime() 
+                        resultSet.getTimestamp("criado_em").toLocalDateTime()
                 );
                 list.add(template);
             }
@@ -153,7 +153,7 @@ public class TemplateZPLService {
                         resultSet.getString("nome"),
                         resultSet.getString("tipo_arquivo"),
                         resultSet.getString("conteudo"),
-                        resultSet.getTimestamp("criado_em").toLocalDateTime() 
+                        resultSet.getTimestamp("criado_em").toLocalDateTime()
                 );
                 logger.info("Template encontrado: {}", template.getNome());
                 return template;
@@ -164,5 +164,25 @@ public class TemplateZPLService {
             logger.error("Erro ao buscar template com ID: {}", id, e);
         }
         return null;
+    }
+
+    public int getTotalTemplates() {
+        logger.info("Consultando total de templates cadastrados.");
+        String sql = "SELECT COUNT(*) AS total FROM template_zpl";
+        int total = 0;
+
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(sql);
+
+            if (resultSet.next()) {
+                total = resultSet.getInt("total");
+                logger.info("Total de templates encontrados: {}", total);
+            }
+        } catch (Exception e) {
+            logger.error("Erro ao consultar total de templates.", e);
+        }
+
+        return total;
     }
 }
