@@ -732,28 +732,7 @@ public class DashboardController implements Initializable {
     }
 
     public void getTotalSalesAmount() {
-        connection = Database.getInstance().connectDB();
-        String sql = "SELECT SUM(total_amount) as total_sale_amount FROM sales";
-        try {
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {
-                String result = resultSet.getString("total_sale_amount");
-                if (result == null) {
-                    sales_total_amount.setText("0.00");
-                } else {
-                    sales_total_amount.setText(result);
-                }
-            }
-        } catch (Exception err) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeight(500);
-            alert.setTitle("Error Message");
-            alert.setHeaderText(null);
-            alert.setContentText(err.getMessage());
-            alert.showAndWait();
-        }
-
+        
     }
 
     public ObservableList<Sales> listSalesData() {
@@ -806,28 +785,7 @@ public class DashboardController implements Initializable {
     }
 
     public void getTotalPurchaseAmount() {
-        connection = Database.getInstance().connectDB();
-        String sql = "SELECT SUM(total_amount) as total_purchase_amount FROM purchase";
-        try {
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {
-                String result = resultSet.getString("total_purchase_amount");
-                if (result == null) {
-                    purchase_total_amount.setText("0.00");
-                } else {
-                    purchase_total_amount.setText(result);
-                }
-            }
-        } catch (Exception err) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeight(500);
-            alert.setTitle("Error Message");
-            alert.setHeaderText(null);
-            alert.setContentText(err.getMessage());
-            alert.showAndWait();
-        }
-
+        
     }
 
     public void printPurchaseDetails() {
@@ -877,53 +835,11 @@ public class DashboardController implements Initializable {
     }
 
     public void getTotalPurchase() {
-        connection = Database.getInstance().connectDB();
-        String sql = "SELECT SUM(total_items) as total_purchase FROM PURCHASE";
-        try {
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {
-                String result = resultSet.getString("total_purchase");
-                if (result == null) {
-                    dash_total_purchase.setText("0");
-                } else {
-                    dash_total_purchase.setText(result);
-                }
-            }
-        } catch (Exception err) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeight(500);
-            alert.setTitle("Error Message");
-            alert.setHeaderText(null);
-            alert.setContentText(err.getMessage());
-            alert.showAndWait();
-        }
-
+      
     }
 
     public void getTotalSales() {
-        connection = Database.getInstance().connectDB();
-        String sql = "SELECT SUM(quantity) as total_sale FROM sales";
-        try {
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {
-                String result = resultSet.getString("total_sale");
-                if (result == null) {
-                    dash_total_sold.setText("0");
-                } else {
-                    dash_total_sold.setText(result);
-                }
-            }
-        } catch (Exception err) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeight(500);
-            alert.setTitle("Error Message");
-            alert.setHeaderText(null);
-            alert.setContentText(err.getMessage());
-            alert.showAndWait();
-        }
-
+      
     }
 
     public void getTotalStocks() {
@@ -934,59 +850,11 @@ public class DashboardController implements Initializable {
     }
 
     public void getSalesDetailsOfThisMonth() {
-        LocalDate date = LocalDate.now();
-        String monthName = date.getMonth().toString();
-        connection = Database.getInstance().connectDB();
-        String sql = "SELECT SUM(total_amount) as total_sales_this_month FROM SALES WHERE MONTHNAME(DATE)=?";
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, monthName);
-            resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                String result = resultSet.getString("total_sales_this_month");
-                if (result == null) {
-                    dash_total_sales_this_month.setText("0.00");
-                } else {
-                    dash_total_sales_this_month.setText(result);
-                }
-                dash_total_sales_this_month_name.setText(monthName);
-            }
-        } catch (Exception err) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeight(500);
-            alert.setTitle("Error Message");
-            alert.setHeaderText(null);
-            alert.setContentText(err.getMessage());
-            alert.showAndWait();
-        }
+       
     }
 
     public void getItemSoldThisMonth() {
-        LocalDate date = LocalDate.now();
-        String monthName = date.getMonth().toString();
-        connection = Database.getInstance().connectDB();
-        String sql = "SELECT SUM(quantity) as total_items_sold_this_month FROM SALES WHERE MONTHNAME(DATE)=?";
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, monthName);
-            resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                String result = resultSet.getString("total_items_sold_this_month");
-                if (result == null) {
-                    dash_total_items_sold_this_month.setText("0");
-                } else {
-                    dash_total_items_sold_this_month.setText(result);
-                }
-                dash_total_sales_items_this_month_name.setText(monthName);
-            }
-        } catch (Exception err) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeight(500);
-            alert.setTitle("Error Message");
-            alert.setHeaderText(null);
-            alert.setContentText(err.getMessage());
-            alert.showAndWait();
-        }
+       
     }
 
     public void showDashboardData() {
