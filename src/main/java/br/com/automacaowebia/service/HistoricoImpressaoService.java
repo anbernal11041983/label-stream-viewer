@@ -1,6 +1,7 @@
 package br.com.automacaowebia.service;
 
 import br.com.automacaowebia.config.Database;
+import br.com.automacaowebia.model.DashResumo;
 import br.com.automacaowebia.model.HistoricoImpressao;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -17,11 +18,10 @@ public class HistoricoImpressaoService {
      * Grava um registro de impressão no histórico.
      */
     public void salvarHistorico(String modelo, String sku, int quantidade, String impressora) {
-        String sql = "INSERT INTO historico_impressao (modelo, sku, quantidade, data_hora, impressora) " +
-                     "VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?)";
+        String sql = "INSERT INTO historico_impressao (modelo, sku, quantidade, data_hora, impressora) "
+                + "VALUES (?, ?, ?, CURRENT_TIMESTAMP, ?)";
 
-        try (Connection conn = Database.getInstance().connectDB();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (Connection conn = Database.getInstance().connectDB(); PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, modelo);
             stmt.setString(2, sku);
@@ -38,94 +38,39 @@ public class HistoricoImpressaoService {
         }
     }
 
-    /**
-     * Retorna o total de etiquetas impressas no dia atual.
-     */
-    public int getTotalDiario() {
-        String sql = "SELECT COALESCE(SUM(quantidade),0) FROM historico_impressao WHERE DATE(data_hora) = CURRENT_DATE";
+    public DashResumo getResumoDashboard() {
+        String sql = "SELECT * FROM dash_impressao_agg";
 
-        try (Connection conn = Database.getInstance().connectDB();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection conn = Database.getInstance().connectDB(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
             if (rs.next()) {
-                int total = rs.getInt(1);
-                logger.info("Total diário de impressões: {}", total);
-                return total;
+                DashResumo resumo = new DashResumo(
+                        rs.getLong("total_templates"),
+                        rs.getLong("total_labels"),
+                        rs.getLong("total_jobs"),
+                        rs.getLong("total_dia"),
+                        rs.getLong("total_mes"),
+                        rs.getLong("total_ano")
+                );
+                logger.info("Resumo do dashboard carregado: {}", resumo);
+                return resumo;
             }
 
         } catch (SQLException e) {
-            logger.error("Erro ao consultar total diário de impressões: {}", e.getMessage(), e);
+            logger.error("Erro ao obter resumo do dashboard: {}", e.getMessage(), e);
         }
 
-        return 0;
+        return new DashResumo(0, 0, 0, 0, 0, 0);
     }
 
     /**
-     * Retorna o total de etiquetas impressas no mês atual.
-     */
-    public int getTotalMensal() {
-        String sql = """
-            SELECT COALESCE(SUM(quantidade),0)
-            FROM historico_impressao
-            WHERE EXTRACT(YEAR FROM data_hora) = EXTRACT(YEAR FROM CURRENT_DATE)
-              AND EXTRACT(MONTH FROM data_hora) = EXTRACT(MONTH FROM CURRENT_DATE)
-        """;
-
-        try (Connection conn = Database.getInstance().connectDB();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            if (rs.next()) {
-                int total = rs.getInt(1);
-                logger.info("Total mensal de impressões: {}", total);
-                return total;
-            }
-
-        } catch (SQLException e) {
-            logger.error("Erro ao consultar total mensal de impressões: {}", e.getMessage(), e);
-        }
-
-        return 0;
-    }
-
-    /**
-     * Retorna o total de etiquetas impressas no ano atual.
-     */
-    public int getTotalAnual() {
-        String sql = """
-            SELECT COALESCE(SUM(quantidade),0)
-            FROM historico_impressao
-            WHERE EXTRACT(YEAR FROM data_hora) = EXTRACT(YEAR FROM CURRENT_DATE)
-        """;
-
-        try (Connection conn = Database.getInstance().connectDB();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
-
-            if (rs.next()) {
-                int total = rs.getInt(1);
-                logger.info("Total anual de impressões: {}", total);
-                return total;
-            }
-
-        } catch (SQLException e) {
-            logger.error("Erro ao consultar total anual de impressões: {}", e.getMessage(), e);
-        }
-
-        return 0;
-    }
-
-    /**
-     * Retorna a lista completa do histórico de impressões.
+     * Lista completa do histórico de impressões.
      */
     public List<HistoricoImpressao> listarTodos() {
         List<HistoricoImpressao> lista = new ArrayList<>();
         String sql = "SELECT * FROM historico_impressao ORDER BY data_hora DESC";
 
-        try (Connection conn = Database.getInstance().connectDB();
-             Statement stmt = conn.createStatement();
-             ResultSet rs = stmt.executeQuery(sql)) {
+        try (Connection conn = Database.getInstance().connectDB(); Statement stmt = conn.createStatement(); ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
                 HistoricoImpressao h = new HistoricoImpressao();

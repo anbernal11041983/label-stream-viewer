@@ -1,6 +1,8 @@
 package br.com.automacaowebia.service;
 
 import br.com.automacaowebia.config.AppProperties;
+import br.com.automacaowebia.printer.ZebraSocketSender;
+import java.io.IOException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -9,6 +11,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.util.Locale;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import javafx.scene.image.Image;
 
 public class ImpressaoZPLService {
@@ -16,6 +20,8 @@ public class ImpressaoZPLService {
     private static final Logger logger = LogManager.getLogger(ImpressaoZPLService.class);
 
     private static final String ZPL_SERVER_URL = AppProperties.getInstance().get("zpl.server.url");
+    private static final Map<String, ZebraSocketSender> pool = new ConcurrentHashMap<>();
+    private final HistoricoImpressaoService historicoImpressaoService = new HistoricoImpressaoService();
 
     public String personalizarZpl(String zplBruto, String sku) {
         logger.info("Iniciando personalização do ZPL.");
@@ -94,9 +100,37 @@ public class ImpressaoZPLService {
         }
     }
 
-    public void imprimirNaZebra(String zpl, String value, boolean selected) {
-        //aqui configuracao da impressora
-        System.out.println("Simulando a Impressora"+value);
+    public void imprimirNaZebra(String zpl,
+            String printerIp,
+            boolean salvarNoFlash,
+            String modelo,
+            String sku,
+            int qtd) {
+
+        // se for usar template salvo em flash: prepend ^XA^XFR:MEUTPL^FS... etc.
+        String payload = salvarNoFlash ? ("^XA^XF" + zpl + "^XZ") : zpl;
+
+        boolean ok = false;
+        try {
+            ZebraSocketSender sender = pool.computeIfAbsent(printerIp, ip -> {
+                try {
+                    return new ZebraSocketSender(ip);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            sender.send(payload);
+            ok = true;
+            logger.info("ZPL enviado para {} ({} bytes)", printerIp, payload.length());
+
+        } catch (Exception e) {
+            logger.error("Falha ao imprimir na impressora {}", printerIp, e);
+        }
+
+        /* grava histórico somente se OK */
+        if (ok) {
+            historicoImpressaoService.salvarHistorico(modelo, sku, qtd, printerIp);
+        }
     }
 
 }

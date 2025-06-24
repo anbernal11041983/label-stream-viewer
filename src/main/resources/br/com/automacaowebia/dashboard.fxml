@@ -91,11 +91,11 @@
                         </AnchorPane>
                         <AnchorPane fx:id="dasboard_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" visible="true">
                             <children>
-                                <Pane layoutX="80.0" layoutY="65.0" prefHeight="200.0" prefWidth="267.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
+                                <Pane layoutX="40.0" layoutY="30.0" prefHeight="186.0" prefWidth="230.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
                                     <children>
-                                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="267.0" spacing="20.0">
+                                        <VBox alignment="CENTER" prefHeight="180.0" prefWidth="230.0" spacing="20.0">
                                             <children>
-                                                <Label alignment="CENTER" prefHeight="27.0" prefWidth="256.0" text="TOTAL MODELOS" textFill="WHITE">
+                                                <Label alignment="CENTER" prefHeight="27.0" prefWidth="256.0" text="Quant.Templates" textFill="WHITE">
                                                     <font>
                                                         <Font name="Arial Rounded MT Bold" size="18.0" />
                                                     </font>
@@ -109,16 +109,16 @@
                                         </VBox>
                                     </children>
                                 </Pane>
-                                <Pane layoutX="450.0" layoutY="65.0" prefHeight="200.0" prefWidth="280.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
+                                <Pane layoutX="560.0" layoutY="30.0" prefHeight="180.0" prefWidth="230.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
                                     <children>
-                                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="280.0" spacing="20.0">
+                                        <VBox alignment="CENTER" prefHeight="180.0" prefWidth="230.0" spacing="20.0">
                                             <children>
-                                                <Label alignment="CENTER" prefHeight="27.0" prefWidth="281.0" text="IMPRESSÃO DIA" textFill="WHITE">
+                                                <Label alignment="CENTER" prefHeight="27.0" prefWidth="281.0" text="Quant. Impressões" textFill="WHITE">
                                                     <font>
                                                         <Font name="Arial Rounded MT Bold" size="18.0" />
                                                     </font>
                                                 </Label>
-                                                <Label fx:id="total_impressao_dia_dash" alignment="CENTER" prefHeight="46.0" prefWidth="280.0" text="18" textFill="WHITE">
+                                                <Label fx:id="total_jobs" alignment="CENTER" prefHeight="46.0" prefWidth="280.0" text="18" textFill="WHITE">
                                                     <font>
                                                         <Font name="Arial Rounded MT Bold" size="30.0" />
                                                     </font>
@@ -127,11 +127,11 @@
                                         </VBox>
                                     </children>
                                 </Pane>
-                                <Pane layoutX="450.0" layoutY="350.0" prefHeight="200.0" prefWidth="280.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
+                                <Pane layoutX="560.0" layoutY="430.0" prefHeight="180.0" prefWidth="230.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
                                     <children>
-                                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="280.0" spacing="20.0">
+                                        <VBox alignment="CENTER" prefHeight="180.0" prefWidth="230.0" spacing="20.0">
                                             <children>
-                                                <Label alignment="CENTER" contentDisplay="TOP" prefHeight="27.0" prefWidth="278.0" text="IMPRESSÃO ANO" textFill="WHITE">
+                                                <Label alignment="CENTER" contentDisplay="TOP" prefHeight="27.0" prefWidth="278.0" text="Total Etiquetas Ano" textFill="WHITE">
                                                     <font>
                                                         <Font name="Arial Rounded MT Bold" size="18.0" />
                                                     </font>
@@ -145,16 +145,16 @@
                                         </VBox>
                                     </children>
                                 </Pane>
-                                <Pane layoutX="80.0" layoutY="350.0" prefHeight="200.0" prefWidth="280.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
+                                <Pane layoutX="40.0" layoutY="430.0" prefHeight="180.0" prefWidth="230.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
                                     <children>
-                                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="280.0" spacing="20.0">
+                                        <VBox alignment="CENTER" prefHeight="180.0" prefWidth="230.0" spacing="20.0">
                                             <children>
-                                                <Label alignment="CENTER" prefHeight="27.0" prefWidth="282.0" text="IMPRESSÃO MÊS" textFill="WHITE">
+                                                <Label alignment="CENTER" prefHeight="27.0" prefWidth="282.0" text="Total Etiquetas Mês" textFill="WHITE">
                                                     <font>
                                                         <Font name="Arial Rounded MT Bold" size="18.0" />
                                                     </font>
                                                 </Label>
-                                                <Label fx:id="total_impressao_mes_dash" alignment="CENTER" prefHeight="46.0" prefWidth="277.0" text="15000" textFill="WHITE">
+                                                <Label fx:id="total_impressao_mes_dash" alignment="CENTER" prefHeight="46.0" prefWidth="223.0" text="15000" textFill="WHITE">
                                                     <font>
                                                         <Font name="Arial Rounded MT Bold" size="30.0" />
                                                     </font>
@@ -163,6 +163,24 @@
                                         </VBox>
                                     </children>
                                 </Pane>
+                        <Pane layoutX="295.0" layoutY="230.0" prefHeight="180.0" prefWidth="230.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
+                           <children>
+                              <VBox alignment="CENTER" prefHeight="180.0" prefWidth="230.0" spacing="20.0">
+                                 <children>
+                                    <Label alignment="CENTER" prefHeight="27.0" prefWidth="281.0" text="Total Etiquetas Dia" textFill="WHITE">
+                                       <font>
+                                          <Font name="Arial Rounded MT Bold" size="18.0" />
+                                       </font>
+                                    </Label>
+                                    <Label fx:id="total_impressao_dia_dash" alignment="CENTER" prefHeight="46.0" prefWidth="280.0" text="18" textFill="WHITE">
+                                       <font>
+                                          <Font name="Arial Rounded MT Bold" size="30.0" />
+                                       </font>
+                                    </Label>
+                                 </children>
+                              </VBox>
+                           </children>
+                        </Pane>
                             </children>
                         </AnchorPane>
                         <AnchorPane fx:id="template_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="false">

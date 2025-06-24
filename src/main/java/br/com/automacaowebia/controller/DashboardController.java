@@ -119,6 +119,8 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Label total_impressao_ano_dash;
+    @FXML
+    private Label total_jobs;
 
     @FXML
     private Label total_modelo_dash;
@@ -135,15 +137,13 @@ public class DashboardController implements Initializable {
 
     public void carredarDadosDash() {
 
-        int totalHoje = historicoImpressaoService.getTotalDiario();
-        int totalMes = historicoImpressaoService.getTotalMensal();
-        int totalAno = historicoImpressaoService.getTotalAnual();
-        int totalTemplates = templateService.getTotalTemplates();
+        DashResumo resumo = historicoImpressaoService.getResumoDashboard();
 
-        total_impressao_dia_dash.setText(String.valueOf(totalHoje));
-        total_impressao_mes_dash.setText(String.valueOf(totalMes));
-        total_impressao_ano_dash.setText(String.valueOf(totalAno));
-        total_modelo_dash.setText(String.valueOf(totalTemplates));
+        total_jobs.setText(String.valueOf(resumo.getTotalJobs()));
+        total_impressao_dia_dash.setText(String.valueOf(resumo.getTotalDia()));
+        total_impressao_mes_dash.setText(String.valueOf(resumo.getTotalMes()));
+        total_impressao_ano_dash.setText(String.valueOf(resumo.getTotalAno()));
+        total_modelo_dash.setText(String.valueOf(resumo.getTotalTemplates()));
 
     }
 

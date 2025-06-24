@@ -41,7 +41,6 @@ public class PrintDialogController {
     private int qtdOriginal;
     private final ImpressaoZPLService impressaoService = new ImpressaoZPLService();
     private static final Logger logger = LogManager.getLogger(PrintDialogController.class);
-    private final HistoricoImpressaoService historicoImpressaoService = new HistoricoImpressaoService();
 
     /**
      * Método chamado ao abrir o modal para preencher os dados.
@@ -70,57 +69,41 @@ public class PrintDialogController {
      */
     @FXML
     private void imprimir() {
-        // ✅ Remove qualquer binding anterior no botão
-        btnConfirmar.disableProperty().unbind();
-        barStatus.progressProperty().unbind();
 
         btnConfirmar.setDisable(true);
         barStatus.setVisible(true);
 
-        int qtd = qtdOriginal;
-        String modelo = lblTemplate.getText();
-        String sku = lblSku.getText();
-        String impressora = cmbImpressora.getValue();
+        final int qtd = qtdOriginal;
+        final String zpl = ZplCacheService.getZpl(cacheKey);
+        final String printerIp = cmbImpressora.getValue();
+        final String modelo = lblTemplate.getText();
+        final String sku = lblSku.getText();
 
-        String zpl = ZplCacheService.getZpl(cacheKey);
         if (zpl == null) {
-            logger.error("ZPL não encontrado no cache!");
+            logger.error("ZPL ausente no cache (key={})", cacheKey);
             fechar();
             return;
         }
 
-        Task<Void> t = new Task<>() {
+        Task<Void> task = new Task<>() {
             @Override
             protected Void call() throws Exception {
-                for (int i = 1; i <= qtd; i++) {
-                    impressaoService.imprimirNaZebra(
-                            zpl,
-                            cmbImpressora.getValue(),
-                            chkSalvarFlash.isSelected()
-                    );
-                    updateProgress(i, qtd);
-                }
+                impressaoService.imprimirNaZebra(
+                        zpl, printerIp, chkSalvarFlash.isSelected(),
+                        modelo, sku, qtd);
+                updateProgress(1, 1);
                 return null;
             }
         };
 
-        barStatus.progressProperty().bind(t.progressProperty());
-
-        t.setOnSucceeded(ev -> {
-            logger.info("Impressão concluída com sucesso.");
-            barStatus.progressProperty().unbind();
-
-            historicoImpressaoService.salvarHistorico(modelo, sku, qtd, impressora);
+        barStatus.progressProperty().bind(task.progressProperty());
+        task.setOnSucceeded(e -> fechar());
+        task.setOnFailed(e -> {
+            logger.error("Falha no job", task.getException());
             fechar();
         });
 
-        t.setOnFailed(ev -> {
-            logger.error("Erro durante a impressão.", t.getException());
-            barStatus.progressProperty().unbind();
-            fechar();
-        });
-
-        new Thread(t).start();
+        new Thread(task, "print-job").start();
     }
 
     /**
