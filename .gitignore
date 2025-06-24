@@ -2,3 +2,4 @@ target
 shade
 /.idea/
 /nbactions.xml
+/logs/

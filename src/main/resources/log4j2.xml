@@ -1,13 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="WARN">
     <Appenders>
+        <!-- Console -->
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="[%d{HH:mm:ss}] [%-5level] %c{1} - %msg%n"/>
         </Console>
-        <File name="ArquivoLog" fileName="logs/application.log">
+
+        <!-- Log em arquivo com rotação -->
+        <RollingFile name="ArquivoLog"
+                     fileName="logs/application.log"
+                     filePattern="logs/application-%d{yyyy-MM-dd}-%i.log.gz">
+                     
             <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss}] [%-5level] %c{1} - %msg%n"/>
-        </File>
+
+            <Policies>
+                <!-- Roda o log quando chegar a 10MB -->
+                <SizeBasedTriggeringPolicy size="10MB"/>
+                <!-- Roda também diariamente (opcional, pode remover) -->
+                <TimeBasedTriggeringPolicy />
+            </Policies>
+
+            <!-- Mantém até 7 arquivos antigos -->
+            <DefaultRolloverStrategy max="7"/>
+        </RollingFile>
     </Appenders>
+
     <Loggers>
         <Root level="info">
             <AppenderRef ref="Console"/>
