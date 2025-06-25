@@ -26,6 +26,12 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         logger.info("Iniciando aplicação...");
 
+        // ✅ Verifica conexão com o banco ANTES de qualquer serviço
+        if (!testarConexaoComBanco()) {
+            showAlertAndExit("Não foi possível conectar ao banco de dados.\nVerifique se o banco está online.");
+            return;
+        }
+
         // 🔗 Verificação de licença
         LicencaService licencaService = new LicencaService();
         String mac = MacAddressUtil.getMacAddress();
@@ -37,16 +43,13 @@ public class App extends Application {
         if (dispositivo == null) {
             licencaService.cadastrarDispositivo(mac);
             showAlertAndExit("Dispositivo não registrado.\nEntre em contato para ativação.");
-            return;
         } else if ("BLOQUEADO".equalsIgnoreCase(dispositivo.getStatus())) {
             showAlertAndExit("Dispositivo bloqueado.\nEntre em contato para ativação.");
-            return;
         } else if ("ATIVADO".equalsIgnoreCase(dispositivo.getStatus())) {
             logger.info("Dispositivo autorizado. Carregando sistema...");
             carregarTelaLogin(stage);
         } else {
             showAlertAndExit("Status inválido. Contate o suporte.");
-            return;
         }
     }
 
@@ -75,12 +78,20 @@ public class App extends Application {
     private void showAlertAndExit(String message) {
         logger.warn(message);
         Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Licenciamento");
-        alert.setHeaderText("Ativação necessária");
+        alert.setTitle("Alerta");
+        alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
-        logger.warn("Encerrando aplicação devido à restrição de licença.");
         System.exit(0);
+    }
+
+    private boolean testarConexaoComBanco() {
+        try (var conn = br.com.automacaowebia.config.Database.getInstance().connectDB()) {
+            return conn != null && !conn.isClosed();
+        } catch (Exception e) {
+            logger.error("Erro ao testar conexão com o banco de dados.", e);
+            return false;
+        }
     }
 
     public static void main(String[] args) {
