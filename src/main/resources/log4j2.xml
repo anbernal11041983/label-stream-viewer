@@ -9,9 +9,9 @@
         <!-- Log em arquivo com rotação -->
         <RollingFile name="ArquivoLog"
                      fileName="logs/application.log"
-                     filePattern="logs/application-%d{yyyy-MM-dd}-%i.log.gz">
+                     filePattern="logs/application-%d{dd-MM-yyyy}-%i.log.gz">
                      
-            <PatternLayout pattern="[%d{yyyy-MM-dd HH:mm:ss}] [%-5level] %c{1} - %msg%n"/>
+            <PatternLayout pattern="[%d{dd-MM-yyyy HH:mm:ss}] [%-5level] %c{1} - %msg%n"/>
 
             <Policies>
                 <!-- Roda o log quando chegar a 10MB -->
