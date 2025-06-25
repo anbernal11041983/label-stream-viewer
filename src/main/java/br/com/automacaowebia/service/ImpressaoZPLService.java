@@ -14,6 +14,7 @@ import java.nio.charset.StandardCharsets;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 
 public class ImpressaoZPLService {
@@ -121,6 +122,7 @@ public class ImpressaoZPLService {
 
         } catch (Exception e) {
             logger.error("Falha ao imprimir na impressora {}", printerIp, e);
+            throw new RuntimeException("Falha ao imprimir na impressora " + printerIp, e);
         }
 
         /* grava histórico somente se OK */

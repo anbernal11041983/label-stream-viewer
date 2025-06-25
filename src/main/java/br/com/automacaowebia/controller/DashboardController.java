@@ -192,6 +192,7 @@ public class DashboardController implements Initializable {
             template_btn.setStyle(corOff);
             impressao_btn.setStyle(corOn);
             printers_btn.setStyle(corOff);
+            carregarComboTemplate();
         });
         printers_btn.setOnMouseClicked(mouseEvent -> {
             dasboard_pane.setVisible(false);
@@ -338,11 +339,10 @@ public class DashboardController implements Initializable {
                 // Ícone no botão (usando FontAwesomeIconView)
                 FontAwesomeIconView icon = new FontAwesomeIconView();
                 icon.setGlyphName("TRASH");
-                icon.setSize("14");
+                icon.setSize("16");
                 icon.setFill(javafx.scene.paint.Color.WHITE);
-
+                btnExcluir.setTooltip(new Tooltip("Remover"));
                 btnExcluir.setGraphic(icon);
-                btnExcluir.setText("Excluir");
                 btnExcluir.setOnAction(event -> {
                     TemplateZPL template = getTableView().getItems().get(getIndex());
 
@@ -370,9 +370,6 @@ public class DashboardController implements Initializable {
                         }
                     }
                 });
-
-                // Estilo opcional do botão
-                btnExcluir.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-cursor: hand;");
             }
 
             @Override
@@ -761,7 +758,7 @@ public class DashboardController implements Initializable {
         setUsername();
         activateDashboard();
         setupFields();
-        comboUnidade.getSelectionModel().select("cm");
+        comboUnidade.getSelectionModel().select("inches");
         carregarComboTemplate();
         comboSku.setItems(getListaSkuMock());
         carregarListaTemplate();

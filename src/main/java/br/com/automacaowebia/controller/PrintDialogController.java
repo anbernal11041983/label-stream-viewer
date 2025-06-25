@@ -127,7 +127,23 @@ public class PrintDialogController {
         task.setOnSucceeded(e -> fechar());
         task.setOnFailed(e -> {
             logger.error("Falha no job", task.getException());
-            fechar();
+            // volta estado visual
+            Throwable ex = task.getException();  // exception real lançada pelo Task
+            logger.error("Falha no job", ex);
+
+            // restaura o estado da UI
+            barStatus.setVisible(false);
+            btnConfirmar.setDisable(false);
+
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro na impressão");
+            alert.setHeaderText(null);
+
+            String msg = (ex != null && ex.getMessage() != null)
+                    ? ex.getMessage()
+                    : "Não foi possível enviar a etiqueta para a impressora.";
+            alert.setContentText(msg);
+            alert.showAndWait();
         });
 
         PrintExecutor.POOL.submit(task);
