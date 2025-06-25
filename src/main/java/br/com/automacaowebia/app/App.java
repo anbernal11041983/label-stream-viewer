@@ -2,7 +2,7 @@ package br.com.automacaowebia.app;
 
 import br.com.automacaowebia.model.Dispositivo;
 import br.com.automacaowebia.service.LicencaService;
-import br.com.automacaowebia.util.MacAddressUtil;
+import br.com.automacaowebia.util.HardwareFingerprintUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -34,14 +34,14 @@ public class App extends Application {
 
         // 🔗 Verificação de licença
         LicencaService licencaService = new LicencaService();
-        String mac = MacAddressUtil.getMacAddress();
+        String fingerprint = HardwareFingerprintUtil.getHardwareFingerprint();
 
-        logger.info("MAC Address detectado: {}", mac);
+        logger.info("Fingerprint detectado: {}", fingerprint);
 
-        Dispositivo dispositivo = licencaService.buscarDispositivo(mac);
+        Dispositivo dispositivo = licencaService.buscarDispositivo(fingerprint);
 
         if (dispositivo == null) {
-            licencaService.cadastrarDispositivo(mac);
+            licencaService.cadastrarDispositivo(fingerprint);
             showAlertAndExit("Dispositivo não registrado.\nEntre em contato para ativação.");
         } else if ("BLOQUEADO".equalsIgnoreCase(dispositivo.getStatus())) {
             showAlertAndExit("Dispositivo bloqueado.\nEntre em contato para ativação.");

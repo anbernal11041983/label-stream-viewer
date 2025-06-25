@@ -69,7 +69,7 @@
                                 <FontAwesomeIconView fill="WHITE" glyphName="BARCODE" size="1.2em" />
                             </graphic>
                         </Button>
-                        <Button fx:id="signout_btn" layoutX="39.0" layoutY="614.0" mnemonicParsing="false" onAction="#signOut" prefHeight="38.0" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="SAIR" textFill="WHITE">
+                        <Button fx:id="signout_btn" layoutX="39.0" layoutY="614.0" mnemonicParsing="false" onAction="#signOut" prefHeight="38.0" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="Sair" textFill="WHITE">
                             <font>
                                 <Font size="16.0" />
                             </font>
