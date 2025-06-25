@@ -24,7 +24,7 @@
             <children>
                 <AnchorPane prefHeight="694.0" prefWidth="275.0" styleClass="navbar" stylesheets="@dashboard.css">
                     <children>
-                        <Button fx:id="dashboard_btn" alignment="CENTER" layoutX="39.0" layoutY="266.0" mnemonicParsing="false" onAction="#activateDashboard" onMouseClicked="#activateAnchorPane" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="DASHBOARD" textFill="WHITE">
+                        <Button fx:id="dashboard_btn" alignment="CENTER" layoutX="40.0" layoutY="266.0" mnemonicParsing="false" onAction="#activateDashboard" onMouseClicked="#activateAnchorPane" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="Dashboard" textFill="WHITE">
                             <font>
                                 <Font size="16.0" />
                             </font>
@@ -42,7 +42,18 @@
                                 <Font name="Arial Black" size="20.0" />
                             </font>
                         </Label>
-                        <Button fx:id="template_btn" layoutX="39.0" layoutY="310.0" mnemonicParsing="false" onAction="#activateDashboard" onMouseClicked="#activateAnchorPane" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="TEMPLATES" textFill="WHITE">
+                        <Button fx:id="printers_btn" layoutX="40.0" layoutY="310.0" mnemonicParsing="false" onAction="#activateDashboard" onMouseClicked="#activateAnchorPane" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="Cadastrar Impressora" textFill="WHITE">
+
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+
+                            <graphic>
+                                <!-- Use PRINT ou PRINTER, conforme quiser diferenciar -->
+                                <FontAwesomeIconView fill="WHITE" glyphName="PRINT" size="1.2em" />
+                            </graphic>
+                        </Button>
+                        <Button fx:id="template_btn" layoutX="40.0" layoutY="353.0" mnemonicParsing="false" onAction="#activateDashboard" onMouseClicked="#activateAnchorPane" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="Templates" textFill="WHITE">
                             <font>
                                 <Font size="16.0" />
                             </font>
@@ -50,12 +61,12 @@
                                 <FontAwesomeIconView fill="WHITE" glyphName="UPLOAD" size="1.2em" />
                             </graphic>
                         </Button>
-                        <Button fx:id="impressao_btn" layoutX="39.0" layoutY="353.0" mnemonicParsing="false" onAction="#activateDashboard" onMouseClicked="#activateAnchorPane" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="IMPRESSÃO" textFill="WHITE">
+                        <Button fx:id="impressao_btn" layoutX="40.0" layoutY="397.0" mnemonicParsing="false" onAction="#activateDashboard" onMouseClicked="#activateAnchorPane" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="Gerar etiqueta" textFill="WHITE">
                             <font>
                                 <Font size="16.0" />
                             </font>
                             <graphic>
-                                <FontAwesomeIconView fill="WHITE" glyphName="PRINT" size="1.2em" />
+                                <FontAwesomeIconView fill="WHITE" glyphName="BARCODE" size="1.2em" />
                             </graphic>
                         </Button>
                         <Button fx:id="signout_btn" layoutX="39.0" layoutY="614.0" mnemonicParsing="false" onAction="#signOut" prefHeight="38.0" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="SAIR" textFill="WHITE">
@@ -95,7 +106,7 @@
                                     <children>
                                         <VBox alignment="CENTER" prefHeight="180.0" prefWidth="230.0" spacing="20.0">
                                             <children>
-                                                <Label alignment="CENTER" prefHeight="27.0" prefWidth="256.0" text="Quant.Templates" textFill="WHITE">
+                                                <Label alignment="CENTER" prefHeight="27.0" prefWidth="256.0" text="Quantidade templates" textFill="WHITE">
                                                     <font>
                                                         <Font name="Arial Rounded MT Bold" size="18.0" />
                                                     </font>
@@ -113,7 +124,7 @@
                                     <children>
                                         <VBox alignment="CENTER" prefHeight="180.0" prefWidth="230.0" spacing="20.0">
                                             <children>
-                                                <Label alignment="CENTER" prefHeight="27.0" prefWidth="281.0" text="Quant. Impressões" textFill="WHITE">
+                                                <Label alignment="CENTER" prefHeight="27.0" prefWidth="281.0" text="Quantidade Impressões" textFill="WHITE">
                                                     <font>
                                                         <Font name="Arial Rounded MT Bold" size="18.0" />
                                                     </font>
@@ -163,24 +174,24 @@
                                         </VBox>
                                     </children>
                                 </Pane>
-                        <Pane layoutX="295.0" layoutY="230.0" prefHeight="180.0" prefWidth="230.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
-                           <children>
-                              <VBox alignment="CENTER" prefHeight="180.0" prefWidth="230.0" spacing="20.0">
-                                 <children>
-                                    <Label alignment="CENTER" prefHeight="27.0" prefWidth="281.0" text="Total Etiquetas Dia" textFill="WHITE">
-                                       <font>
-                                          <Font name="Arial Rounded MT Bold" size="18.0" />
-                                       </font>
-                                    </Label>
-                                    <Label fx:id="total_impressao_dia_dash" alignment="CENTER" prefHeight="46.0" prefWidth="280.0" text="18" textFill="WHITE">
-                                       <font>
-                                          <Font name="Arial Rounded MT Bold" size="30.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                           </children>
-                        </Pane>
+                                <Pane layoutX="295.0" layoutY="230.0" prefHeight="180.0" prefWidth="230.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
+                                    <children>
+                                        <VBox alignment="CENTER" prefHeight="180.0" prefWidth="230.0" spacing="20.0">
+                                            <children>
+                                                <Label alignment="CENTER" prefHeight="27.0" prefWidth="281.0" text="Total Etiquetas Dia" textFill="WHITE">
+                                                    <font>
+                                                        <Font name="Arial Rounded MT Bold" size="18.0" />
+                                                    </font>
+                                                </Label>
+                                                <Label fx:id="total_impressao_dia_dash" alignment="CENTER" prefHeight="46.0" prefWidth="280.0" text="18" textFill="WHITE">
+                                                    <font>
+                                                        <Font name="Arial Rounded MT Bold" size="30.0" />
+                                                    </font>
+                                                </Label>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </Pane>
                             </children>
                         </AnchorPane>
                         <AnchorPane fx:id="template_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="false">
@@ -231,6 +242,77 @@
                                     <graphic>
                                         <FontAwesomeIconView fill="WHITE" glyphName="TAG" size="18.0" />
                                     </graphic>
+                                </Button>
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="printer_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="false">
+
+                            <children>
+                                <TableView fx:id="lista_printer" layoutX="13.0" layoutY="33.0" prefHeight="271.0" prefWidth="794.0" stylesheets="@dashboard.css">
+                                    <columns>
+                                        <TableColumn fx:id="col_printer_nome" prefWidth="200.0" text="Nome" />
+                                        <TableColumn fx:id="col_printer_ip" prefWidth="160.0" text="IP" />
+                                        <TableColumn fx:id="col_printer_porta" prefWidth="80.0" text="Porta" />
+                                        <TableColumn fx:id="col_printer_modelo" prefWidth="150.0" text="Modelo" />
+                                        <TableColumn fx:id="col_printer_acao" prefWidth="120.0" text="Ações" />
+                                    </columns>
+                                </TableView>
+
+                                <Separator layoutX="11.0" layoutY="331.0" prefWidth="794.0" />
+
+                                <Label layoutX="27.0" layoutY="352.0" text="Adicionar impressora">
+                                    <font>
+                                        <Font name="Dubai Bold" size="15.0" />
+                                    </font>
+                                </Label>
+
+                                <Label layoutX="28.0" layoutY="402.0" text="Nome">
+                                    <font>
+                                        <Font name="Dubai Bold" size="15.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="printer_nome" layoutX="151.0" layoutY="402.0" prefHeight="26.0" prefWidth="421.0" promptText="Digite o nome da impressora" styleClass="textfield" stylesheets="@dashboard.css" />
+
+                                <!-- IP -->
+                                <Label layoutX="28.0" layoutY="442.0" text="IP">
+                                    <font>
+                                        <Font name="Dubai Bold" size="15.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="printer_ip" layoutX="151.0" layoutY="442.0" prefHeight="26.0" prefWidth="200.0" promptText="Ex.: 192.168.0.50" styleClass="textfield" />
+
+                                <!-- Porta -->
+                                <Label layoutX="371.0" layoutY="442.0" text="Porta">
+                                    <font>
+                                        <Font name="Dubai Bold" size="15.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="printer_porta" layoutX="430.0" layoutY="442.0" prefHeight="26.0" prefWidth="142.0" promptText="9100" styleClass="textfield" />
+
+                                <!-- Modelo -->
+                                <Label layoutX="28.0" layoutY="482.0" text="Modelo">
+                                    <font>
+                                        <Font name="Dubai Bold" size="15.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="printer_modelo" layoutX="151.0" layoutY="482.0" prefHeight="26.0" prefWidth="421.0" promptText="Zebra ZT411" styleClass="textfield" />
+
+                                <Button fx:id="btn_salvar_printer" layoutX="685.0" layoutY="563.0" mnemonicParsing="false" onAction="#salvarPrinter" prefHeight="38.0" prefWidth="91.0" styleClass="save" text=" Salvar">
+                                    <graphic>
+                                        <FontAwesomeIconView fill="WHITE" glyphName="SAVE" size="18.0" />
+                                    </graphic>
+                                    <font>
+                                        <Font name="Dubai Bold" size="16.0" />
+                                    </font>
+                                </Button>
+
+                                <Button fx:id="btn_clear_printer" layoutX="549.0" layoutY="563.0" mnemonicParsing="false" onAction="#limparCamposPrinter" prefHeight="38.0" prefWidth="115.0" styleClass="clear" text="Limpar">
+                                    <graphic>
+                                        <FontAwesomeIconView fill="WHITE" glyphName="REMOVE" size="18.0" />
+                                    </graphic>
+                                    <font>
+                                        <Font name="Dubai Bold" size="16.0" />
+                                    </font>
                                 </Button>
                             </children>
                         </AnchorPane>

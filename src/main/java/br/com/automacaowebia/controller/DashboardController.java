@@ -6,6 +6,8 @@ import br.com.automacaowebia.service.HistoricoImpressaoService;
 import br.com.automacaowebia.service.ImpressaoZPLService;
 import br.com.automacaowebia.service.TemplateZPLService;
 import br.com.automacaowebia.service.ZplCacheService;
+import br.com.automacaowebia.service.PrinterService;
+import br.com.automacaowebia.model.Printer;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.File;
 import javafx.collections.FXCollections;
@@ -28,6 +30,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.event.ActionEvent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -39,96 +42,96 @@ import static org.burningwave.core.assembler.StaticComponentContainer.Modules;
 
 public class DashboardController implements Initializable {
 
-    private double x;
-    private double y;
-
     @FXML
     private Button template_btn;
-
     @FXML
     private AnchorPane template_pane;
-
     @FXML
     private Button impressao_btn;
-
     @FXML
     private Button dashboard_btn;
-
     @FXML
     private AnchorPane impressao_zpl;
-
     @FXML
     private AnchorPane dasboard_pane;
-
     @FXML
     private Label user;
-
     @FXML
     private TextField template_nome;
-
     @FXML
     private TableView<TemplateZPL> lista_template;
-
     @FXML
     private ComboBox<String> comboTemplate;
-
     @FXML
     private ComboBox<String> comboSku;
-
     @FXML
     private ImageView imgPreview;
-
     @FXML
     private Label lblPreviewPlaceholder;
-
     @FXML
     private TableColumn<TemplateZPL, String> col_template_nome;
-
     @FXML
     private TableColumn<TemplateZPL, String> col_template_tipo;
-
     @FXML
     private TableColumn<TemplateZPL, String> col_template_criado;
-
     @FXML
     private TableColumn<TemplateZPL, Void> col_template_acao;
-
     @FXML
     private Button signout_btn;
-
     @FXML
     private TextField txtQuantidade;
-
     @FXML
     private TextField txtWidth;
-
     @FXML
     private TextField txtHeight;
-
     @FXML
     private ComboBox<String> comboUnidade;
-
     @FXML
     private Label lblVersao;
-
     @FXML
     private Label total_impressao_dia_dash;
-
     @FXML
     private Label total_impressao_mes_dash;
-
     @FXML
     private Label total_impressao_ano_dash;
     @FXML
     private Label total_jobs;
-
     @FXML
     private Label total_modelo_dash;
+    @FXML
+    private TextField printer_nome;
+    @FXML
+    private TextField printer_ip;
+    @FXML
+    private TextField printer_porta;
+    @FXML
+    private TextField printer_modelo;
+    @FXML
+    private TableView<Printer> lista_printer;
+    @FXML
+    private TableColumn<Printer, String> col_printer_nome;
+    @FXML
+    private TableColumn<Printer, String> col_printer_ip;
+    @FXML
+    private TableColumn<Printer, Integer> col_printer_porta;
+    @FXML
+    private TableColumn<Printer, String> col_printer_modelo;
+    @FXML
+    private TableColumn<Printer, Void> col_printer_acao;
+    @FXML
+    private Button printers_btn;
+    @FXML
+    private AnchorPane printer_pane;
 
+    private double x;
+    private double y;
     private final TemplateZPLService templateService = new TemplateZPLService();
     private final ImpressaoZPLService impressaoZPLService = new ImpressaoZPLService();
     private final HistoricoImpressaoService historicoImpressaoService = new HistoricoImpressaoService();
     private String conteudoTemplate; // Para guardar o conteúdo carregado
+    private final PrinterService printerService = new PrinterService(); // >>> NOVO
+    private Printer selecionadoPrinter;
+
     private static final Logger logger = LogManager.getLogger(DashboardController.class);
 
     public void onExit() {
@@ -148,31 +151,52 @@ public class DashboardController implements Initializable {
     }
 
     public void activateAnchorPane() {
+
+        String corOn = "-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.7), rgba(255,106,239,0.7))";
+        String corOff = "-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2), rgba(255,106,239,0.2))";
+
         dashboard_btn.setOnMouseClicked(mouseEvent -> {
             dasboard_pane.setVisible(true);
             template_pane.setVisible(false);
             impressao_zpl.setVisible(false);
-            dashboard_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.7),  rgba(255,106,239,0.7))");
-            template_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
-            impressao_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
+            printer_pane.setVisible(false);
+            dashboard_btn.setStyle(corOn);
+            template_btn.setStyle(corOff);
+            impressao_btn.setStyle(corOff);
+            printers_btn.setStyle(corOff);
             carredarDadosDash();
         });
         template_btn.setOnMouseClicked(mouseEvent -> {
             dasboard_pane.setVisible(false);
             template_pane.setVisible(true);
             impressao_zpl.setVisible(false);
-            dashboard_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
-            template_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.7),  rgba(255,106,239,0.7))");
-            impressao_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
+            printer_pane.setVisible(false);
+            dashboard_btn.setStyle(corOff);
+            template_btn.setStyle(corOn);
+            impressao_btn.setStyle(corOff);
+            printers_btn.setStyle(corOff);
         });
         impressao_btn.setOnMouseClicked(mouseEvent -> {
             dasboard_pane.setVisible(false);
             template_pane.setVisible(false);
             impressao_zpl.setVisible(true);
-            dashboard_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
-            template_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2),  rgba(255,106,239,0.2))");
-            impressao_btn.setStyle("-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.7),  rgba(255,106,239,0.7))");
+            printer_pane.setVisible(false);
+            dashboard_btn.setStyle(corOff);
+            template_btn.setStyle(corOff);
+            impressao_btn.setStyle(corOn);
+            printers_btn.setStyle(corOff);
         });
+        printers_btn.setOnMouseClicked(mouseEvent -> {
+            dasboard_pane.setVisible(false);
+            template_pane.setVisible(false);
+            impressao_zpl.setVisible(false);
+            printer_pane.setVisible(true);
+            dashboard_btn.setStyle(corOff);
+            template_btn.setStyle(corOff);
+            impressao_btn.setStyle(corOff);
+            printers_btn.setStyle(corOn);
+        });
+
     }
 
     public void setUsername() {
@@ -610,6 +634,128 @@ public class DashboardController implements Initializable {
         }
     }
 
+    private void initPrinterCrud() {
+        // colunas
+        col_printer_nome.setCellValueFactory(new PropertyValueFactory<>("nome"));
+        col_printer_ip.setCellValueFactory(new PropertyValueFactory<>("ip"));
+        col_printer_porta.setCellValueFactory(new PropertyValueFactory<>("porta"));
+        col_printer_modelo.setCellValueFactory(new PropertyValueFactory<>("modelo"));
+
+        configurarColunaAcoesPrinter();
+        carregarListaPrinter();
+
+        // clique na linha ⇒ preencher formulário
+        lista_printer.getSelectionModel().selectedItemProperty().addListener((obs, oldVal, newVal) -> {
+            if (newVal != null) {
+                selecionadoPrinter = newVal;
+                printer_nome.setText(newVal.getNome());
+                printer_ip.setText(newVal.getIp());
+                printer_porta.setText(String.valueOf(newVal.getPorta()));
+                printer_modelo.setText(newVal.getModelo());
+            }
+        });
+    }
+
+    @FXML
+    private void salvarPrinter(ActionEvent e) {
+        try {
+            String nome = printer_nome.getText().trim();
+            String ip = printer_ip.getText().trim();
+            String modelo = printer_modelo.getText().trim();
+            int porta = Integer.parseInt(printer_porta.getText().trim());
+
+            if (nome.isEmpty() || ip.isEmpty()) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Alerta");
+                alert.setHeaderText(null);
+                alert.setContentText("Nome e IP são obrigatórios.");
+                alert.showAndWait();
+                return;
+            }
+            if (porta <= 0) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Alerta");
+                alert.setHeaderText(null);
+                alert.setContentText("Porta inválida.");
+                alert.showAndWait();
+                return;
+            }
+
+            Printer p = (selecionadoPrinter == null) ? new Printer() : selecionadoPrinter;
+            p.setNome(nome);
+            p.setIp(ip);
+            p.setPorta(porta);
+            p.setModelo(modelo);
+
+            printerService.salvar(p);
+            limparCamposPrinter(null);
+            carregarListaPrinter();
+
+        } catch (NumberFormatException ex) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Alerta");
+            alert.setHeaderText(null);
+            alert.setContentText("Porta deve ser numérica.");
+            alert.showAndWait();
+        }
+    }
+
+    private void carregarListaPrinter() {
+        lista_printer.setItems(printerService.listarTodos());
+    }
+
+    @FXML
+    private void limparCamposPrinter(ActionEvent e) {
+        printer_nome.clear();
+        printer_ip.clear();
+        printer_porta.clear();
+        printer_modelo.clear();
+        selecionadoPrinter = null;
+        lista_printer.getSelectionModel().clearSelection();
+    }
+
+    private void configurarColunaAcoesPrinter() {
+        col_printer_acao.setCellFactory(param -> new TableCell<>() {
+            private final Button btn = criarBotaoTrash();
+
+            {
+                btn.setOnAction(ev -> {
+                    Printer pr = getTableView().getItems().get(getIndex());
+                    removerPrinter(pr);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : btn);
+            }
+        });
+    }
+
+    private Button criarBotaoTrash() {
+        Button b = new Button();
+        FontAwesomeIconView icon = new FontAwesomeIconView();
+        icon.setGlyphName("TRASH");
+        icon.setFill(javafx.scene.paint.Color.WHITE);
+        icon.setSize("16");
+        b.setGraphic(icon);
+        b.getStyleClass().add("delete");
+        b.setTooltip(new Tooltip("Remover"));
+        return b;
+    }
+
+    private void removerPrinter(Printer p) {
+        Alert c = new Alert(Alert.AlertType.CONFIRMATION, "Remover impressora '" + p.getNome() + "'?");
+        c.showAndWait().ifPresent(bt -> {
+            if (bt == ButtonType.OK) {
+                printerService.remover(p);
+                carregarListaPrinter();
+                limparCamposPrinter(null);
+            }
+        });
+    }
+
     @FXML
     public void onMinimize() {
         Stage stage = (Stage) template_btn.getScene().getWindow();
@@ -635,5 +781,6 @@ public class DashboardController implements Initializable {
         comboSku.setItems(getListaSkuMock());
         carregarListaTemplate();
         carredarDadosDash();
+        initPrinterCrud();
     }
 }
