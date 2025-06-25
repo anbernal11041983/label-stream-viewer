@@ -7,6 +7,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
@@ -21,6 +22,9 @@ public class ImpressaoZPLService {
 
     private static final String ZPL_SERVER_URL = AppProperties.getInstance().get("zpl.server.url");
     private static final Map<String, ZebraSocketSender> pool = new ConcurrentHashMap<>();
+
+    private static final int DPMM = 8;        // 203 dpi  -> 8 dpmm
+    private static final int ROTATION = 0;
     private final HistoricoImpressaoService historicoImpressaoService = new HistoricoImpressaoService();
 
     public String personalizarZpl(String zplBruto, String sku) {
@@ -43,61 +47,52 @@ public class ImpressaoZPLService {
         return zplFinal;
     }
 
-    public Image gerarPreview(String zplFinal, double largura, double altura, String unidade, String formatoSaida) {
-        logger.info("Iniciando geração do preview da etiqueta.");
+    public Image gerarPreview(String zpl,
+            double larguraMm,
+            double alturaMm,
+            String unidade, // “cm”, “mm” ou “in”
+            String formato) {      // “png”, “pdf”, …
+
+        // 1. Converta sempre para MILÍMETROS
+        double wMm, hMm;
+        switch (unidade.toLowerCase()) {
+            case "cm" -> {
+                wMm = larguraMm * 10;
+                hMm = alturaMm * 10;
+            }
+            case "in" -> {
+                wMm = larguraMm * 25.4;
+                hMm = alturaMm * 25.4;
+            }
+            default -> {
+                wMm = larguraMm;
+                hMm = alturaMm;
+            }   // já está em mm
+        }
+
+        // 2. Monte a URL usando mm
+        String url = String.format(Locale.ENGLISH,
+                "%s?dpmm=%d&width=%.2f&height=%.2f&rotation=%d&format=%s",
+                ZPL_SERVER_URL, DPMM, wMm, hMm, ROTATION, formato);
 
         try {
-            // Conversão de unidades (cm, mm, inches) para polegadas
-            double wIn, hIn;
-            switch (unidade.toLowerCase()) {
-                case "cm":
-                    wIn = largura / 2.54;
-                    hIn = altura / 2.54;
-                    break;
-                case "mm":
-                    wIn = largura / 25.4;
-                    hIn = altura / 25.4;
-                    break;
-                default:     // "inches"
-                    wIn = largura;
-                    hIn = altura;
-                    break;
+            HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("Content-Type", "text/plain; charset=US-ASCII");
+            con.setDoOutput(true);
+
+            try (OutputStream os = con.getOutputStream()) {
+                os.write(zpl.getBytes(StandardCharsets.US_ASCII));
             }
 
-            // Monta a URL com os parâmetros, incluindo formato dinâmico
-            String urlStr = String.format(Locale.ENGLISH,
-                    "%s?dpmm=%d&width=%.2f&height=%.2f&rotation=%d&format=%s",
-                    ZPL_SERVER_URL, 8, wIn, hIn, 0, formatoSaida);
-
-            logger.debug("Montando URL para requisição: {}", urlStr);
-
-            HttpURLConnection connection = (HttpURLConnection) new URL(urlStr).openConnection();
-            connection.setRequestMethod("POST");
-            connection.setRequestProperty("Content-Type", "text/plain");
-            connection.setDoOutput(true);
-
-            // Envia o ZPL
-            try (var output = connection.getOutputStream()) {
-                output.write(zplFinal.getBytes(StandardCharsets.UTF_8));
+            if (con.getResponseCode() == 200) {
+                return new Image(con.getInputStream());
             }
-
-            int responseCode = connection.getResponseCode();
-            logger.debug("Response code do servidor de preview: {}", responseCode);
-
-            if (responseCode == HttpURLConnection.HTTP_OK) {
-                InputStream inputStream = connection.getInputStream();
-                Image image = new Image(inputStream);
-                logger.info("Preview da etiqueta gerado com sucesso.");
-                return image;
-            } else {
-                logger.error("Falha ao gerar o preview da etiqueta. Response code: {}", responseCode);
-                return null;
-            }
-
+            logger.error("Labelary respondeu {}", con.getResponseCode());
         } catch (Exception e) {
-            logger.error("Erro ao gerar preview da etiqueta ZPL.", e);
-            return null;
+            logger.error("Erro no preview", e);
         }
+        return null;
     }
 
     public void imprimirNaZebra(String zpl,
