@@ -12,14 +12,19 @@ import java.nio.charset.StandardCharsets;
 public final class ZebraSocketSender implements AutoCloseable {
 
     private static final Logger log = LogManager.getLogger(ZebraSocketSender.class);
+    
+    private static final int CONNECT_TIMEOUT_MS = 3_000;
+    private static final int SO_TIMEOUT_MS = 5_000;
+
     private final Socket socket;
     private final OutputStream out;
 
-    public ZebraSocketSender(String ip) throws IOException {
-        this.socket = new Socket();
-        socket.setTcpNoDelay(true); // desliga algoritmo de Nagle
-        socket.connect(new InetSocketAddress(ip, 9100), 3_000);
-        this.out = socket.getOutputStream();
+    public ZebraSocketSender(String ip, int port) throws IOException {
+        socket = new Socket();
+        socket.setTcpNoDelay(true);
+        socket.setSoTimeout(SO_TIMEOUT_MS);       
+        socket.connect(new InetSocketAddress(ip, port), CONNECT_TIMEOUT_MS);
+        out = socket.getOutputStream();
         log.info("Conexão aberta com a impressora {}", ip);
     }
 
@@ -30,6 +35,9 @@ public final class ZebraSocketSender implements AutoCloseable {
 
     @Override
     public void close() {
-        try { socket.close(); } catch (IOException ignore) { }
+        try {
+            socket.close();
+        } catch (IOException ignore) {
+        }
     }
 }

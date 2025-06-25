@@ -100,7 +100,7 @@
                                 </Label>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="dasboard_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" visible="true">
+                        <AnchorPane fx:id="dasboard_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" visible="false">
                             <children>
                                 <Pane layoutX="40.0" layoutY="30.0" prefHeight="186.0" prefWidth="230.0" styleClass="dasboard_box" stylesheets="@dashboard.css">
                                     <children>
@@ -194,55 +194,62 @@
                                 </Pane>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="template_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="false">
+                        <AnchorPane fx:id="template_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="true">
                             <children>
-                                <Label fx:id="inv_num" layoutX="151.0" layoutY="352.0" prefHeight="32.0" prefWidth="102.0" />
-                                <TableView fx:id="lista_template" layoutX="13.0" layoutY="33.0" prefHeight="271.0" prefWidth="794.0" stylesheets="@dashboard.css">
+                                <Label layoutX="17.0" layoutY="0.0" prefHeight="32.0" prefWidth="267.0" text="Lista de templates">
+                                    <font>
+                                        <Font name="Dubai Bold" size="15.0" />
+                                    </font>
+                                </Label>
+                                <TableView fx:id="lista_template" layoutX="13.0" layoutY="33.0" prefHeight="271.0" prefWidth="794.0">
                                     <columns>
-                                        <TableColumn fx:id="col_template_nome" prefWidth="380.0" text="Template" />
-                                        <TableColumn fx:id="col_template_tipo" prefWidth="150.0" text="Tipo" />
-                                        <TableColumn fx:id="col_template_criado" minWidth="0.0" prefWidth="153.5999755859375" text="Criado em" />
-                                        <TableColumn fx:id="col_template_acao" prefWidth="120.0" text="Ações" />
+                                        <TableColumn fx:id="col_template_nome" prefWidth="350.0" text="Template" />
+                                        <TableColumn fx:id="col_template_tipo" prefWidth="100.0" text="Tipo" />
+                                        <TableColumn fx:id="col_template_criado" prefWidth="160.0" text="Criado em" />
+                                        <TableColumn fx:id="col_template_acao" prefWidth="183.20004882812498" text="Ações" />
                                     </columns>
                                 </TableView>
-                                <Separator layoutX="11.0" layoutY="331.0" prefHeight="0.0" prefWidth="794.0" />
-                                <TextField fx:id="template_nome" layoutX="151.0" layoutY="402.0" prefHeight="26.0" prefWidth="421.0" promptText="Digite no nome do template" styleClass="textfield" stylesheets="@dashboard.css" />
-                                <Label layoutX="28.0" layoutY="402.0" prefHeight="32.0" prefWidth="115.0" text="Nome">
+
+                                <Separator layoutX="11.0" layoutY="310.0" prefWidth="794.0" />
+                                <Label layoutX="17.0" layoutY="325.0" text="Adicionar template">
                                     <font>
                                         <Font name="Dubai Bold" size="15.0" />
                                     </font>
                                 </Label>
-                                <Button fx:id="btn_salvar_template" alignment="CENTER" layoutX="685.0" layoutY="563.0" mnemonicParsing="false" onAction="#salvarTemplate" onMouseClicked="#salvarTemplate" prefHeight="38.0" prefWidth="91.0" styleClass="save" stylesheets="@dashboard.css" text=" Salvar">
-                                    <graphic>
-                                        <FontAwesomeIconView fill="WHITE" glyphName="SAVE" size="18.0" text="" />
-                                    </graphic>
-                                    <font>
-                                        <Font name="Dubai Bold" size="16.0" />
-                                    </font>
-                                </Button>
-                                <Button fx:id="bill_clear" layoutX="549.0" layoutY="563.0" mnemonicParsing="false" onAction="#limparCampoTemplate" onMouseClicked="#limparCampoTemplate" prefHeight="38.0" prefWidth="115.0" styleClass="clear" stylesheets="@dashboard.css" text="Limpar">
-                                    <graphic>
-                                        <FontAwesomeIconView fill="WHITE" glyphName="REMOVE" size="18.0" text="" />
-                                    </graphic>
-                                    <font>
-                                        <Font name="Dubai Bold" size="16.0" />
-                                    </font>
-                                </Button>
-                                <Label layoutX="27.0" layoutY="352.0" prefHeight="32.0" prefWidth="267.0" text="Adicionar template">
+
+                                <Label layoutX="28.0" layoutY="370.0" text="Nome">
                                     <font>
                                         <Font name="Dubai Bold" size="15.0" />
                                     </font>
                                 </Label>
-                                <Label layoutX="17.0" prefHeight="32.0" prefWidth="267.0" text="Lista de templates">
-                                    <font>
-                                        <Font name="Dubai Bold" size="15.0" />
-                                    </font>
-                                </Label>
-                                <Button fx:id="btnLoadTemplate" layoutX="591.0" layoutY="402.0" onAction="#loadTemplate" prefHeight="26.0" prefWidth="166.0" styleClass="add" stylesheets="@dashboard.css" text="Carregar Template">
+                                <TextField fx:id="template_nome" layoutX="151.0" layoutY="370.0" prefHeight="26.0" prefWidth="421.0" promptText="Digite o nome do template" styleClass="textfield" />
+
+                                <Button fx:id="btnLoadTemplate" layoutX="591.0" layoutY="370.0" onAction="#loadTemplate" prefHeight="26.0" prefWidth="166.0" styleClass="add" text="Carregar Template">
                                     <graphic>
                                         <FontAwesomeIconView fill="WHITE" glyphName="TAG" size="18.0" />
                                     </graphic>
                                 </Button>
+
+                                <Label fx:id="inv_num" layoutX="151.0" layoutY="405.0" prefHeight="22.0" prefWidth="600.0" style="-fx-font-size: 12px; -fx-text-fill: gray;" text="Nenhum arquivo carregado." />
+
+                                <Button fx:id="btn_salvar_template" layoutX="685.0" layoutY="563.0" mnemonicParsing="false" onAction="#salvarTemplate" prefHeight="38.0" prefWidth="91.0" styleClass="save" text="Salvar">
+                                    <graphic>
+                                        <FontAwesomeIconView fill="WHITE" glyphName="SAVE" size="18.0" />
+                                    </graphic>
+                                    <font>
+                                        <Font name="Dubai Bold" size="16.0" />
+                                    </font>
+                                </Button>
+
+                                <Button fx:id="bill_clear" layoutX="549.0" layoutY="563.0" mnemonicParsing="false" onAction="#limparCampoTemplate" prefHeight="38.0" prefWidth="115.0" styleClass="clear" text="Limpar">
+                                    <graphic>
+                                        <FontAwesomeIconView fill="WHITE" glyphName="REMOVE" size="18.0" />
+                                    </graphic>
+                                    <font>
+                                        <Font name="Dubai Bold" size="16.0" />
+                                    </font>
+                                </Button>
+
                             </children>
                         </AnchorPane>
                         <AnchorPane fx:id="printer_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="false">
@@ -250,11 +257,11 @@
                             <children>
                                 <TableView fx:id="lista_printer" layoutX="13.0" layoutY="33.0" prefHeight="271.0" prefWidth="794.0" stylesheets="@dashboard.css">
                                     <columns>
-                                        <TableColumn fx:id="col_printer_nome" prefWidth="200.0" text="Nome" />
-                                        <TableColumn fx:id="col_printer_ip" prefWidth="160.0" text="IP" />
-                                        <TableColumn fx:id="col_printer_porta" prefWidth="80.0" text="Porta" />
-                                        <TableColumn fx:id="col_printer_modelo" prefWidth="150.0" text="Modelo" />
-                                        <TableColumn fx:id="col_printer_acao" prefWidth="120.0" text="Ações" />
+                                        <TableColumn fx:id="col_printer_nome" prefWidth="219.20001220703125" text="Nome" />
+                                        <TableColumn fx:id="col_printer_ip" prefWidth="180.0" text="IP" />
+                                        <TableColumn fx:id="col_printer_porta" prefWidth="109.60003662109375" text="Porta" />
+                                        <TableColumn fx:id="col_printer_modelo" prefWidth="132.79998779296875" text="Modelo" />
+                                        <TableColumn fx:id="col_printer_acao" prefWidth="148.00006103515625" text="Ações" />
                                     </columns>
                                 </TableView>
 

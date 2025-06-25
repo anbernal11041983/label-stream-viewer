@@ -3,6 +3,10 @@ package br.com.automacaowebia.controller;
 import br.com.automacaowebia.service.HistoricoImpressaoService;
 import br.com.automacaowebia.service.ImpressaoZPLService;
 import br.com.automacaowebia.service.ZplCacheService;
+import br.com.automacaowebia.model.Printer;
+import br.com.automacaowebia.service.PrinterService;
+import br.com.automacaowebia.util.PrintExecutor;
+
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -40,6 +44,8 @@ public class PrintDialogController {
     private String cacheKey;
     private int qtdOriginal;
     private final ImpressaoZPLService impressaoService = new ImpressaoZPLService();
+    private final PrinterService printerService = new PrinterService();
+
     private static final Logger logger = LogManager.getLogger(PrintDialogController.class);
 
     /**
@@ -60,22 +66,39 @@ public class PrintDialogController {
         lblAlt.setText(String.valueOf(alt));
         lblUnid.setText(unid);
 
-        cmbImpressora.getItems().setAll("Zebra ZT411", "ZDesigner GK420d");
-        cmbImpressora.getSelectionModel().selectFirst();
+        cmbImpressora.getItems().clear();
+        for (Printer p : printerService.listarTodos()) {
+            // Ex.:  ZT-411 (192.168.1.90)
+            cmbImpressora.getItems()
+                    .add(String.format("%s (%s)", p.getNome(), p.getIp()));
+        }
+
+        if (!cmbImpressora.getItems().isEmpty()) {
+            cmbImpressora.getSelectionModel().selectFirst();
+        }
     }
 
-    /**
-     * Inicia a impressão no background
-     */
     @FXML
     private void imprimir() {
 
+        // verifica se o usuário escolheu alguma impressora
+        String impressoraSelecionada = cmbImpressora.getValue();
+        if (impressoraSelecionada == null) {
+            new Alert(Alert.AlertType.WARNING,
+                    "Escolha uma impressora antes de confirmar.").showAndWait();
+            return;
+        }
+
+        String printerIp = impressoraSelecionada
+                .replaceAll(".*\\((.*)\\)", "$1")
+                .trim();
+
+        btnConfirmar.disableProperty().unbind();
         btnConfirmar.setDisable(true);
         barStatus.setVisible(true);
 
         final int qtd = qtdOriginal;
         final String zpl = ZplCacheService.getZpl(cacheKey);
-        final String printerIp = cmbImpressora.getValue();
         final String modelo = lblTemplate.getText();
         final String sku = lblSku.getText();
 
@@ -87,10 +110,14 @@ public class PrintDialogController {
 
         Task<Void> task = new Task<>() {
             @Override
-            protected Void call() throws Exception {
+            protected Void call() {
                 impressaoService.imprimirNaZebra(
-                        zpl, printerIp, chkSalvarFlash.isSelected(),
-                        modelo, sku, qtd);
+                        zpl,
+                        printerIp,
+                        chkSalvarFlash.isSelected(),
+                        modelo,
+                        sku,
+                        qtd);
                 updateProgress(1, 1);
                 return null;
             }
@@ -103,7 +130,7 @@ public class PrintDialogController {
             fechar();
         });
 
-        new Thread(task, "print-job").start();
+        PrintExecutor.POOL.submit(task);
     }
 
     /**

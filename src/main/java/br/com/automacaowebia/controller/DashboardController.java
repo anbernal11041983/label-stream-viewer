@@ -8,8 +8,10 @@ import br.com.automacaowebia.service.TemplateZPLService;
 import br.com.automacaowebia.service.ZplCacheService;
 import br.com.automacaowebia.service.PrinterService;
 import br.com.automacaowebia.model.Printer;
+import br.com.automacaowebia.util.PrintExecutor;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.File;
+import java.io.IOException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -24,6 +26,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.net.URL;
+import static java.nio.charset.StandardCharsets.ISO_8859_1;
+import java.nio.file.Files;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
@@ -97,6 +101,8 @@ public class DashboardController implements Initializable {
     @FXML
     private Label total_jobs;
     @FXML
+    private Label inv_num;
+    @FXML
     private Label total_modelo_dash;
     @FXML
     private TextField printer_nome;
@@ -135,6 +141,7 @@ public class DashboardController implements Initializable {
     private static final Logger logger = LogManager.getLogger(DashboardController.class);
 
     public void onExit() {
+        PrintExecutor.POOL.shutdown();
         System.exit(0);
     }
 
@@ -210,6 +217,7 @@ public class DashboardController implements Initializable {
     }
 
     public void signOut() {
+        PrintExecutor.POOL.shutdown();
         signout_btn.getScene().getWindow().hide();
         try {
             //Parent root = FXMLLoader.load(getClass().getResource("login-view.fxml"));
@@ -230,7 +238,6 @@ public class DashboardController implements Initializable {
             stage.show();
         } catch (Exception err) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeight(500);
             alert.setTitle("Error Message");
             alert.setHeaderText(null);
             alert.setContentText(err.getMessage());
@@ -240,34 +247,24 @@ public class DashboardController implements Initializable {
     }
 
     public void loadTemplate() {
-        logger.info("Abrindo seletor de arquivos para carregar template.");
+        FileChooser fc = new FileChooser();
+        fc.setTitle("Selecionar Template TXT");
+        fc.getExtensionFilters().add(new FileChooser.ExtensionFilter("Arquivos TXT", "*.txt"));
 
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Selecionar Template TXT");
-        fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("Arquivos TXT", "*.txt")
-        );
+        File arq = fc.showOpenDialog(new Stage());
+        if (arq == null) {
+            return;
+        }
 
-        File selectedFile = fileChooser.showOpenDialog(new Stage());
+        try {
+            conteudoTemplate = Files.readString(arq.toPath(), ISO_8859_1);
 
-        if (selectedFile != null) {
-            try {
-                conteudoTemplate = java.nio.file.Files.readString(selectedFile.toPath());
-                //template_nome.setText(selectedFile.getName().replace(".txt", ""));
+            inv_num.setText("Arquivo carregado: " + arq.getName());
+            logger.info("Template '{}' carregado com sucesso.", arq.getAbsolutePath());
 
-                logger.info("Template '{}' carregado com sucesso.", selectedFile.getAbsolutePath());
-
-            } catch (Exception e) {
-                logger.error("Erro ao carregar arquivo: {}", e.getMessage(), e);
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setHeight(500);
-                alert.setTitle("Alerta");
-                alert.setHeaderText(null);
-                alert.setContentText("Erro ao carregar o arquivo.");
-                alert.showAndWait();
-            }
-        } else {
-            logger.warn("Nenhum arquivo selecionado.");
+        } catch (IOException e) {
+            logger.error("Erro ao carregar arquivo '{}': {}", arq.getName(), e.getMessage(), e);
+            new Alert(Alert.AlertType.ERROR, "Não foi possível ler o arquivo.").showAndWait();
         }
     }
 
@@ -278,8 +275,7 @@ public class DashboardController implements Initializable {
 
         if (nome == null || nome.isBlank()) {
             logger.warn("Nome do template não preenchido.");
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeight(500);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Atenção");
             alert.setHeaderText(null);
             alert.setContentText("O nome do template é obrigatório.");
@@ -289,8 +285,7 @@ public class DashboardController implements Initializable {
 
         if (conteudoTemplate == null || conteudoTemplate.isBlank()) {
             logger.warn("Nenhum conteúdo de template carregado para salvar.");
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setHeight(500);
+            Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setTitle("Atenção");
             alert.setHeaderText(null);
             alert.setContentText("Nenhum arquivo foi carregado");
@@ -303,18 +298,11 @@ public class DashboardController implements Initializable {
         boolean sucesso = templateService.insertTemplate(template);
         if (sucesso) {
             logger.info("Template '{}' salvo com sucesso.", nome);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeight(500);
-            alert.setTitle("Sucesso");
-            alert.setHeaderText(null);
-            alert.setContentText("Template salvo com sucesso.");
-            alert.showAndWait();
             limparCampoTemplate();
             carregarListaTemplate();
         } else {
             logger.error("Erro ao salvar template '{}'.", nome);
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setHeight(500);
+            Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
             alert.setHeaderText(null);
             alert.setContentText("Erro ao salvar template.");
@@ -325,6 +313,7 @@ public class DashboardController implements Initializable {
 
     public void limparCampoTemplate() {
         template_nome.setText("");
+        inv_num.setText("");
     }
 
     public void carregarListaTemplate() {
@@ -344,10 +333,6 @@ public class DashboardController implements Initializable {
             private final Button btnExcluir = new Button();
 
             {
-                btnExcluir.getStyleClass().add("delete"); // aplica classe CSS
-                btnExcluir.setPrefWidth(80);
-                btnExcluir.setPrefHeight(28);
-
                 btnExcluir.getStyleClass().add("delete");
 
                 // Ícone no botão (usando FontAwesomeIconView)

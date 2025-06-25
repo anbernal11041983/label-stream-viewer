@@ -107,14 +107,15 @@ public class ImpressaoZPLService {
             String sku,
             int qtd) {
 
-        // se for usar template salvo em flash: prepend ^XA^XFR:MEUTPL^FS... etc.
-        String payload = salvarNoFlash ? ("^XA^XF" + zpl + "^XZ") : zpl;
+        String payload = preparePayload(zpl, qtd, salvarNoFlash);
 
         boolean ok = false;
         try {
+
             ZebraSocketSender sender = pool.computeIfAbsent(printerIp, ip -> {
                 try {
-                    return new ZebraSocketSender(ip);
+                    String porta = "9100";
+                    return new ZebraSocketSender(ip, Integer.parseInt(porta));
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -131,6 +132,20 @@ public class ImpressaoZPLService {
         if (ok) {
             historicoImpressaoService.salvarHistorico(modelo, sku, qtd, printerIp);
         }
+    }
+
+    private String preparePayload(String zpl, int copies, boolean salvarNoFlash) {
+        // 1) remove ^PQ existente (evita cópias duplas)
+        zpl = zpl.replaceAll("(?i)\\^PQ[0-9,]*", "");
+        // 2) injeta nova quantidade antes do ^XZ final
+        int idx = zpl.lastIndexOf("^XZ");
+        String withQty = zpl.substring(0, idx)
+                + "^PQ" + copies + "\n"
+                + zpl.substring(idx);
+
+        // 3) flash ou direto
+        return salvarNoFlash ? "^XA^XF" + withQty + "^XZ"
+                : withQty;
     }
 
 }
