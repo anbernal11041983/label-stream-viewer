@@ -194,7 +194,7 @@
                                 </Pane>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="template_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="true">
+                        <AnchorPane fx:id="template_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="false">
                             <children>
                                 <Label layoutX="17.0" layoutY="0.0" prefHeight="32.0" prefWidth="267.0" text="Lista de templates">
                                     <font>
@@ -321,6 +321,14 @@
                                         <Font name="Dubai Bold" size="16.0" />
                                     </font>
                                 </Button>
+                        <Button fx:id="btn_test_printer" layoutX="369.0" layoutY="563.0" mnemonicParsing="false" onAction="#testPrinter" prefHeight="41.0" prefWidth="166.0" styleClass="save" text="Testar impressora">
+                           <graphic>
+                              <FontAwesomeIconView fill="WHITE" glyphName="PRINT" size="18.0" />
+                           </graphic>
+                           <font>
+                              <Font name="Dubai Bold" size="16.0" />
+                           </font>
+                        </Button>
                             </children>
                         </AnchorPane>
                         <AnchorPane fx:id="impressao_zpl" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="false">

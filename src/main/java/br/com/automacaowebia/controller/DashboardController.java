@@ -12,6 +12,7 @@ import br.com.automacaowebia.util.PrintExecutor;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.File;
 import java.io.IOException;
+import java.net.ConnectException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -678,6 +679,76 @@ public class DashboardController implements Initializable {
             alert.setTitle("Alerta");
             alert.setHeaderText(null);
             alert.setContentText("Porta deve ser numérica.");
+            alert.showAndWait();
+        }
+    }
+
+    @FXML
+    private void testPrinter(ActionEvent e) {
+        // 1) leitura e validação dos campos
+        String nome = printer_nome.getText().trim();
+        String ip = printer_ip.getText().trim();
+        String modelo = printer_modelo.getText().trim();
+        String portaTxt = printer_porta.getText().trim();
+
+        if (nome.isEmpty() || ip.isEmpty()) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Alerta");
+            alert.setHeaderText(null);
+            alert.setContentText("Nome e IP são obrigatórios.");
+            alert.showAndWait();
+            return;
+        }
+
+        int porta;
+        try {
+            porta = Integer.parseInt(portaTxt);
+            if (porta <= 0) {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Alerta");
+                alert.setHeaderText(null);
+                alert.setContentText("Porta inválida.");
+                alert.showAndWait();
+                return;
+            }
+        } catch (NumberFormatException nfe) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Alerta");
+            alert.setHeaderText(null);
+            alert.setContentText("Porta deve ser numérica.");
+            alert.showAndWait();
+            return;
+        }
+
+        // 2) monta ou atualiza a entidade
+        Printer p = (selecionadoPrinter == null) ? new Printer() : selecionadoPrinter;
+        p.setNome(nome);
+        p.setIp(ip);
+        p.setPorta(porta);
+        p.setModelo(modelo);
+
+        try {
+            printerService.teste(p);
+
+            Alert info = new Alert(Alert.AlertType.INFORMATION);
+            info.setTitle("Sucesso");
+            info.setHeaderText(null);
+            info.setContentText("Teste de impressão enviado com sucesso!");
+            info.showAndWait();
+        } catch (ConnectException ce) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro de Conexão");
+            alert.setHeaderText(null);
+            alert.setContentText(
+                    String.format("Não foi possível conectar à impressora em %s:%d",
+                            p.getIp(), p.getPorta())
+            );
+            alert.showAndWait();
+        } catch (IOException ioe) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Erro de Comunicação");
+            alert.setHeaderText(null);
+            alert.setContentText("Erro ao comunicar com a impressora: " + ioe.getMessage());
             alert.showAndWait();
         }
     }

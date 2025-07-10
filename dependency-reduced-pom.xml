@@ -85,10 +85,10 @@
     </dependency>
   </dependencies>
   <properties>
-    <maven.compiler.target>23</maven.compiler.target>
-    <maven.compiler.source>23</maven.compiler.source>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <javafx.version>23.0.1</javafx.version>
     <log4j.version>2.22.1</log4j.version>
+    <maven.compiler.target>23</maven.compiler.target>
+    <maven.compiler.source>23</maven.compiler.source>
   </properties>
 </project>
