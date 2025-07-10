@@ -35,6 +35,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -685,72 +686,85 @@ public class DashboardController implements Initializable {
 
     @FXML
     private void testPrinter(ActionEvent e) {
-        // 1) leitura e validação dos campos
+
+        /* --------- 1. validação de campos --------- */
         String nome = printer_nome.getText().trim();
         String ip = printer_ip.getText().trim();
         String modelo = printer_modelo.getText().trim();
-        String portaTxt = printer_porta.getText().trim();
+        String portaTx = printer_porta.getText().trim();
 
         if (nome.isEmpty() || ip.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Alerta");
-            alert.setHeaderText(null);
-            alert.setContentText("Nome e IP são obrigatórios.");
-            alert.showAndWait();
+            showError("Nome e IP são obrigatórios.");
             return;
         }
 
         int porta;
         try {
-            porta = Integer.parseInt(portaTxt);
+            porta = Integer.parseInt(portaTx);
             if (porta <= 0) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Alerta");
-                alert.setHeaderText(null);
-                alert.setContentText("Porta inválida.");
-                alert.showAndWait();
+                showError("Porta inválida (deve ser > 0).");
                 return;
             }
-        } catch (NumberFormatException nfe) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Alerta");
-            alert.setHeaderText(null);
-            alert.setContentText("Porta deve ser numérica.");
-            alert.showAndWait();
+        } catch (NumberFormatException ex) {
+            showError("Porta deve ser numérica.");
             return;
         }
 
-        // 2) monta ou atualiza a entidade
+        /* --------- 2. monta objeto Printer --------- */
         Printer p = (selecionadoPrinter == null) ? new Printer() : selecionadoPrinter;
         p.setNome(nome);
         p.setIp(ip);
         p.setPorta(porta);
         p.setModelo(modelo);
 
-        try {
-            printerService.teste(p);
+        /* --------- 3. task assíncrona --------- */
+        Task<Void> task = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                logger.info("Iniciando teste na impressora {}:{}", p.getIp(), p.getPorta());
+                printerService.teste(p); // pode lançar IOException ou ConnectException
+                return null;
+            }
+        };
 
-            Alert info = new Alert(Alert.AlertType.INFORMATION);
-            info.setTitle("Sucesso");
-            info.setHeaderText(null);
-            info.setContentText("Teste de impressão enviado com sucesso!");
-            info.showAndWait();
-        } catch (ConnectException ce) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro de Conexão");
-            alert.setHeaderText(null);
-            alert.setContentText(
-                    String.format("Não foi possível conectar à impressora em %s:%d",
-                            p.getIp(), p.getPorta())
-            );
-            alert.showAndWait();
-        } catch (IOException ioe) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro de Comunicação");
-            alert.setHeaderText(null);
-            alert.setContentText("Erro ao comunicar com a impressora: " + ioe.getMessage());
-            alert.showAndWait();
-        }
+        task.setOnSucceeded(ev -> {
+            logger.info("Teste concluído com sucesso na impressora {}:{}", p.getIp(), p.getPorta());
+            showInfo("Teste de impressão enviado com sucesso!");
+        });
+
+        task.setOnFailed(ev -> {
+            Throwable ex = task.getException();
+            if (ex instanceof ConnectException) {
+                logger.error("Falha de conexão em {}:{} – {}", p.getIp(), p.getPorta(), ex.getMessage());
+                showError("Não foi possível conectar à impressora em "
+                        + p.getIp() + ":" + p.getPorta());
+            } else {
+                logger.error("Erro de I/O durante teste na impressora {}:{}",
+                        p.getIp(), p.getPorta(), ex);
+                showError("Erro de comunicação: " + ex.getMessage());
+            }
+        });
+
+        /* --------- 4. dispara em thread tradicional (compatível com todos JDKs) --------- */
+        Thread th = new Thread(task);
+        th.setDaemon(true); // não bloqueia fechamento do app
+        th.start();
+    }
+
+    private void showError(String msg) {
+        Alert a = new Alert(Alert.AlertType.ERROR);
+        a.setTitle("Erro");
+        a.setHeaderText(null);
+        a.setContentText(msg);
+        a.showAndWait();
+    }
+
+    private void showInfo(String msg) {
+        Alert a = new Alert(Alert.AlertType.INFORMATION);
+        a.setTitle("Informação");
+        a.setHeaderText(null);
+        a.setContentText(msg);
+        a.showAndWait();
     }
 
     private void carregarListaPrinter() {

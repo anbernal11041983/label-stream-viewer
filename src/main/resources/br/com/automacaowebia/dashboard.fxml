@@ -321,7 +321,7 @@
                                         <Font name="Dubai Bold" size="16.0" />
                                     </font>
                                 </Button>
-                        <Button fx:id="btn_test_printer" layoutX="369.0" layoutY="563.0" mnemonicParsing="false" onAction="#testPrinter" prefHeight="41.0" prefWidth="166.0" styleClass="save" text="Testar impressora">
+                        <Button fx:id="btn_test_printer" layoutX="341.0" layoutY="563.0" mnemonicParsing="false" onAction="#testPrinter" prefHeight="42.0" prefWidth="194.0" styleClass="save" text="Testar impressora">
                            <graphic>
                               <FontAwesomeIconView fill="WHITE" glyphName="PRINT" size="18.0" />
                            </graphic>

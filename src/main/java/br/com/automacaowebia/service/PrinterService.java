@@ -2,6 +2,7 @@ package br.com.automacaowebia.service;
 
 import br.com.automacaowebia.config.Database;
 import br.com.automacaowebia.model.Printer;
+import br.com.automacaowebia.printer.LaserDriver;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -19,6 +20,7 @@ import java.sql.*;
 public class PrinterService {
 
     private static final Logger logger = LogManager.getLogger(PrinterService.class);
+    private final LaserDriver driver = new LaserDriver();
 
     public ObservableList<Printer> listarTodos() {
         ObservableList<Printer> lista = FXCollections.observableArrayList();
@@ -54,19 +56,8 @@ public class PrinterService {
     }
 
     public void teste(Printer printer) throws IOException {
-        try (Socket socket = new Socket(printer.getIp(), printer.getPorta())) {
-            OutputStream out = socket.getOutputStream();
-            InputStream in = socket.getInputStream();
-
-            // 1) Envia comando
-            String cmdPrint = "seta:data#v1=O teste com o aplicativo deu certo - JULIO+pos#100|100|0|1";
-            out.write(frame(cmdPrint));
-            waitAck(in, "seta");
-
-            // 2) Dispara gravação
-            out.write(frame("start:"));
-            waitAck(in, "start");
-        }
+        driver.testPrint(printer, "O teste com o aplicativo deu certo - JULIO");
+        logger.info("Teste de impressão enviado a {}:{}", printer.getIp(), printer.getPorta());
     }
 
     private static byte[] frame(String payload) {

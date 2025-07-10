@@ -260,3 +260,180 @@ java.lang.NullPointerException: null
 [2025-06-21 14:20:26] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
 [2025-06-21 14:21:09] [INFO ] LoginService - Tentando autenticar usuário: admin
 [2025-06-21 14:21:09] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
+[10-07-2025 07:39:43] [INFO ] App - Iniciando aplicação...
+[10-07-2025 07:39:44] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[10-07-2025 07:39:44] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[10-07-2025 07:39:44] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[10-07-2025 07:39:44] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[10-07-2025 07:39:44] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[10-07-2025 07:39:44] [INFO ] App - Dispositivo autorizado. Carregando sistema...
+[10-07-2025 07:39:44] [INFO ] App - Carregando tela de login...
+[10-07-2025 07:39:46] [INFO ] App - Tela de login carregada com sucesso.
+[10-07-2025 07:39:52] [INFO ] LoginService - Tentando autenticar usuário: admin
+[10-07-2025 07:39:52] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
+[10-07-2025 07:39:52] [INFO ] TemplateZPLService - Buscando lista de templates.
+[10-07-2025 07:39:52] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[10-07-2025 07:39:52] [INFO ] TemplateZPLService - Buscando lista de templates.
+[10-07-2025 07:39:52] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[10-07-2025 07:39:53] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=1801, totalJobs=7, totalDia=0, totalMes=0, totalAno=1801}
+[10-07-2025 07:39:53] [INFO ] PrinterService - Lista de impressoras carregada. Total: 4
+[10-07-2025 07:39:57] [INFO ] TemplateZPLService - Buscando lista de templates.
+[10-07-2025 07:39:57] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[10-07-2025 07:40:10] [INFO ] DashboardController - Iniciando geração de preview da etiqueta.
+[10-07-2025 07:40:10] [INFO ] DashboardController - Gerando cacheKey: 2048|SKU-0001|6,00|7,00|inches
+[10-07-2025 07:40:10] [INFO ] DashboardController - CacheKey gerada: 2048|SKU-0001|6,00|7,00|inches
+[10-07-2025 07:40:10] [INFO ] TemplateZPLService - Buscando lista de templates.
+[10-07-2025 07:40:10] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[10-07-2025 07:40:10] [INFO ] ImpressaoZPLService - Iniciando personalização do ZPL.
+[10-07-2025 07:40:10] [INFO ] ImpressaoZPLService - Personalização do ZPL concluída.
+[10-07-2025 07:40:12] [INFO ] ZplCacheService - Salvando Preview no cache para chave: 2048|SKU-0001|6,00|7,00|inches
+[10-07-2025 07:40:12] [INFO ] ZplCacheService - Salvando ZPL no cache para chave: 2048|SKU-0001|6,00|7,00|inches
+[10-07-2025 07:40:12] [INFO ] DashboardController - Preview e ZPL armazenados no cache com sucesso.
+[10-07-2025 07:40:22] [INFO ] DashboardController - Gerando cacheKey: 2048|SKU-0001|6,00|7,00|inches
+[10-07-2025 07:40:22] [INFO ] ZplCacheService - Buscando ZPL no cache para chave: 2048|SKU-0001|6,00|7,00|inches
+[10-07-2025 07:40:22] [INFO ] ZplCacheService - Buscando Preview no cache para chave: 2048|SKU-0001|6,00|7,00|inches
+[10-07-2025 07:40:22] [INFO ] PrinterService - Lista de impressoras carregada. Total: 4
+[10-07-2025 09:03:28] [INFO ] App - Iniciando aplicação...
+[10-07-2025 09:03:29] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[10-07-2025 09:03:29] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[10-07-2025 09:03:29] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[10-07-2025 09:03:29] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[10-07-2025 09:03:29] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[10-07-2025 09:03:29] [INFO ] App - Dispositivo autorizado. Carregando sistema...
+[10-07-2025 09:03:29] [INFO ] App - Carregando tela de login...
+[10-07-2025 09:03:30] [INFO ] App - Tela de login carregada com sucesso.
+[10-07-2025 09:03:35] [INFO ] LoginService - Tentando autenticar usuário: admin
+[10-07-2025 09:03:35] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
+[10-07-2025 09:03:36] [INFO ] TemplateZPLService - Buscando lista de templates.
+[10-07-2025 09:03:36] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[10-07-2025 09:03:36] [INFO ] TemplateZPLService - Buscando lista de templates.
+[10-07-2025 09:03:36] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[10-07-2025 09:03:36] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=1801, totalJobs=7, totalDia=0, totalMes=0, totalAno=1801}
+[10-07-2025 09:03:36] [INFO ] PrinterService - Lista de impressoras carregada. Total: 4
+[10-07-2025 09:04:53] [INFO ] App - Iniciando aplicação...
+[10-07-2025 09:04:54] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[10-07-2025 09:04:54] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[10-07-2025 09:04:54] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[10-07-2025 09:04:54] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[10-07-2025 09:04:54] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[10-07-2025 09:04:54] [INFO ] App - Dispositivo autorizado. Carregando sistema...
+[10-07-2025 09:04:54] [INFO ] App - Carregando tela de login...
+[10-07-2025 09:04:55] [INFO ] App - Tela de login carregada com sucesso.
+[10-07-2025 09:05:03] [INFO ] LoginService - Tentando autenticar usuário: admin
+[10-07-2025 09:05:03] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
+[10-07-2025 09:05:03] [INFO ] TemplateZPLService - Buscando lista de templates.
+[10-07-2025 09:05:03] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[10-07-2025 09:05:03] [INFO ] TemplateZPLService - Buscando lista de templates.
+[10-07-2025 09:05:03] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[10-07-2025 09:05:03] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=1801, totalJobs=7, totalDia=0, totalMes=0, totalAno=1801}
+[10-07-2025 09:05:04] [INFO ] PrinterService - Lista de impressoras carregada. Total: 4
+[10-07-2025 09:06:10] [INFO ] App - Iniciando aplicação...
+[10-07-2025 09:06:10] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[10-07-2025 09:06:11] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[10-07-2025 09:06:11] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[10-07-2025 09:06:11] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[10-07-2025 09:06:11] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[10-07-2025 09:06:11] [INFO ] App - Dispositivo autorizado. Carregando sistema...
+[10-07-2025 09:06:11] [INFO ] App - Carregando tela de login...
+[10-07-2025 09:06:12] [INFO ] App - Tela de login carregada com sucesso.
+[10-07-2025 09:06:18] [INFO ] LoginService - Tentando autenticar usuário: admin
+[10-07-2025 09:06:18] [WARN ] LoginService - Falha na autenticação para o usuário: admin
+[10-07-2025 09:06:25] [INFO ] LoginService - Tentando autenticar usuário: admin
+[10-07-2025 09:06:25] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
+[10-07-2025 09:06:25] [INFO ] TemplateZPLService - Buscando lista de templates.
+[10-07-2025 09:06:25] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[10-07-2025 09:06:25] [INFO ] TemplateZPLService - Buscando lista de templates.
+[10-07-2025 09:06:25] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[10-07-2025 09:06:25] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=1801, totalJobs=7, totalDia=0, totalMes=0, totalAno=1801}
+[10-07-2025 09:06:25] [INFO ] PrinterService - Lista de impressoras carregada. Total: 4
+[10-07-2025 09:11:21] [INFO ] App - Iniciando aplicação...
+[10-07-2025 09:11:22] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[10-07-2025 09:11:22] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[10-07-2025 09:11:22] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[10-07-2025 09:11:22] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[10-07-2025 09:11:22] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[10-07-2025 09:11:22] [INFO ] App - Dispositivo autorizado. Carregando sistema...
+[10-07-2025 09:11:22] [INFO ] App - Carregando tela de login...
+[10-07-2025 09:11:23] [INFO ] App - Tela de login carregada com sucesso.
+[10-07-2025 09:11:29] [INFO ] LoginService - Tentando autenticar usuário: admin
+[10-07-2025 09:11:29] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
+[10-07-2025 09:11:30] [INFO ] TemplateZPLService - Buscando lista de templates.
+[10-07-2025 09:11:30] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[10-07-2025 09:11:30] [INFO ] TemplateZPLService - Buscando lista de templates.
+[10-07-2025 09:11:30] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[10-07-2025 09:11:30] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=1801, totalJobs=7, totalDia=0, totalMes=0, totalAno=1801}
+[10-07-2025 09:11:30] [INFO ] PrinterService - Lista de impressoras carregada. Total: 4
+[10-07-2025 12:02:09] [INFO ] App - Iniciando aplicação...
+[10-07-2025 12:02:10] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[10-07-2025 12:02:10] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[10-07-2025 12:02:10] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[10-07-2025 12:02:10] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[10-07-2025 12:02:10] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[10-07-2025 12:02:10] [INFO ] App - Dispositivo autorizado. Carregando sistema...
+[10-07-2025 12:02:10] [INFO ] App - Carregando tela de login...
+[10-07-2025 12:02:12] [INFO ] App - Tela de login carregada com sucesso.
+[10-07-2025 12:02:39] [INFO ] LoginService - Tentando autenticar usuário: admin
+[10-07-2025 12:02:39] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
+[10-07-2025 12:02:39] [INFO ] TemplateZPLService - Buscando lista de templates.
+[10-07-2025 12:02:40] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[10-07-2025 12:02:40] [INFO ] TemplateZPLService - Buscando lista de templates.
+[10-07-2025 12:02:40] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[10-07-2025 12:02:40] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=1801, totalJobs=7, totalDia=0, totalMes=0, totalAno=1801}
+[10-07-2025 12:02:40] [INFO ] PrinterService - Lista de impressoras carregada. Total: 4
+[10-07-2025 12:02:46] [INFO ] DashboardController - Iniciando teste na impressora 127.0.0.1:100
+[10-07-2025 12:02:46] [INFO ] LaserDriver - Iniciando teste na impressora Setor 09 (127.0.0.1:100)
+[10-07-2025 12:02:46] [ERROR] DashboardController - Falha de conexão em 127.0.0.1:100 – Connection refused: connect
+[10-07-2025 12:06:38] [INFO ] App - Iniciando aplicação...
+[10-07-2025 12:06:39] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[10-07-2025 12:06:39] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[10-07-2025 12:06:39] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[10-07-2025 12:06:39] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[10-07-2025 12:06:39] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[10-07-2025 12:06:39] [INFO ] App - Dispositivo autorizado. Carregando sistema...
+[10-07-2025 12:06:39] [INFO ] App - Carregando tela de login...
+[10-07-2025 12:06:41] [INFO ] App - Tela de login carregada com sucesso.
+[10-07-2025 12:08:32] [INFO ] LoginService - Tentando autenticar usuário: admin
+[10-07-2025 12:08:32] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
+[10-07-2025 12:08:33] [INFO ] TemplateZPLService - Buscando lista de templates.
+[10-07-2025 12:08:33] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[10-07-2025 12:08:33] [INFO ] TemplateZPLService - Buscando lista de templates.
+[10-07-2025 12:08:33] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[10-07-2025 12:08:33] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=1801, totalJobs=7, totalDia=0, totalMes=0, totalAno=1801}
+[10-07-2025 12:08:33] [INFO ] PrinterService - Lista de impressoras carregada. Total: 4
+[10-07-2025 12:08:42] [INFO ] DashboardController - Iniciando teste na impressora 127.0.0.0.1:9257
+[10-07-2025 12:08:42] [INFO ] LaserDriver - Iniciando teste na impressora Setor 12 (127.0.0.0.1:9257)
+[10-07-2025 12:08:42] [ERROR] DashboardController - Erro de I/O durante teste na impressora 127.0.0.0.1:9257
+java.net.UnknownHostException: 127.0.0.0.1
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:567) ~[?:?]
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[?:?]
+	at java.base/java.net.Socket.connect(Socket.java:760) ~[?:?]
+	at java.base/java.net.Socket.connect(Socket.java:695) ~[?:?]
+	at java.base/java.net.Socket.<init>(Socket.java:564) ~[?:?]
+	at java.base/java.net.Socket.<init>(Socket.java:328) ~[?:?]
+	at br.com.automacaowebia.printer.LaserDriver.testPrint(LaserDriver.java:36) ~[classes/:?]
+	at br.com.automacaowebia.service.PrinterService.teste(PrinterService.java:59) ~[classes/:?]
+	at br.com.automacaowebia.controller.DashboardController$2.call(DashboardController.java:725) ~[classes/:?]
+	at br.com.automacaowebia.controller.DashboardController$2.call(DashboardController.java:721) ~[classes/:?]
+	at javafx.concurrent.Task$TaskCallable.call(Task.java:1401) ~[javafx-graphics-23.0.1-win.jar:?]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317) ~[?:?]
+	at java.base/java.lang.Thread.run(Thread.java:1575) [?:?]
+[10-07-2025 12:08:45] [INFO ] DashboardController - Iniciando teste na impressora 127.0.0.0.1:9257
+[10-07-2025 12:08:45] [INFO ] LaserDriver - Iniciando teste na impressora Setor 12 (127.0.0.0.1:9257)
+[10-07-2025 12:08:45] [ERROR] DashboardController - Erro de I/O durante teste na impressora 127.0.0.0.1:9257
+java.net.UnknownHostException: 127.0.0.0.1
+	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:567) ~[?:?]
+	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[?:?]
+	at java.base/java.net.Socket.connect(Socket.java:760) ~[?:?]
+	at java.base/java.net.Socket.connect(Socket.java:695) ~[?:?]
+	at java.base/java.net.Socket.<init>(Socket.java:564) ~[?:?]
+	at java.base/java.net.Socket.<init>(Socket.java:328) ~[?:?]
+	at br.com.automacaowebia.printer.LaserDriver.testPrint(LaserDriver.java:36) ~[classes/:?]
+	at br.com.automacaowebia.service.PrinterService.teste(PrinterService.java:59) ~[classes/:?]
+	at br.com.automacaowebia.controller.DashboardController$2.call(DashboardController.java:725) ~[classes/:?]
+	at br.com.automacaowebia.controller.DashboardController$2.call(DashboardController.java:721) ~[classes/:?]
+	at javafx.concurrent.Task$TaskCallable.call(Task.java:1401) ~[javafx-graphics-23.0.1-win.jar:?]
+	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317) ~[?:?]
+	at java.base/java.lang.Thread.run(Thread.java:1575) [?:?]
+[10-07-2025 12:08:49] [INFO ] DashboardController - Iniciando teste na impressora 127.0.0.1:100
+[10-07-2025 12:08:49] [INFO ] LaserDriver - Iniciando teste na impressora Setor 09 (127.0.0.1:100)
+[10-07-2025 12:08:49] [ERROR] DashboardController - Falha de conexão em 127.0.0.1:100 – Connection refused: connect
