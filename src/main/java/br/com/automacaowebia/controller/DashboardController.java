@@ -29,16 +29,21 @@ import javafx.stage.StageStyle;
 import java.net.URL;
 import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import java.nio.file.Files;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
+import javafx.application.Platform;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import org.apache.logging.log4j.LogManager;
@@ -55,11 +60,15 @@ public class DashboardController implements Initializable {
     @FXML
     private Button impressao_btn;
     @FXML
+    private Button monitor_btn;
+    @FXML
     private Button dashboard_btn;
     @FXML
     private AnchorPane impressao_zpl;
     @FXML
     private AnchorPane dasboard_pane;
+    @FXML
+    private AnchorPane monitor_pane;
     @FXML
     private Label user;
     @FXML
@@ -131,6 +140,19 @@ public class DashboardController implements Initializable {
     @FXML
     private AnchorPane printer_pane;
 
+    @FXML
+    private TextArea txtLog;
+    @FXML
+    private TextField txtTemplate, txtTexto;
+    @FXML
+    private ComboBox<Printer> cmbImpressora;
+    @FXML
+    private FontAwesomeIconView icoStatus;
+    @FXML
+    private ProgressBar barStatus;
+    @FXML
+    private Button btnImprimir;
+
     private double x;
     private double y;
     private final TemplateZPLService templateService = new TemplateZPLService();
@@ -139,6 +161,7 @@ public class DashboardController implements Initializable {
     private String conteudoTemplate; // Para guardar o conteúdo carregado
     private final PrinterService printerService = new PrinterService(); // >>> NOVO
     private Printer selecionadoPrinter;
+    private final BooleanProperty botaoDesabilitado = new SimpleBooleanProperty(false);
 
     private static final Logger logger = LogManager.getLogger(DashboardController.class);
 
@@ -165,46 +188,83 @@ public class DashboardController implements Initializable {
         String corOff = "-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2), rgba(255,106,239,0.2))";
 
         dashboard_btn.setOnMouseClicked(mouseEvent -> {
+            //-- PAINEL
             dasboard_pane.setVisible(true);
             template_pane.setVisible(false);
             impressao_zpl.setVisible(false);
             printer_pane.setVisible(false);
+            monitor_pane.setVisible(false);
+
+            //--BOTAO
             dashboard_btn.setStyle(corOn);
             template_btn.setStyle(corOff);
             impressao_btn.setStyle(corOff);
             printers_btn.setStyle(corOff);
+            monitor_btn.setStyle(corOff);
             carredarDadosDash();
         });
         template_btn.setOnMouseClicked(mouseEvent -> {
+            //-- PAINEL
             dasboard_pane.setVisible(false);
             template_pane.setVisible(true);
             impressao_zpl.setVisible(false);
             printer_pane.setVisible(false);
+            monitor_pane.setVisible(false);
+
+            //--BOTAO
             dashboard_btn.setStyle(corOff);
             template_btn.setStyle(corOn);
             impressao_btn.setStyle(corOff);
             printers_btn.setStyle(corOff);
+            monitor_btn.setStyle(corOff);
         });
         impressao_btn.setOnMouseClicked(mouseEvent -> {
+            //-- PAINEL
             dasboard_pane.setVisible(false);
             template_pane.setVisible(false);
             impressao_zpl.setVisible(true);
             printer_pane.setVisible(false);
+            monitor_pane.setVisible(false);
+
+            //--BOTAO        
             dashboard_btn.setStyle(corOff);
             template_btn.setStyle(corOff);
             impressao_btn.setStyle(corOn);
             printers_btn.setStyle(corOff);
+            monitor_btn.setStyle(corOff);
             carregarComboTemplate();
         });
         printers_btn.setOnMouseClicked(mouseEvent -> {
+            //-- PAINEL
             dasboard_pane.setVisible(false);
             template_pane.setVisible(false);
             impressao_zpl.setVisible(false);
             printer_pane.setVisible(true);
+            monitor_pane.setVisible(false);
+
+            //--BOTAO
             dashboard_btn.setStyle(corOff);
             template_btn.setStyle(corOff);
             impressao_btn.setStyle(corOff);
             printers_btn.setStyle(corOn);
+            monitor_btn.setStyle(corOff);
+        });
+
+        monitor_btn.setOnMouseClicked(mouseEvent -> {
+            //-- PAINEL
+            dasboard_pane.setVisible(false);
+            template_pane.setVisible(false);
+            impressao_zpl.setVisible(false);
+            printer_pane.setVisible(false);
+            monitor_pane.setVisible(true);
+
+            //--BOTAO
+            dashboard_btn.setStyle(corOff);
+            template_btn.setStyle(corOff);
+            impressao_btn.setStyle(corOff);
+            printers_btn.setStyle(corOff);
+            monitor_btn.setStyle(corOn);
+            carregaImpressoraMonitor();
         });
 
     }
@@ -751,6 +811,107 @@ public class DashboardController implements Initializable {
         th.start();
     }
 
+    public void imprimir() {
+        String template = txtTemplate.getText().trim();
+        String texto = txtTexto.getText().trim();
+        Printer prSelecionada = cmbImpressora.getSelectionModel().getSelectedItem();
+
+        if (template.isEmpty() || texto.isEmpty() || prSelecionada == null) {
+            appendLog("⚠ Por favor, preencha todos os campos obrigatórios.");
+            return;
+        }
+
+        // Busca atualizada pelo ID, se quiser garantir info atualizada
+        Printer pr = printerService.buscarPorId(prSelecionada.getId());
+        if (pr == null) {
+            appendLog("⚠ Impressora não encontrada na base.");
+            return;
+        }
+
+        barStatus.setVisible(true);
+
+        Task<Void> job = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                printerService.imprimir(pr, template, texto, line -> appendLog(line));
+                return null;
+            }
+        };
+
+        job.setOnSucceeded(e -> {
+            barStatus.setVisible(false);
+            appendLog("✔ Impressão concluída com sucesso.");
+        });
+
+        job.setOnFailed(e -> {
+            barStatus.setVisible(false);
+            Throwable ex = job.getException();
+            appendLog("✖ Falha: " + ex.getMessage());
+        });
+
+        new Thread(job).start();
+    }
+
+    public BooleanProperty botaoDesabilitadoProperty() {
+        return botaoDesabilitado;
+    }
+
+    public void atualizarEstadoBotao() {
+        boolean disable
+                = (icoStatus.getFill().equals(Color.RED))
+                || txtTemplate.getText().isEmpty()
+                || txtTexto.getText().isEmpty()
+                || cmbImpressora.getSelectionModel().getSelectedItem() == null;
+        botaoDesabilitado.set(disable);
+    }
+
+    public void appendLog(String line) {
+        Platform.runLater(() -> {
+            txtLog.appendText(LocalTime.now() + " " + line + "\n");
+            txtLog.setScrollTop(Double.MAX_VALUE);
+        });
+    }
+
+    public void fechar(ActionEvent e) {
+        //root.getScene().getWindow().hide();
+    }
+
+    public void carregaImpressoraMonitor() {
+        cmbImpressora.getItems().clear();
+        for (Printer p : printerService.listarTodos()) {
+            cmbImpressora.getItems().add(p);
+        }
+
+        if (!cmbImpressora.getItems().isEmpty()) {
+            cmbImpressora.getSelectionModel().selectFirst();
+        }
+
+        // Configura a forma de exibir
+        cmbImpressora.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(Printer item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(String.format("%s (%s)", item.getNome(), item.getIp()));
+                }
+            }
+        });
+
+        cmbImpressora.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(Printer item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || item == null) {
+                    setText(null);
+                } else {
+                    setText(String.format("%s (%s)", item.getNome(), item.getIp()));
+                }
+            }
+        });
+    }
+
     private void showError(String msg) {
         Alert a = new Alert(Alert.AlertType.ERROR);
         a.setTitle("Erro");
@@ -846,6 +1007,7 @@ public class DashboardController implements Initializable {
         comboUnidade.getSelectionModel().select("inches");
         carregarComboTemplate();
         comboSku.setItems(getListaSkuMock());
+        btnImprimir.disableProperty().bind(botaoDesabilitado);
         carregarListaTemplate();
         carredarDadosDash();
         initPrinterCrud();

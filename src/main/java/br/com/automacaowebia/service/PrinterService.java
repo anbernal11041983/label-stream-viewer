@@ -5,9 +5,6 @@ import br.com.automacaowebia.model.Printer;
 import br.com.automacaowebia.printer.LaserDriver;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.net.ConnectException;
-import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import javafx.collections.FXCollections;
@@ -16,11 +13,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
+import java.util.function.Consumer;
 
 public class PrinterService {
 
     private static final Logger logger = LogManager.getLogger(PrinterService.class);
-    private final LaserDriver driver = new LaserDriver();
+    private final LaserDriver laserDriver = new LaserDriver();
 
     public ObservableList<Printer> listarTodos() {
         ObservableList<Printer> lista = FXCollections.observableArrayList();
@@ -56,8 +54,17 @@ public class PrinterService {
     }
 
     public void teste(Printer printer) throws IOException {
-        driver.testPrint(printer, "O teste com o aplicativo deu certo - JULIO");
+        laserDriver.testPrint(printer, "O teste com o aplicativo deu certo - JULIO");
         logger.info("Teste de impressão enviado a {}:{}", printer.getIp(), printer.getPorta());
+    }
+
+    public void imprimir(Printer pr, String template, String texto, Consumer<String> logCallback) throws IOException {
+        laserDriver.print(pr, template, texto,logCallback);
+        logger.info("Impressão enviado a {}:{}", pr.getIp(), pr.getPorta());
+
+        if (logCallback != null) {
+            logCallback.accept("✔ Teste de impressão enviado a " + pr.getIp() + ":" + pr.getPorta());
+        }
     }
 
     private static byte[] frame(String payload) {

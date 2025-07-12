@@ -6,14 +6,16 @@ import java.time.LocalDateTime;
 
 public class Printer {
 
-    private final LongProperty            id       = new SimpleLongProperty();
-    private final StringProperty          nome     = new SimpleStringProperty();
-    private final StringProperty          ip       = new SimpleStringProperty();
-    private final IntegerProperty         porta    = new SimpleIntegerProperty();
-    private final StringProperty          modelo   = new SimpleStringProperty();
+    private final LongProperty id = new SimpleLongProperty();
+    private final StringProperty nome = new SimpleStringProperty();
+    private final StringProperty ip = new SimpleStringProperty();
+    private final IntegerProperty porta = new SimpleIntegerProperty();
+    private final StringProperty modelo = new SimpleStringProperty();
     private final ObjectProperty<LocalDateTime> criadoEm = new SimpleObjectProperty<>();
 
-    public Printer() { this(null, "", "", 9100, ""); }
+    public Printer() {
+        this(null, "", "", 9100, "");
+    }
 
     public Printer(Long id, String nome, String ip, int porta, String modelo) {
         setId(id);
@@ -25,27 +27,80 @@ public class Printer {
     }
 
     // --- getters / setters -------------------------------------------------
-    public long getId()                 { return id.get(); }
-    public void setId(Long value)       { this.id.set(value == null ? 0 : value); }
-    public LongProperty idProperty()    { return id; }
+    public long getId() {
+        return id.get();
+    }
 
-    public String getNome()             { return nome.get(); }
-    public void setNome(String value)   { nome.set(value); }
-    public StringProperty nomeProperty(){ return nome; }
+    public void setId(Long value) {
+        this.id.set(value == null ? 0 : value);
+    }
 
-    public String getIp()               { return ip.get(); }
-    public void setIp(String value)     { ip.set(value); }
-    public StringProperty ipProperty()  { return ip; }
+    public LongProperty idProperty() {
+        return id;
+    }
 
-    public int getPorta()               { return porta.get(); }
-    public void setPorta(int value)     { porta.set(value); }
-    public IntegerProperty portaProperty(){ return porta; }
+    public String getNome() {
+        return nome.get();
+    }
 
-    public String getModelo()           { return modelo.get(); }
-    public void setModelo(String value) { modelo.set(value); }
-    public StringProperty modeloProperty(){ return modelo; }
+    public void setNome(String value) {
+        nome.set(value);
+    }
 
-    public LocalDateTime getCriadoEm()                { return criadoEm.get(); }
-    public void setCriadoEm(LocalDateTime value)      { criadoEm.set(value); }
-    public ObjectProperty<LocalDateTime> criadoEmProperty(){ return criadoEm; }
+    public StringProperty nomeProperty() {
+        return nome;
+    }
+
+    public String getIp() {
+        return ip.get();
+    }
+
+    public void setIp(String value) {
+        ip.set(value);
+    }
+
+    public StringProperty ipProperty() {
+        return ip;
+    }
+
+    public int getPorta() {
+        return porta.get();
+    }
+
+    public void setPorta(int value) {
+        porta.set(value);
+    }
+
+    public IntegerProperty portaProperty() {
+        return porta;
+    }
+
+    public String getModelo() {
+        return modelo.get();
+    }
+
+    public void setModelo(String value) {
+        modelo.set(value);
+    }
+
+    public StringProperty modeloProperty() {
+        return modelo;
+    }
+
+    public LocalDateTime getCriadoEm() {
+        return criadoEm.get();
+    }
+
+    public void setCriadoEm(LocalDateTime value) {
+        criadoEm.set(value);
+    }
+
+    public ObjectProperty<LocalDateTime> criadoEmProperty() {
+        return criadoEm;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s (%s)", nome, ip);
+    }
 }
