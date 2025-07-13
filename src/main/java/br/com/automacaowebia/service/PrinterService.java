@@ -58,8 +58,8 @@ public class PrinterService {
         logger.info("Teste de impressão enviado a {}:{}", printer.getIp(), printer.getPorta());
     }
 
-    public void imprimir(Printer pr, String template, String texto, Consumer<String> logCallback) throws IOException {
-        laserDriver.print(pr, template, texto,logCallback);
+    public void imprimir(Printer pr, String template, String texto,int quantidadeInpressao, Consumer<String> logCallback) throws IOException {
+        laserDriver.printBatch(pr, template, texto,quantidadeInpressao,logCallback);
         logger.info("Impressão enviado a {}:{}", pr.getIp(), pr.getPorta());
 
         if (logCallback != null) {
