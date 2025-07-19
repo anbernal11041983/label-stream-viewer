@@ -13,6 +13,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class PrinterService {
@@ -58,8 +59,9 @@ public class PrinterService {
         logger.info("Teste de impressão enviado a {}:{}", printer.getIp(), printer.getPorta());
     }
 
-    public void imprimir(Printer pr, String template, String texto,int quantidadeInpressao, Consumer<String> logCallback, int espacamento) throws IOException {
-        laserDriver.printBatch(pr, template, texto,quantidadeInpressao,logCallback, espacamento);
+    public void imprimir(Printer pr, String template, int quantidadeInpressao,
+            Consumer<String> logCallback, int espacamento, Map<String, String> vars) throws IOException {
+        laserDriver.printBatch(pr, template, quantidadeInpressao, logCallback, espacamento, vars);
         logger.info("Impressão enviado a {}:{}", pr.getIp(), pr.getPorta());
 
         if (logCallback != null) {

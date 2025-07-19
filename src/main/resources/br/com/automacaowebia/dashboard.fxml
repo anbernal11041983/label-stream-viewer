@@ -5,7 +5,6 @@
 <?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
@@ -44,7 +43,7 @@
                                 <Font name="Arial Black" size="20.0" />
                             </font>
                         </Label>
-                        <Label fx:id="user" alignment="CENTER" layoutX="72.0" layoutY="96.0" prefHeight="30.0" prefWidth="134.0" text="Admin" textFill="WHITE">
+                        <Label fx:id="user" alignment="CENTER" contentDisplay="CENTER" layoutX="4.0" layoutY="96.0" prefHeight="30.0" prefWidth="267.0" text="Admin" textAlignment="CENTER" textFill="WHITE">
                             <font>
                                 <Font name="Arial Black" size="20.0" />
                             </font>
@@ -84,14 +83,12 @@
                                 <Font size="16.0" />
                             </font>
                         </Button>
-                        <Button fx:id="dispositivos_btn" layoutX="40.0" layoutY="485.0"
-                                onMouseClicked="#activateAnchorPane" prefWidth="200.0"
-                                styleClass="navbutton" text="Dispositivos" textFill="WHITE">
+                        <Button fx:id="dispositivos_btn" layoutX="40.0" layoutY="485.0" onMouseClicked="#activateAnchorPane" prefWidth="200.0" styleClass="navbutton" text="Dispositivos" textFill="WHITE">
                             <graphic>
-                                <FontAwesomeIconView fill="WHITE" glyphName="MOBILE" size="1.2em"/>
+                                <FontAwesomeIconView fill="WHITE" glyphName="MOBILE" size="1.2em" />
                             </graphic>
                             <font>
-                                <Font size="16"/>
+                                <Font size="16" />
                             </font>
                         </Button>
                         <Button fx:id="signout_btn" layoutX="39.0" layoutY="614.0" mnemonicParsing="false" onAction="#signOut" prefHeight="38.0" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="Sair" textFill="WHITE">
@@ -439,15 +436,15 @@
                                 </VBox>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="monitor_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639" prefWidth="820" stylesheets="@dashboard.css" visible="false">
+                        <AnchorPane fx:id="monitor_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639" prefWidth="820" stylesheets="@dashboard.css" visible="true">
 
                             <children>
-                                <VBox alignment="TOP_LEFT" prefHeight="639" prefWidth="820" spacing="18">
+                                <VBox alignment="TOP_LEFT" prefHeight="639" prefWidth="820" spacing="11.0">
                                     <padding>
-                                        <Insets bottom="20" left="20" right="20" top="20" />
+                                        <Insets bottom="10.0" left="20.0" right="20.0" top="10.0" />
                                     </padding>
 
-                                    <Label styleClass="label-bold" text="Monitor de Conexão / Impressão">
+                                    <Label prefHeight="13.0" prefWidth="262.0" styleClass="label-bold" text="Monitor de Conexão / Impressão">
                                         <font>
                                             <Font size="18" />
                                         </font>
@@ -455,49 +452,72 @@
 
                                     <VBox spacing="6">
                                         <Label styleClass="label-bold" text="Log de conexão" />
-                                        <TextArea fx:id="txtLog" editable="false" prefRowCount="10" styleClass="log-area" wrapText="true" />
+                                        <TextArea fx:id="txtLog" editable="false" prefHeight="153.0" prefRowCount="10" prefWidth="780.0" styleClass="log-area" wrapText="true" />
                                     </VBox>
 
                                     <GridPane hgap="10" vgap="10">
+
+                                        <!-- 4 colunas ⇒ 15 % + 35 %  |  15 % + 35 % -->
                                         <columnConstraints>
-                                            <ColumnConstraints percentWidth="35" />
-                                            <ColumnConstraints percentWidth="65" />
+                                            <ColumnConstraints percentWidth="23.0" />
+                                            <ColumnConstraints percentWidth="28.0" />
+                                            <ColumnConstraints percentWidth="19.0" />
+                                            <ColumnConstraints percentWidth="30.0" />
                                         </columnConstraints>
 
-                                        <Label text="Template:*" GridPane.rowIndex="0" />
+                                        <!-- ─────────── 1ª linha ───────────-->
+                                        <Label text="Template:*" GridPane.columnIndex="0" GridPane.rowIndex="0" />
                                         <TextField fx:id="txtTemplate" promptText="HELLO.ncfm" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
-                                        <Label text="Texto:*" GridPane.rowIndex="1" />
-                                        <TextField fx:id="txtTexto" promptText="Mensagem" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                        <Label text="Impressora:*" GridPane.columnIndex="2" GridPane.rowIndex="0" />
 
-                                        <Label text="Impressora:*" GridPane.rowIndex="2" />
-                                        <HBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                                            <children>
-                                                <ComboBox fx:id="cmbImpressora" prefWidth="220" />
-
-                                                <FontAwesomeIconView fx:id="icoStatus" glyphName="CIRCLE" size="16" style="-fx-fill: red;">
-                                                    <HBox.margin>
-                                                        <Insets top="4" />
-                                                    </HBox.margin>
-                                                </FontAwesomeIconView>
-                                            </children>
+                                        <!-- ─────────── 2ª linha ───────────-->
+                                        <Label text="Tempo de espaçamento" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                        <HBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                 <children>
+                                              <Spinner fx:id="tmpSpinner" prefWidth="150" />
+                                 </children>
                                         </HBox>
-                                        <Label text="Quantidade:*" GridPane.rowIndex="3" />
-                                        <Spinner fx:id="qtdSpinner" prefHeight="26.0" prefWidth="219.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                        <Label prefHeight="18.0" prefWidth="194.0" text="Tempo de espaçamento" GridPane.rowIndex="4" />
-                                        <Spinner fx:id="tmpSpinner" prefHeight="26.0" prefWidth="219.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                                        <rowConstraints>
-                                            <RowConstraints />
-                                            <RowConstraints />
-                                            <RowConstraints />
-                                            <RowConstraints minHeight="10.0" prefHeight="30.0" />
-                                            <RowConstraints minHeight="10.0" prefHeight="30.0" />
-                                        </rowConstraints>
+
+                                        <Label text="Quantidade:*" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                        <Spinner fx:id="qtdSpinner" prefWidth="150" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+                                        <!-- se não houver outro par na 3ª linha, deixe as colunas 2‑3 vazias
+                                        ou mova o bloco “Variáveis” para cá -->
+
+                                        <!-- ─────────── 4ª linha – Variáveis ───────────-->
+                                        <Label text="Variáveis: Tempĺate" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+
+                                        <!-- VBox ocupa as 3 colunas restantes -->
+                                        <VBox spacing="8" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="2">
+                                            <children>
+
+                                                <!-- linha de inserção -->
+                                                <HBox spacing="6">
+                                                    <TextField fx:id="txtKey" prefWidth="90" promptText="Chave (ex.: T1)" />
+                                                    <TextField fx:id="txtValue" prefWidth="200" promptText="Valor" />
+                                                    <Button fx:id="btnAddVar" onAction="#addVar" text="Adicionar" />
+                                                </HBox>
+
+                                                <!-- tabela -->
+                                                <TableView fx:id="tblVars" editable="true" prefHeight="184.0" prefWidth="290.0">
+                                                    <columns>
+                                                        <TableColumn fx:id="colKey" editable="false" prefWidth="342.40003049373627" text="Chave" />
+                                                        <TableColumn fx:id="colValue" prefWidth="313.6001281738281" text="Valor" />
+                                                    </columns>
+                                                </TableView>
+
+                                                <Button fx:id="btnRemVar" alignment="CENTER_RIGHT" onAction="#remVar" text="Remover selecionado" />
+                                            </children>
+                                        </VBox>
+                                          <ComboBox fx:id="cmbImpressora" prefWidth="220" GridPane.columnIndex="3" />
+                              <rowConstraints>
+                                 <RowConstraints />
+                                 <RowConstraints />
+                                 <RowConstraints />
+                              </rowConstraints>
+
                                     </GridPane>
-
-                                    <!-- Salvar na flash -->
-                                    <CheckBox fx:id="chkSalvarFlash" text="Salvar template na memória da impressora" />
-
                                     <Separator />
 
                                     <HBox alignment="CENTER_RIGHT" spacing="10">
@@ -512,69 +532,59 @@
                                 </VBox>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="dispositivo_pane" layoutX="-1" layoutY="55"
-                                    prefWidth="820" prefHeight="639" visible="false"
-                                    stylesheets="@dashboard.css">
+                        <AnchorPane fx:id="dispositivo_pane" layoutX="-1" layoutY="55" prefHeight="639" prefWidth="820" stylesheets="@dashboard.css" visible="false">
                             <children>
-                                <TableView fx:id="lista_dispositivo" layoutX="13" layoutY="33"
-                                           prefWidth="794" prefHeight="271">
+                                <TableView fx:id="lista_dispositivo" layoutX="13" layoutY="33" prefHeight="271" prefWidth="794">
                                     <columns>
-                                        <TableColumn fx:id="col_disp_mac" prefWidth="250" text="MAC"/>
-                                        <TableColumn fx:id="col_disp_status" prefWidth="120" text="Status"/>
-                                        <TableColumn fx:id="col_disp_acao" prefWidth="160" text="Ações"/>
+                                        <TableColumn fx:id="col_disp_mac" prefWidth="250" text="MAC" />
+                                        <TableColumn fx:id="col_disp_status" prefWidth="120" text="Status" />
+                                        <TableColumn fx:id="col_disp_acao" prefWidth="160" text="Ações" />
                                     </columns>
                                 </TableView>
 
-                                <Separator layoutX="11" layoutY="331" prefWidth="794"/>
+                                <Separator layoutX="11" layoutY="331" prefWidth="794" />
                                 <Label layoutX="27" layoutY="352" text="Adicionar dispositivo">
                                     <font>
-                                        <Font name="Dubai Bold" size="15"/>
+                                        <Font name="Dubai Bold" size="15" />
                                     </font>
                                 </Label>
 
                                 <Label layoutX="28" layoutY="402" text="MAC">
                                     <font>
-                                        <Font name="Dubai Bold" size="15"/>
+                                        <Font name="Dubai Bold" size="15" />
                                     </font>
                                 </Label>
-                                <TextField fx:id="disp_mac" layoutX="151" layoutY="402"
-                                           prefWidth="421" promptText="AA:BB:CC:DD:EE:FF"
-                                           styleClass="textfield"/>
+                                <TextField fx:id="disp_mac" layoutX="151" layoutY="402" prefWidth="421" promptText="AA:BB:CC:DD:EE:FF" styleClass="textfield" />
 
                                 <Label layoutX="28" layoutY="442" text="Status">
                                     <font>
-                                        <Font name="Dubai Bold" size="15"/>
+                                        <Font name="Dubai Bold" size="15" />
                                     </font>
                                 </Label>
-                                <ComboBox fx:id="disp_status" layoutX="151" layoutY="442"
-                                          prefWidth="200">
+                                <ComboBox fx:id="disp_status" layoutX="151" layoutY="442" prefWidth="200">
                                     <items>
                                         <FXCollections fx:factory="observableArrayList">
-                                            <String fx:value="ATIVADO"/>
-                                            <String fx:value="BLOQUEADO"/>
+                                            <String fx:value="ATIVADO" />
+                                            <String fx:value="BLOQUEADO" />
                                         </FXCollections>
                                     </items>
                                 </ComboBox>
 
-                                <Button fx:id="btn_salvar_disp" layoutX="685" layoutY="563"
-                                        onAction="#salvarDispositivo" text="Salvar"
-                                        styleClass="save" prefWidth="91" prefHeight="38">
+                                <Button fx:id="btn_salvar_disp" layoutX="685" layoutY="563" onAction="#salvarDispositivo" prefHeight="38" prefWidth="91" styleClass="save" text="Salvar">
                                     <graphic>
-                                        <FontAwesomeIconView fill="WHITE" glyphName="SAVE" size="18"/>
+                                        <FontAwesomeIconView fill="WHITE" glyphName="SAVE" size="18" />
                                     </graphic>
                                     <font>
-                                        <Font name="Dubai Bold" size="16"/>
+                                        <Font name="Dubai Bold" size="16" />
                                     </font>
                                 </Button>
 
-                                <Button fx:id="btn_clear_disp" layoutX="549" layoutY="563"
-                                        onAction="#limparCamposDispositivo" text="Limpar"
-                                        styleClass="clear" prefWidth="115" prefHeight="38">
+                                <Button fx:id="btn_clear_disp" layoutX="549" layoutY="563" onAction="#limparCamposDispositivo" prefHeight="38" prefWidth="115" styleClass="clear" text="Limpar">
                                     <graphic>
-                                        <FontAwesomeIconView fill="WHITE" glyphName="REMOVE" size="18"/>
+                                        <FontAwesomeIconView fill="WHITE" glyphName="REMOVE" size="18" />
                                     </graphic>
                                     <font>
-                                        <Font name="Dubai Bold" size="16"/>
+                                        <Font name="Dubai Bold" size="16" />
                                     </font>
                                 </Button>
                             </children>

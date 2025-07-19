@@ -36,6 +36,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -46,6 +47,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -148,7 +150,7 @@ public class DashboardController implements Initializable {
     @FXML
     private TextArea txtLog;
     @FXML
-    private TextField txtTemplate, txtTexto;
+    private TextField txtTemplate;
     @FXML
     private ComboBox<Printer> cmbImpressora;
     @FXML
@@ -178,6 +180,21 @@ public class DashboardController implements Initializable {
     private TextField disp_mac;
     @FXML
     private ComboBox<String> disp_status;
+    @FXML
+    private TableView<VarItem> tblVars;
+    @FXML
+    private TableColumn<VarItem, String> colKey;
+    @FXML
+    private TableColumn<VarItem, String> colValue;
+    @FXML
+    private Button btnAddVar;
+    @FXML
+    private Button btnRemVar;
+
+    @FXML
+    private TextField txtKey;
+    @FXML
+    private TextField txtValue;
 
     private double x;
     private double y;
@@ -193,6 +210,8 @@ public class DashboardController implements Initializable {
     private static final Logger logger = LogManager.getLogger(DashboardController.class);
     private final DispositivoService dispositivoService = new DispositivoService();
     private Dispositivo selecionadoDispositivo;
+
+    private ObservableList<VarItem> varsData = FXCollections.observableArrayList();
 
     public void onExit() {
         PrintExecutor.POOL.shutdown();
@@ -256,6 +275,8 @@ public class DashboardController implements Initializable {
             }
             if (modulo.btn == dashboard_btn) {
                 carredarDadosDash();
+            } else if (modulo.btn == monitor_btn) {  
+                carregaImpressoraMonitor(); 
             }
         } else {
             new Alert(Alert.AlertType.WARNING, "Você não tem permissão para acessar este módulo.").showAndWait();
@@ -732,6 +753,7 @@ public class DashboardController implements Initializable {
             printerService.salvar(p);
             limparCamposPrinter(null);
             carregarListaPrinter();
+            carregaImpressoraMonitor(); 
 
         } catch (NumberFormatException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -811,15 +833,27 @@ public class DashboardController implements Initializable {
 
     public void imprimir() {
         String template = txtTemplate.getText().trim();
-        String texto = txtTexto.getText().trim();
         Printer prSelecionada = cmbImpressora.getSelectionModel().getSelectedItem();
         Integer qtdImpressao = qtdSpinner.getValue();
         Integer espacamento = tmpSpinner.getValue();
 
-        if (template.isEmpty() || texto.isEmpty() || prSelecionada == null || qtdImpressao == null || qtdImpressao <= 0) {
+        Map<String, String> mapVars = varsData.stream()
+                .collect(Collectors.toMap(
+                        VarItem::getKey,
+                        VarItem::getValue,
+                        (a, b) -> b,
+                        LinkedHashMap::new));
+
+        if (template.isEmpty() || prSelecionada == null || qtdImpressao == null || qtdImpressao <= 0) {
             appendLog("⚠ Por favor, preencha todos os campos obrigatórios e informe uma quantidade válida (> 0).");
             return;
         }
+
+        if (mapVars.isEmpty()) {                  // ⚠ nenhuma variável definida
+            appendLog("⚠ Adicione ao menos uma variável antes de imprimir.");
+            return;
+        }
+
         // Busca atualizada pelo ID, se quiser garantir info atualizada
         Printer pr = printerService.buscarPorId(prSelecionada.getId());
         if (pr == null) {
@@ -832,7 +866,8 @@ public class DashboardController implements Initializable {
         Task<Void> job = new Task<>() {
             @Override
             protected Void call() throws Exception {
-                printerService.imprimir(pr, template, texto, qtdImpressao, line -> appendLog(line), espacamento);
+
+                printerService.imprimir(pr, template, qtdImpressao, line -> appendLog(line), espacamento, mapVars);
                 return null;
             }
         };
@@ -859,7 +894,6 @@ public class DashboardController implements Initializable {
         boolean disable
                 = (icoStatus.getFill().equals(Color.RED))
                 || txtTemplate.getText().isEmpty()
-                || txtTexto.getText().isEmpty()
                 || cmbImpressora.getSelectionModel().getSelectedItem() == null;
         botaoDesabilitado.set(disable);
     }
@@ -1062,6 +1096,44 @@ public class DashboardController implements Initializable {
         lista_dispositivo.getSelectionModel().clearSelection();
     }
 
+    @FXML
+    private void remVar() {
+        VarItem sel = tblVars.getSelectionModel().getSelectedItem();
+        if (sel != null) {
+            varsData.remove(sel);
+        }
+    }
+
+    @FXML
+    private void addVar() {
+        String k = txtKey.getText().trim();
+        String v = txtValue.getText().trim();
+
+        if (k.isEmpty() || v.isEmpty()) {
+            showError("Preencha chave e valor antes de adicionar.");
+            return;
+        }
+
+        // se já existir a chave, só atualiza o valor
+        for (VarItem vi : varsData) {
+            if (vi.getKey().equalsIgnoreCase(k)) {
+                vi.setValue(v);
+                tblVars.refresh();
+                limparCamposVar();
+                return;
+            }
+        }
+
+        varsData.add(new VarItem(k, v));
+        limparCamposVar();
+    }
+
+    private void limparCamposVar() {
+        txtKey.clear();
+        txtValue.clear();
+        txtKey.requestFocus();
+    }
+
     private void removerDispositivo(Dispositivo d) {
         Alert c = new Alert(Alert.AlertType.CONFIRMATION,
                 "Remover dispositivo '" + d.getMacAddress() + "'?");
@@ -1135,29 +1207,48 @@ public class DashboardController implements Initializable {
         modulos.put(dispositivos_btn, new PermissaoModulo(dispositivo_pane, dispositivos_btn, List.of("ADMIN")));
     }
 
+    private void initVarsTable() {
+        colKey.setCellValueFactory(c -> c.getValue().keyProperty());
+        colValue.setCellValueFactory(c -> c.getValue().valueProperty());
+
+        // permitir editar **apenas o valor**
+        colValue.setCellFactory(TextFieldTableCell.forTableColumn());
+        colValue.setOnEditCommit(evt
+                -> evt.getRowValue().setValue(evt.getNewValue())
+        );
+
+        tblVars.setItems(varsData);
+        tblVars.setEditable(true);
+    }
+
     @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
+    public void initialize(URL url, ResourceBundle rb) {
         Modules.exportAllToAll();
-        configurarPermissoes();          // 1️⃣ preenche o mapa
-        ocultarBotoesNaoPermitidos();    // 2️⃣ esconde botões não permitidos
-        activateAnchorPane();            // 3️⃣ registra os cliques
+
+        initVarsTable();
+        configurarPermissoes();
+        ocultarBotoesNaoPermitidos();
+        activateAnchorPane();
 
         lblVersao.setText("Versão: " + AppInfo.getVersion());
-        setupQuantidadeField();
         setUsername();
-        activateDashboard();
+
+        // campos numéricos
         setupFields();
+        configurarSpinnerQtd();
+        configurarSpinnerTmp();
+
+        // combos / tabelas
         comboUnidade.getSelectionModel().select("inches");
         carregarComboTemplate();
         comboSku.setItems(getListaSkuMock());
-        btnImprimir.disableProperty().bind(botaoDesabilitado);
-        configurarSpinnerQtd();
-        configurarSpinnerTmp();
         carregarListaTemplate();
-        carredarDadosDash();
-        initPrinterCrud();
         initPrinterCrud();
         initDispositivoCrud();
+        carredarDadosDash();
 
+        btnImprimir.disableProperty().bind(botaoDesabilitado);
+
+        activateDashboard();   // por último
     }
 }

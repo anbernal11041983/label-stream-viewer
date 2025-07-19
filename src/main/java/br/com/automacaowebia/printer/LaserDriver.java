@@ -8,11 +8,10 @@ import java.io.*;
 import java.net.Socket;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
-import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public final class LaserDriver {
@@ -88,10 +87,9 @@ public final class LaserDriver {
      * ============================================================ */
     public void printBatch(Printer printer,
             String template,
-            String textoV1,
             int qty,
             Consumer<String> cb,
-            int espacamento) throws IOException {
+            int espacamento, Map<String, String> vars) throws IOException {
 
         if (cb != null) {
             cb.accept("▶ Conectando em " + printer.getIp() + ":" + printer.getPorta());
@@ -108,14 +106,8 @@ public final class LaserDriver {
                 throw new IOException("Template '" + template + "' não encontrado");
             }
 
-            // 2) monta SETA
-            String cmdSeta = montarSetaComVariaveis(
-                    textoV1,
-                    "Data de Fabricacao:",
-                    "Data de Validade:",
-                    "01/01/2025 [d]",
-                    "01/06/2025 [d]",
-                    "9994567890123");
+
+            String cmdSeta = montarSetaComVariaveis(vars);
 
             if (cb != null) {
                 cb.accept(">> Comando SETA: " + cmdSeta);
@@ -194,41 +186,20 @@ public final class LaserDriver {
         }
     }
 
-    /* ============================================================
-     *  Funções utilitárias (novas ou aprimoradas)
-     * ============================================================ */
-    private static String montarSetaComVariaveis(
-            String t1, String t2, String t3,
-            String t4, String t5, String b1) {
-
+    private static String montarSetaComVariaveis(Map<String, String> vars) {
         StringBuilder sb = new StringBuilder("seta:data#");
 
-        if (t1 != null && !t1.isEmpty()) {
-            sb.append("T1=").append(t1).append("; ");
-        }
-        if (t2 != null && !t2.isEmpty()) {
-            sb.append("T2=").append(t2).append("; ");
-        }
-        if (t3 != null && !t3.isEmpty()) {
-            sb.append("T3=").append(t3).append("; ");
-        }
-        if (t4 != null && !t4.isEmpty()) {
-            sb.append("T4=").append(t4).append("; ");
-        }
-        if (t5 != null && !t5.isEmpty()) {
-            sb.append("T5=").append(t5).append("; ");
-        }
-        if (b1 != null && !b1.isEmpty()) {
-            sb.append("B1=").append(b1).append("; ");
-        }
+        vars.forEach((k, v) -> {
+            if (v != null && !v.isBlank()) {
+                sb.append(k).append('=').append(v).append("; ");
+            }
+        });
 
-        // Remove último "; " se existir
+        // remove o último "; " se existir
         int len = sb.length();
         if (len >= 2 && sb.substring(len - 2).equals("; ")) {
             sb.delete(len - 2, len);
         }
-
-        //sb.append("+pos#0|0|0|1");
         return sb.toString();
     }
 
