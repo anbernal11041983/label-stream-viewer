@@ -22,6 +22,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.prefs.Preferences;
 
 public class LoginController implements Initializable {
 
@@ -47,9 +48,17 @@ public class LoginController implements Initializable {
     @FXML
     private Label lblVersao;
 
+    @FXML
+    private CheckBox chkRemember;
+
     private double x;
     private double y;
 
+    private static final String PREF_NODE = "br.com.automacaowebia.login";
+    private static final String PREF_USER = "rememberUser";
+    private static final String PREF_PASS = "rememberPass";
+
+    private final Preferences prefs = Preferences.userRoot().node(PREF_NODE);
     private final LoginService loginService = new LoginService();
 
     public void textfieldDesign() {
@@ -120,8 +129,16 @@ public class LoginController implements Initializable {
                     "Dispositivo bloqueado. Desbloqueie no menu Dispositivos.")
                     .showAndWait();
         }
-        /* ---------- abre dashboard ---------- */
-        abrirDashboard();   // método auxiliar mostrado abaixo
+
+        if (chkRemember.isSelected()) {
+            prefs.put(PREF_USER, userInput);
+            prefs.put(PREF_PASS, passwordInput);   
+        } else {
+            prefs.remove(PREF_USER);
+            prefs.remove(PREF_PASS);
+        }
+
+        abrirDashboard();
     }
 
     private void abrirDashboard() {
@@ -160,5 +177,13 @@ public class LoginController implements Initializable {
     public void initialize(URL url, ResourceBundle resourceBundle) {
         dropShowAffect();
         lblVersao.setText("Versão: " + AppInfo.getVersion());
+
+        String savedUser = prefs.get(PREF_USER, "");
+        String savedPass = prefs.get(PREF_PASS, "");
+        if (!savedUser.isEmpty() && !savedPass.isEmpty()) {
+            username.setText(savedUser);
+            password.setText(savedPass);
+            chkRemember.setSelected(true);
+        }
     }
 }
