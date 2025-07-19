@@ -2,6 +2,7 @@ package br.com.automacaowebia.app;
 
 import br.com.automacaowebia.model.Dispositivo;
 import br.com.automacaowebia.service.LicencaService;
+import br.com.automacaowebia.session.Session;
 import br.com.automacaowebia.util.HardwareFingerprintUtil;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -26,31 +27,29 @@ public class App extends Application {
     public void start(Stage stage) throws IOException {
         logger.info("Iniciando aplicação...");
 
-        // ✅ Verifica conexão com o banco ANTES de qualquer serviço
         if (!testarConexaoComBanco()) {
             showAlertAndExit("Não foi possível conectar ao banco de dados.\nVerifique se o banco está online.");
             return;
         }
 
-        // 🔗 Verificação de licença
         LicencaService licencaService = new LicencaService();
         String fingerprint = HardwareFingerprintUtil.getHardwareFingerprint();
-
         logger.info("Fingerprint detectado: {}", fingerprint);
 
         Dispositivo dispositivo = licencaService.buscarDispositivo(fingerprint);
 
+        // ↴  Se não existir, cadastra e continua para login (status BLOQUEADO)
         if (dispositivo == null) {
             licencaService.cadastrarDispositivo(fingerprint);
-            showAlertAndExit("Dispositivo não registrado.\nEntre em contato para ativação.");
-        } else if ("BLOQUEADO".equalsIgnoreCase(dispositivo.getStatus())) {
-            showAlertAndExit("Dispositivo bloqueado.\nEntre em contato para ativação.");
-        } else if ("ATIVADO".equalsIgnoreCase(dispositivo.getStatus())) {
-            logger.info("Dispositivo autorizado. Carregando sistema...");
-            carregarTelaLogin(stage);
-        } else {
-            showAlertAndExit("Status inválido. Contate o suporte.");
+            dispositivo = licencaService.buscarDispositivo(fingerprint);
         }
+
+        /*  ------------  Salva no Session para usar depois  ------------ */
+        Session.getInstance().setDispositivoAtual(dispositivo);
+        Session.getInstance().setFingerprintAtual(fingerprint);
+
+        /* Sempre carrega a tela de login a partir daqui */
+        carregarTelaLogin(stage);
     }
 
     private void carregarTelaLogin(Stage stage) throws IOException {

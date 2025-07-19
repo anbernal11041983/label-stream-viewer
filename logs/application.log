@@ -698,3 +698,164 @@ org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (no suc
 [19-07-2025 12:52:03] [INFO ] TemplateZPLService - Buscando lista de templates.
 [19-07-2025 12:52:03] [INFO ] TemplateZPLService - Total de templates encontrados: 0
 [19-07-2025 12:52:05] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[19-07-2025 12:55:25] [INFO ] App - Iniciando aplicação...
+[19-07-2025 12:55:25] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[19-07-2025 12:55:25] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[19-07-2025 12:55:25] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[19-07-2025 12:55:25] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[19-07-2025 12:55:25] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[19-07-2025 12:55:25] [INFO ] App - Dispositivo autorizado. Carregando sistema...
+[19-07-2025 12:55:25] [INFO ] App - Carregando tela de login...
+[19-07-2025 12:55:26] [INFO ] App - Tela de login carregada com sucesso.
+[19-07-2025 12:55:35] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 12:55:35] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 12:55:35] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 12:55:35] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 12:55:35] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[19-07-2025 12:55:35] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
+[19-07-2025 12:55:52] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 12:55:52] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 12:55:55] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 12:55:55] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:11:02] [INFO ] App - Iniciando aplicação...
+[19-07-2025 13:11:02] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[19-07-2025 13:11:02] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[19-07-2025 13:11:02] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[19-07-2025 13:11:02] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[19-07-2025 13:11:02] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[19-07-2025 13:11:02] [INFO ] App - Dispositivo autorizado. Carregando sistema...
+[19-07-2025 13:11:02] [INFO ] App - Carregando tela de login...
+[19-07-2025 13:11:03] [INFO ] App - Tela de login carregada com sucesso.
+[19-07-2025 13:11:11] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:11:11] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:11:11] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:11:11] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:11:11] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[19-07-2025 13:11:11] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
+[19-07-2025 13:11:11] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
+[19-07-2025 13:11:18] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:11:18] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:11:21] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:11:21] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:11:24] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:11:24] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:11:25] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:11:25] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:11:30] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:11:30] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:14:02] [INFO ] App - Iniciando aplicação...
+[19-07-2025 13:14:03] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[19-07-2025 13:14:03] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[19-07-2025 13:14:03] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[19-07-2025 13:14:03] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[19-07-2025 13:14:03] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[19-07-2025 13:14:03] [INFO ] App - Dispositivo autorizado. Carregando sistema...
+[19-07-2025 13:14:03] [INFO ] App - Carregando tela de login...
+[19-07-2025 13:14:04] [INFO ] App - Tela de login carregada com sucesso.
+[19-07-2025 13:14:12] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:14:12] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:14:12] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:14:12] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:14:12] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[19-07-2025 13:14:12] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
+[19-07-2025 13:14:12] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
+[19-07-2025 13:14:17] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:14:17] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:14:27] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:14:27] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:14:27] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:14:27] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:14:27] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[19-07-2025 13:14:27] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
+[19-07-2025 13:14:27] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
+[19-07-2025 13:15:22] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:15:22] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:15:22] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:15:22] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:15:22] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[19-07-2025 13:15:22] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
+[19-07-2025 13:15:22] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
+[19-07-2025 13:15:45] [INFO ] App - Iniciando aplicação...
+[19-07-2025 13:15:46] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[19-07-2025 13:15:46] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[19-07-2025 13:15:46] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[19-07-2025 13:15:46] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[19-07-2025 13:15:46] [INFO ] LicencaService - Dispositivo encontrado: BLOQUEADO
+[19-07-2025 13:15:46] [WARN ] App - Dispositivo bloqueado.
+Entre em contato para ativação.
+[19-07-2025 13:16:12] [INFO ] App - Iniciando aplicação...
+[19-07-2025 13:16:13] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[19-07-2025 13:16:13] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[19-07-2025 13:16:13] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[19-07-2025 13:16:13] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[19-07-2025 13:16:13] [INFO ] LicencaService - Dispositivo encontrado: BLOQUEADO
+[19-07-2025 13:16:13] [WARN ] App - Dispositivo bloqueado.
+Entre em contato para ativação.
+[19-07-2025 13:36:19] [INFO ] App - Iniciando aplicação...
+[19-07-2025 13:36:19] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[19-07-2025 13:36:20] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[19-07-2025 13:36:20] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[19-07-2025 13:36:20] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[19-07-2025 13:36:20] [INFO ] LicencaService - Dispositivo encontrado: BLOQUEADO
+[19-07-2025 13:36:20] [INFO ] App - Carregando tela de login...
+[19-07-2025 13:36:20] [INFO ] App - Tela de login carregada com sucesso.
+[19-07-2025 13:37:10] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:37:10] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:37:10] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:37:10] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:37:11] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[19-07-2025 13:37:11] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
+[19-07-2025 13:37:11] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
+[19-07-2025 13:37:11] [INFO ] LoginController - Usuário logado: Administrador | Perfil: ADMIN
+[19-07-2025 13:37:36] [INFO ] App - Iniciando aplicação...
+[19-07-2025 13:37:36] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[19-07-2025 13:37:36] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[19-07-2025 13:37:36] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[19-07-2025 13:37:36] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[19-07-2025 13:37:36] [INFO ] LicencaService - Dispositivo não encontrado no banco.
+[19-07-2025 13:37:36] [INFO ] LicencaService - Cadastrando novo dispositivo MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34 com status BLOQUEADO
+[19-07-2025 13:37:36] [INFO ] LicencaService - Dispositivo cadastrado com sucesso.
+[19-07-2025 13:37:36] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[19-07-2025 13:37:36] [INFO ] LicencaService - Dispositivo encontrado: BLOQUEADO
+[19-07-2025 13:37:36] [INFO ] App - Carregando tela de login...
+[19-07-2025 13:37:37] [INFO ] App - Tela de login carregada com sucesso.
+[19-07-2025 13:38:02] [INFO ] App - Iniciando aplicação...
+[19-07-2025 13:38:03] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[19-07-2025 13:38:03] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[19-07-2025 13:38:03] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[19-07-2025 13:38:03] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[19-07-2025 13:38:03] [INFO ] LicencaService - Dispositivo encontrado: BLOQUEADO
+[19-07-2025 13:38:03] [INFO ] App - Carregando tela de login...
+[19-07-2025 13:38:04] [INFO ] App - Tela de login carregada com sucesso.
+[19-07-2025 13:38:33] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:38:33] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:38:33] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:38:33] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:38:33] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[19-07-2025 13:38:33] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
+[19-07-2025 13:38:33] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
+[19-07-2025 13:38:33] [INFO ] LoginController - Usuário logado: Administrador | Perfil: ADMIN
+[19-07-2025 13:38:53] [INFO ] App - Iniciando aplicação...
+[19-07-2025 13:38:54] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[19-07-2025 13:38:54] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[19-07-2025 13:38:54] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[19-07-2025 13:38:54] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[19-07-2025 13:38:54] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[19-07-2025 13:38:54] [INFO ] App - Carregando tela de login...
+[19-07-2025 13:38:55] [INFO ] App - Tela de login carregada com sucesso.
+[19-07-2025 13:39:32] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:39:32] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:39:32] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:39:32] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:39:32] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[19-07-2025 13:39:32] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
+[19-07-2025 13:39:32] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
+[19-07-2025 13:39:33] [INFO ] LoginController - Usuário logado: Operação | Perfil: OPERADOR
+[19-07-2025 13:39:38] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:39:38] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:39:40] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[19-07-2025 13:39:41] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:39:41] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:39:41] [INFO ] TemplateZPLService - Buscando lista de templates.
+[19-07-2025 13:39:41] [INFO ] TemplateZPLService - Total de templates encontrados: 0
+[19-07-2025 13:39:43] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}

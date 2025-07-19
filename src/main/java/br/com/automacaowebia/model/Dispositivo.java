@@ -1,10 +1,13 @@
 package br.com.automacaowebia.model;
 
+import java.time.LocalDateTime;
+
 
 public class Dispositivo {
     private Integer id;
     private String macAddress;
     private String status;
+    private LocalDateTime criadoEm;
 
     public Dispositivo() {}
 
@@ -22,4 +25,18 @@ public class Dispositivo {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    /**
+     * @return the criadoEm
+     */
+    public LocalDateTime getCriadoEm() {
+        return criadoEm;
+    }
+
+    /**
+     * @param criadoEm the criadoEm to set
+     */
+    public void setCriadoEm(LocalDateTime criadoEm) {
+        this.criadoEm = criadoEm;
+    }
 }

@@ -9,6 +9,7 @@ import br.com.automacaowebia.service.TemplateZPLService;
 import br.com.automacaowebia.service.ZplCacheService;
 import br.com.automacaowebia.service.PrinterService;
 import br.com.automacaowebia.model.Printer;
+import br.com.automacaowebia.service.DispositivoService;
 import br.com.automacaowebia.session.Session;
 import br.com.automacaowebia.util.PrintExecutor;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -161,6 +162,23 @@ public class DashboardController implements Initializable {
     @FXML
     private Spinner<Integer> tmpSpinner;
 
+    @FXML
+    private Button dispositivos_btn;
+    @FXML
+    private AnchorPane dispositivo_pane;
+    @FXML
+    private TableView<Dispositivo> lista_dispositivo;
+    @FXML
+    private TableColumn<Dispositivo, String> col_disp_mac;
+    @FXML
+    private TableColumn<Dispositivo, String> col_disp_status;
+    @FXML
+    private TableColumn<Dispositivo, Void> col_disp_acao;
+    @FXML
+    private TextField disp_mac;
+    @FXML
+    private ComboBox<String> disp_status;
+
     private double x;
     private double y;
     private final TemplateZPLService templateService = new TemplateZPLService();
@@ -173,6 +191,8 @@ public class DashboardController implements Initializable {
     private final Map<Button, PermissaoModulo> modulos = new HashMap<>();
 
     private static final Logger logger = LogManager.getLogger(DashboardController.class);
+    private final DispositivoService dispositivoService = new DispositivoService();
+    private Dispositivo selecionadoDispositivo;
 
     public void onExit() {
         PrintExecutor.POOL.shutdown();
@@ -1011,6 +1031,92 @@ public class DashboardController implements Initializable {
         stage.setMaximized(!stage.isMaximized()); // Alterna entre maximizado e restaurado
     }
 
+    @FXML
+    private void salvarDispositivo() {
+        String mac = disp_mac.getText().trim();
+        String status = disp_status.getValue();
+
+        if (mac.isEmpty() || status == null) {
+            showError("MAC e Status são obrigatórios.");
+            return;
+        }
+        Dispositivo d = (selecionadoDispositivo == null)
+                ? new Dispositivo() : selecionadoDispositivo;
+        d.setMacAddress(mac);
+        d.setStatus(status);
+
+        try {
+            dispositivoService.salvar(d);
+            limparCamposDispositivo();
+            carregarListaDispositivo();
+        } catch (Exception ex) {
+            showError("Erro ao salvar dispositivo: " + ex.getMessage());
+        }
+    }
+
+    @FXML
+    private void limparCamposDispositivo() {
+        disp_mac.clear();
+        disp_status.getSelectionModel().clearSelection();
+        selecionadoDispositivo = null;
+        lista_dispositivo.getSelectionModel().clearSelection();
+    }
+
+    private void removerDispositivo(Dispositivo d) {
+        Alert c = new Alert(Alert.AlertType.CONFIRMATION,
+                "Remover dispositivo '" + d.getMacAddress() + "'?");
+        c.showAndWait().ifPresent(bt -> {
+            if (bt == ButtonType.OK) {
+                try {
+                    dispositivoService.remover(d);
+                    carregarListaDispositivo();
+                    limparCamposDispositivo();
+                } catch (Exception ex) {
+                    showError("Erro ao remover: " + ex.getMessage());
+                }
+            }
+        });
+    }
+
+    private void carregarListaDispositivo() {
+        try {
+            lista_dispositivo.setItems(dispositivoService.listarTodos());
+        } catch (Exception ex) {
+            showError("Não foi possível carregar dispositivos.");
+        }
+    }
+
+    private void initDispositivoCrud() {
+        col_disp_mac.setCellValueFactory(new PropertyValueFactory<>("macAddress"));
+        col_disp_status.setCellValueFactory(new PropertyValueFactory<>("status"));
+
+        col_disp_acao.setCellFactory(tb -> new TableCell<>() {
+            private final Button btn = criarBotaoTrash();
+
+            {
+                btn.setOnAction(e -> removerDispositivo(
+                        getTableView().getItems().get(getIndex())));
+            }
+
+            @Override
+            protected void updateItem(Void v, boolean empty) {
+                super.updateItem(v, empty);
+                setGraphic(empty ? null : btn);
+            }
+        });
+
+        carregarListaDispositivo();
+
+        lista_dispositivo.getSelectionModel().selectedItemProperty()
+                .addListener((o, oldVal, newVal) -> {
+                    if (newVal != null) {
+                        selecionadoDispositivo = newVal;
+                        disp_mac.setText(newVal.getMacAddress());
+                        disp_status.setValue(newVal.getStatus());
+                    }
+                });
+    }
+
     private void ocultarBotoesNaoPermitidos() {
         User usuario = Session.getInstance().getUser();
         String perfil = usuario != null ? usuario.getPerfil() : "";
@@ -1025,7 +1131,8 @@ public class DashboardController implements Initializable {
         modulos.put(template_btn, new PermissaoModulo(template_pane, template_btn, List.of("ADMIN", "OPERADOR")));
         modulos.put(impressao_btn, new PermissaoModulo(impressao_zpl, impressao_btn, List.of("ADMIN", "OPERADOR")));
         modulos.put(printers_btn, new PermissaoModulo(printer_pane, printers_btn, List.of("ADMIN", "OPERADOR")));
-        modulos.put(monitor_btn, new PermissaoModulo(monitor_pane, monitor_btn, List.of("ADMIN")));
+        modulos.put(monitor_btn, new PermissaoModulo(monitor_pane, monitor_btn, List.of("ADMIN", "OPERADOR")));
+        modulos.put(dispositivos_btn, new PermissaoModulo(dispositivo_pane, dispositivos_btn, List.of("ADMIN")));
     }
 
     @Override
@@ -1049,6 +1156,8 @@ public class DashboardController implements Initializable {
         carregarListaTemplate();
         carredarDadosDash();
         initPrinterCrud();
+        initPrinterCrud();
+        initDispositivoCrud();
 
     }
 }

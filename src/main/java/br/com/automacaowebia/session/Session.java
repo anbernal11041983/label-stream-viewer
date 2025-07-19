@@ -1,13 +1,17 @@
 package br.com.automacaowebia.session;
 
+import br.com.automacaowebia.model.Dispositivo;
 import br.com.automacaowebia.model.User;
 
 public class Session {
 
     private static Session instance;
     private User user;
+    private Dispositivo dispositivoAtual;
+    private String fingerprintAtual;
 
-    private Session() {}
+    private Session() {
+    }
 
     public static Session getInstance() {
         if (instance == null) {
@@ -31,5 +35,21 @@ public class Session {
 
     public boolean isLogged() {
         return user != null;
+    }
+
+    public Dispositivo getDispositivoAtual() {
+        return dispositivoAtual;
+    }
+
+    public void setDispositivoAtual(Dispositivo d) {
+        dispositivoAtual = d;
+    }
+
+    public String getFingerprintAtual() {
+        return fingerprintAtual;
+    }
+
+    public void setFingerprintAtual(String fp) {
+        fingerprintAtual = fp;
     }
 }

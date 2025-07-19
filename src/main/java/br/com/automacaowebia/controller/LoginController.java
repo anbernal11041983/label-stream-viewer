@@ -1,7 +1,9 @@
 package br.com.automacaowebia.controller;
 
 import br.com.automacaowebia.config.AppInfo;
+import br.com.automacaowebia.model.Dispositivo;
 import br.com.automacaowebia.model.User;
+import br.com.automacaowebia.service.LicencaService;
 import br.com.automacaowebia.service.LoginService;
 import br.com.automacaowebia.session.Session;
 import javafx.fxml.FXML;
@@ -71,58 +73,86 @@ public class LoginController implements Initializable {
     }
 
     public void login() {
+
+        /* ---------- validações simples ---------- */
         String userInput = username.getText();
         String passwordInput = password.getText();
 
         if (userInput.isEmpty() || passwordInput.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Alerta");
-            alert.setHeaderText(null);
-            alert.setContentText("Usuário e senha obrigatórios.");
-            alert.showAndWait();
+            new Alert(Alert.AlertType.ERROR, "Usuário e senha obrigatórios.").showAndWait();
             return;
         }
 
-        User user = new User();
-        user.setUsername(userInput);
-        user.setPassword(passwordInput);
+        /* ---------- autenticação ---------- */
+        User tentativa = new User();
+        tentativa.setUsername(userInput);
+        tentativa.setPassword(passwordInput);
 
-        User authenticatedUser = loginService.autenticar(user);
+        User authenticatedUser = loginService.autenticar(tentativa);
 
-        if (authenticatedUser != null) {
-            Session.getInstance().setUser(authenticatedUser);
+        if (authenticatedUser == null) {
+            new Alert(Alert.AlertType.ERROR, "Usuário ou senha inválidos!").showAndWait();
+            return;
+        }
 
-            System.out.println("Usuário logado: " + authenticatedUser.getNome()
-                    + " | Perfil: " + authenticatedUser.getPerfil());
+        /* ---------- grava na sessão ---------- */
+        Session sess = Session.getInstance();
+        sess.setUser(authenticatedUser);
 
+        // Dispositivo & fingerprint vieram do App.start()
+        Dispositivo disp = sess.getDispositivoAtual();
+
+        boolean bloqueado = disp != null && "BLOQUEADO".equalsIgnoreCase(disp.getStatus());
+        boolean admin = "ADMIN".equalsIgnoreCase(authenticatedUser.getPerfil());
+
+        /* ---------- regras de dispositivo ---------- */
+        if (bloqueado && !admin) {             // operador → nega acesso
+            new Alert(Alert.AlertType.ERROR,
+                    "Dispositivo bloqueado.\nEntre em contato com o administrador.")
+                    .showAndWait();
+            return;
+        }
+
+        /*  Se BLOQUEADO + ADMIN: apenas avisa e continua.
+    O admin poderá desbloquear pelo módulo de Dispositivos.                 */
+        if (bloqueado && admin) {
+            new Alert(Alert.AlertType.INFORMATION,
+                    "Dispositivo bloqueado. Desbloqueie no menu Dispositivos.")
+                    .showAndWait();
+        }
+        /* ---------- abre dashboard ---------- */
+        abrirDashboard();   // método auxiliar mostrado abaixo
+    }
+
+    private void abrirDashboard() {
+        try {
+            Parent root = FXMLLoader.load(
+                    getClass().getResource("/br/com/automacaowebia/dashboard.fxml"));
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+
+            root.setOnMousePressed(e -> {
+                x = e.getSceneX();
+                y = e.getSceneY();
+            });
+            root.setOnMouseDragged(e -> {
+                stage.setX(e.getScreenX() - x);
+                stage.setY(e.getScreenY() - y);
+            });
+
+            stage.initStyle(StageStyle.TRANSPARENT);
+            stage.setScene(scene);
+            stage.show();
+
+            // fecha tela de login
             login_btn.getScene().getWindow().hide();
 
-            try {
-                Parent root = FXMLLoader.load(getClass().getResource("/br/com/automacaowebia/dashboard.fxml"));
-                Scene scene = new Scene(root);
-                Stage stage = new Stage();
+            logger.info("Usuário logado: {} | Perfil: {}",
+                    Session.getInstance().getUser().getNome(),
+                    Session.getInstance().getUser().getPerfil());
 
-                root.setOnMousePressed(event -> {
-                    x = event.getSceneX();
-                    y = event.getSceneY();
-                });
-                root.setOnMouseDragged(event -> {
-                    stage.setX(event.getScreenX() - x);
-                    stage.setY(event.getScreenY() - y);
-                });
-
-                stage.initStyle(StageStyle.TRANSPARENT);
-                stage.setScene(scene);
-                stage.show();
-            } catch (Exception e) {
-                logger.error("Erro ao carregar dashboard.fxml", e);
-            }
-        } else {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Alerta");
-            alert.setHeaderText(null);
-            alert.setContentText("Usuário ou senha inválidos!");
-            alert.showAndWait();
+        } catch (Exception e) {
+            logger.error("Erro ao carregar dashboard.fxml", e);
         }
     }
 

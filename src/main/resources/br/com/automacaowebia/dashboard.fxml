@@ -80,9 +80,19 @@
                             <graphic>
                                 <FontAwesomeIconView fill="WHITE" glyphName="SERVER" />
                             </graphic>
-                     <font>
-                        <Font size="16.0" />
-                     </font>
+                            <font>
+                                <Font size="16.0" />
+                            </font>
+                        </Button>
+                        <Button fx:id="dispositivos_btn" layoutX="40.0" layoutY="485.0"
+                                onMouseClicked="#activateAnchorPane" prefWidth="200.0"
+                                styleClass="navbutton" text="Dispositivos" textFill="WHITE">
+                            <graphic>
+                                <FontAwesomeIconView fill="WHITE" glyphName="MOBILE" size="1.2em"/>
+                            </graphic>
+                            <font>
+                                <Font size="16"/>
+                            </font>
                         </Button>
                         <Button fx:id="signout_btn" layoutX="39.0" layoutY="614.0" mnemonicParsing="false" onAction="#signOut" prefHeight="38.0" prefWidth="200.0" styleClass="navbutton" stylesheets="@dashboard.css" text="Sair" textFill="WHITE">
                             <font>
@@ -472,16 +482,16 @@
                                                 </FontAwesomeIconView>
                                             </children>
                                         </HBox>
-                              <Label text="Quantidade:*" GridPane.rowIndex="3" />
-                              <Spinner fx:id="qtdSpinner" prefHeight="26.0" prefWidth="219.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                              <Label prefHeight="18.0" prefWidth="194.0" text="Tempo de espaçamento" GridPane.rowIndex="4" />
-                              <Spinner fx:id="tmpSpinner" prefHeight="26.0" prefWidth="219.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                                        <Label text="Quantidade:*" GridPane.rowIndex="3" />
+                                        <Spinner fx:id="qtdSpinner" prefHeight="26.0" prefWidth="219.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                        <Label prefHeight="18.0" prefWidth="194.0" text="Tempo de espaçamento" GridPane.rowIndex="4" />
+                                        <Spinner fx:id="tmpSpinner" prefHeight="26.0" prefWidth="219.0" GridPane.columnIndex="1" GridPane.rowIndex="4" />
                                         <rowConstraints>
                                             <RowConstraints />
                                             <RowConstraints />
                                             <RowConstraints />
-                                 <RowConstraints minHeight="10.0" prefHeight="30.0" />
-                                 <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                                            <RowConstraints minHeight="10.0" prefHeight="30.0" />
+                                            <RowConstraints minHeight="10.0" prefHeight="30.0" />
                                         </rowConstraints>
                                     </GridPane>
 
@@ -500,6 +510,73 @@
                                         </Button>
                                     </HBox>
                                 </VBox>
+                            </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="dispositivo_pane" layoutX="-1" layoutY="55"
+                                    prefWidth="820" prefHeight="639" visible="false"
+                                    stylesheets="@dashboard.css">
+                            <children>
+                                <TableView fx:id="lista_dispositivo" layoutX="13" layoutY="33"
+                                           prefWidth="794" prefHeight="271">
+                                    <columns>
+                                        <TableColumn fx:id="col_disp_mac" prefWidth="250" text="MAC"/>
+                                        <TableColumn fx:id="col_disp_status" prefWidth="120" text="Status"/>
+                                        <TableColumn fx:id="col_disp_acao" prefWidth="160" text="Ações"/>
+                                    </columns>
+                                </TableView>
+
+                                <Separator layoutX="11" layoutY="331" prefWidth="794"/>
+                                <Label layoutX="27" layoutY="352" text="Adicionar dispositivo">
+                                    <font>
+                                        <Font name="Dubai Bold" size="15"/>
+                                    </font>
+                                </Label>
+
+                                <Label layoutX="28" layoutY="402" text="MAC">
+                                    <font>
+                                        <Font name="Dubai Bold" size="15"/>
+                                    </font>
+                                </Label>
+                                <TextField fx:id="disp_mac" layoutX="151" layoutY="402"
+                                           prefWidth="421" promptText="AA:BB:CC:DD:EE:FF"
+                                           styleClass="textfield"/>
+
+                                <Label layoutX="28" layoutY="442" text="Status">
+                                    <font>
+                                        <Font name="Dubai Bold" size="15"/>
+                                    </font>
+                                </Label>
+                                <ComboBox fx:id="disp_status" layoutX="151" layoutY="442"
+                                          prefWidth="200">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="ATIVADO"/>
+                                            <String fx:value="BLOQUEADO"/>
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
+
+                                <Button fx:id="btn_salvar_disp" layoutX="685" layoutY="563"
+                                        onAction="#salvarDispositivo" text="Salvar"
+                                        styleClass="save" prefWidth="91" prefHeight="38">
+                                    <graphic>
+                                        <FontAwesomeIconView fill="WHITE" glyphName="SAVE" size="18"/>
+                                    </graphic>
+                                    <font>
+                                        <Font name="Dubai Bold" size="16"/>
+                                    </font>
+                                </Button>
+
+                                <Button fx:id="btn_clear_disp" layoutX="549" layoutY="563"
+                                        onAction="#limparCamposDispositivo" text="Limpar"
+                                        styleClass="clear" prefWidth="115" prefHeight="38">
+                                    <graphic>
+                                        <FontAwesomeIconView fill="WHITE" glyphName="REMOVE" size="18"/>
+                                    </graphic>
+                                    <font>
+                                        <Font name="Dubai Bold" size="16"/>
+                                    </font>
+                                </Button>
                             </children>
                         </AnchorPane>
                         <Separator layoutX="14.0" layoutY="49.0" prefHeight="0.0" prefWidth="794.0" />
