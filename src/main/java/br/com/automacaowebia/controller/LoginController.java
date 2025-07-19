@@ -3,6 +3,7 @@ package br.com.automacaowebia.controller;
 import br.com.automacaowebia.config.AppInfo;
 import br.com.automacaowebia.model.User;
 import br.com.automacaowebia.service.LoginService;
+import br.com.automacaowebia.session.Session;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -77,7 +78,7 @@ public class LoginController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Alerta");
             alert.setHeaderText(null);
-            alert.setContentText("Usuário e senha obrigatório.");
+            alert.setContentText("Usuário e senha obrigatórios.");
             alert.showAndWait();
             return;
         }
@@ -86,14 +87,13 @@ public class LoginController implements Initializable {
         user.setUsername(userInput);
         user.setPassword(passwordInput);
 
-        boolean authenticated = loginService.autenticar(user);
+        User authenticatedUser = loginService.autenticar(user);
 
-        if (authenticated) {
-            //Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            //alert.setTitle("Success Message");
-            //alert.setHeaderText(null);
-            //alert.setContentText("Login Successful!");
-            //alert.showAndWait();
+        if (authenticatedUser != null) {
+            Session.getInstance().setUser(authenticatedUser);
+
+            System.out.println("Usuário logado: " + authenticatedUser.getNome()
+                    + " | Perfil: " + authenticatedUser.getPerfil());
 
             login_btn.getScene().getWindow().hide();
 
@@ -115,14 +115,13 @@ public class LoginController implements Initializable {
                 stage.setScene(scene);
                 stage.show();
             } catch (Exception e) {
-                logger.error("Error loading dashboard.fxml", e);
-                e.printStackTrace();
+                logger.error("Erro ao carregar dashboard.fxml", e);
             }
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Alerta");
             alert.setHeaderText(null);
-            alert.setContentText("Usuário ou senha inválido!");
+            alert.setContentText("Usuário ou senha inválidos!");
             alert.showAndWait();
         }
     }

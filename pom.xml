@@ -7,7 +7,7 @@
 
     <groupId>br.com.automacaowebia</groupId>
     <artifactId>label-stream-viewer</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <name>Label Stream Viewer</name>
 
     <properties>
@@ -139,6 +139,12 @@
             <groupId>net.java.dev.jna</groupId>
             <artifactId>jna</artifactId>
             <version>5.14.0</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.50.2.0</version>
         </dependency>
 
         <!-- JNA platform (contém WMI helpers) -->

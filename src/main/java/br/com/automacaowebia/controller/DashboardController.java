@@ -1,6 +1,7 @@
 package br.com.automacaowebia.controller;
 
 import br.com.automacaowebia.config.AppInfo;
+import br.com.automacaowebia.config.PermissaoModulo;
 import br.com.automacaowebia.model.*;
 import br.com.automacaowebia.service.HistoricoImpressaoService;
 import br.com.automacaowebia.service.ImpressaoZPLService;
@@ -8,6 +9,7 @@ import br.com.automacaowebia.service.TemplateZPLService;
 import br.com.automacaowebia.service.ZplCacheService;
 import br.com.automacaowebia.service.PrinterService;
 import br.com.automacaowebia.model.Printer;
+import br.com.automacaowebia.session.Session;
 import br.com.automacaowebia.util.PrintExecutor;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
 import java.io.File;
@@ -32,7 +34,9 @@ import java.nio.file.Files;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
@@ -166,6 +170,7 @@ public class DashboardController implements Initializable {
     private final PrinterService printerService = new PrinterService(); // >>> NOVO
     private Printer selecionadoPrinter;
     private final BooleanProperty botaoDesabilitado = new SimpleBooleanProperty(false);
+    private final Map<Button, PermissaoModulo> modulos = new HashMap<>();
 
     private static final Logger logger = LogManager.getLogger(DashboardController.class);
 
@@ -188,93 +193,62 @@ public class DashboardController implements Initializable {
 
     public void activateAnchorPane() {
 
+        configurarPermissoes();
+
+        for (Map.Entry<Button, PermissaoModulo> entry : modulos.entrySet()) {
+            Button btn = entry.getKey();
+            PermissaoModulo modulo = entry.getValue();
+            btn.setOnMouseClicked(event -> showPaneComPermissao(modulo));
+        }
+    }
+
+    private void showPaneComPermissao(PermissaoModulo modulo) {
+        // Esconde todos
+        dasboard_pane.setVisible(false);
+        template_pane.setVisible(false);
+        impressao_zpl.setVisible(false);
+        printer_pane.setVisible(false);
+        monitor_pane.setVisible(false);
+
+        // Estilo
         String corOn = "-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.7), rgba(255,106,239,0.7))";
         String corOff = "-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.2), rgba(255,106,239,0.2))";
+        dashboard_btn.setStyle(corOff);
+        template_btn.setStyle(corOff);
+        impressao_btn.setStyle(corOff);
+        printers_btn.setStyle(corOff);
+        monitor_btn.setStyle(corOff);
 
-        dashboard_btn.setOnMouseClicked(mouseEvent -> {
-            //-- PAINEL
-            dasboard_pane.setVisible(true);
-            template_pane.setVisible(false);
-            impressao_zpl.setVisible(false);
-            printer_pane.setVisible(false);
-            monitor_pane.setVisible(false);
+        // Checa permissão
+        User usuario = Session.getInstance().getUser();
+        String perfil = usuario != null ? usuario.getPerfil() : "";
 
-            //--BOTAO
-            dashboard_btn.setStyle(corOn);
-            template_btn.setStyle(corOff);
-            impressao_btn.setStyle(corOff);
-            printers_btn.setStyle(corOff);
-            monitor_btn.setStyle(corOff);
-            carredarDadosDash();
-        });
-        template_btn.setOnMouseClicked(mouseEvent -> {
-            //-- PAINEL
-            dasboard_pane.setVisible(false);
-            template_pane.setVisible(true);
-            impressao_zpl.setVisible(false);
-            printer_pane.setVisible(false);
-            monitor_pane.setVisible(false);
-
-            //--BOTAO
-            dashboard_btn.setStyle(corOff);
-            template_btn.setStyle(corOn);
-            impressao_btn.setStyle(corOff);
-            printers_btn.setStyle(corOff);
-            monitor_btn.setStyle(corOff);
-        });
-        impressao_btn.setOnMouseClicked(mouseEvent -> {
-            //-- PAINEL
-            dasboard_pane.setVisible(false);
-            template_pane.setVisible(false);
-            impressao_zpl.setVisible(true);
-            printer_pane.setVisible(false);
-            monitor_pane.setVisible(false);
-
-            //--BOTAO        
-            dashboard_btn.setStyle(corOff);
-            template_btn.setStyle(corOff);
-            impressao_btn.setStyle(corOn);
-            printers_btn.setStyle(corOff);
-            monitor_btn.setStyle(corOff);
-            carregarComboTemplate();
-        });
-        printers_btn.setOnMouseClicked(mouseEvent -> {
-            //-- PAINEL
-            dasboard_pane.setVisible(false);
-            template_pane.setVisible(false);
-            impressao_zpl.setVisible(false);
-            printer_pane.setVisible(true);
-            monitor_pane.setVisible(false);
-
-            //--BOTAO
-            dashboard_btn.setStyle(corOff);
-            template_btn.setStyle(corOff);
-            impressao_btn.setStyle(corOff);
-            printers_btn.setStyle(corOn);
-            monitor_btn.setStyle(corOff);
-        });
-
-        monitor_btn.setOnMouseClicked(mouseEvent -> {
-            //-- PAINEL
-            dasboard_pane.setVisible(false);
-            template_pane.setVisible(false);
-            impressao_zpl.setVisible(false);
-            printer_pane.setVisible(false);
-            monitor_pane.setVisible(true);
-
-            //--BOTAO
-            dashboard_btn.setStyle(corOff);
-            template_btn.setStyle(corOff);
-            impressao_btn.setStyle(corOff);
-            printers_btn.setStyle(corOff);
-            monitor_btn.setStyle(corOn);
-            carregaImpressoraMonitor();
-        });
-
+        if (modulo.perfisPermitidos.contains(perfil)) {
+            if (modulo.pane != null) {
+                modulo.pane.setVisible(true);
+            }
+            if (modulo.btn != null) {
+                modulo.btn.setStyle(corOn);
+            }
+            // Se quiser lógica extra, coloque aqui
+            if (modulo.btn == impressao_btn) {
+                carregarComboTemplate();
+            }
+            if (modulo.btn == dashboard_btn) {
+                carredarDadosDash();
+            }
+        } else {
+            new Alert(Alert.AlertType.WARNING, "Você não tem permissão para acessar este módulo.").showAndWait();
+        }
     }
 
     public void setUsername() {
-        user.setText("Admin");
+        var usuario = Session.getInstance().getUser();
+        if (usuario != null) {
+            user.setText(usuario.getNome() + " (" + usuario.getPerfil() + ")");
+        } else {
+            user.setText("Desconhecido");
+        }
     }
 
     public void activateDashboard() {
@@ -1037,9 +1011,30 @@ public class DashboardController implements Initializable {
         stage.setMaximized(!stage.isMaximized()); // Alterna entre maximizado e restaurado
     }
 
+    private void ocultarBotoesNaoPermitidos() {
+        User usuario = Session.getInstance().getUser();
+        String perfil = usuario != null ? usuario.getPerfil() : "";
+
+        for (PermissaoModulo modulo : modulos.values()) {
+            modulo.btn.setVisible(modulo.perfisPermitidos.contains(perfil));
+        }
+    }
+
+    private void configurarPermissoes() {
+        modulos.put(dashboard_btn, new PermissaoModulo(dasboard_pane, dashboard_btn, List.of("ADMIN", "OPERADOR")));
+        modulos.put(template_btn, new PermissaoModulo(template_pane, template_btn, List.of("ADMIN", "OPERADOR")));
+        modulos.put(impressao_btn, new PermissaoModulo(impressao_zpl, impressao_btn, List.of("ADMIN", "OPERADOR")));
+        modulos.put(printers_btn, new PermissaoModulo(printer_pane, printers_btn, List.of("ADMIN", "OPERADOR")));
+        modulos.put(monitor_btn, new PermissaoModulo(monitor_pane, monitor_btn, List.of("ADMIN")));
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         Modules.exportAllToAll();
+        configurarPermissoes();          // 1️⃣ preenche o mapa
+        ocultarBotoesNaoPermitidos();    // 2️⃣ esconde botões não permitidos
+        activateAnchorPane();            // 3️⃣ registra os cliques
+
         lblVersao.setText("Versão: " + AppInfo.getVersion());
         setupQuantidadeField();
         setUsername();
@@ -1054,5 +1049,6 @@ public class DashboardController implements Initializable {
         carregarListaTemplate();
         carredarDadosDash();
         initPrinterCrud();
+
     }
 }
