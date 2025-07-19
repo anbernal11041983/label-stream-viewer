@@ -154,6 +154,8 @@ public class DashboardController implements Initializable {
     private Button btnImprimir;
     @FXML
     private Spinner<Integer> qtdSpinner;
+    @FXML
+    private Spinner<Integer> tmpSpinner;
 
     private double x;
     private double y;
@@ -818,6 +820,7 @@ public class DashboardController implements Initializable {
         String texto = txtTexto.getText().trim();
         Printer prSelecionada = cmbImpressora.getSelectionModel().getSelectedItem();
         Integer qtdImpressao = qtdSpinner.getValue();
+        Integer espacamento = tmpSpinner.getValue();
 
         if (template.isEmpty() || texto.isEmpty() || prSelecionada == null || qtdImpressao == null || qtdImpressao <= 0) {
             appendLog("⚠ Por favor, preencha todos os campos obrigatórios e informe uma quantidade válida (> 0).");
@@ -835,7 +838,7 @@ public class DashboardController implements Initializable {
         Task<Void> job = new Task<>() {
             @Override
             protected Void call() throws Exception {
-                printerService.imprimir(pr, template, texto, qtdImpressao, line -> appendLog(line));
+                printerService.imprimir(pr, template, texto, qtdImpressao, line -> appendLog(line), espacamento);
                 return null;
             }
         };
@@ -993,6 +996,24 @@ public class DashboardController implements Initializable {
         qtdSpinner.getEditor().setTextFormatter(intFormatter);
     }
 
+    private void configurarSpinnerTmp() {
+        // Define ValueFactory
+        SpinnerValueFactory.IntegerSpinnerValueFactory valueFactory
+                = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 1, 1);
+        tmpSpinner.setValueFactory(valueFactory);
+
+        // Permite digitar manualmente
+        tmpSpinner.setEditable(true);
+
+        // Aplica TextFormatter para filtrar somente dígitos
+        TextFormatter<Integer> intFormatter = new TextFormatter<>(
+                new javafx.util.converter.IntegerStringConverter(),
+                1,
+                change -> change.getControlNewText().matches("\\d*") ? change : null
+        );
+        tmpSpinner.getEditor().setTextFormatter(intFormatter);
+    }
+
     private void removerPrinter(Printer p) {
         Alert c = new Alert(Alert.AlertType.CONFIRMATION, "Remover impressora '" + p.getNome() + "'?");
         c.showAndWait().ifPresent(bt -> {
@@ -1029,6 +1050,7 @@ public class DashboardController implements Initializable {
         comboSku.setItems(getListaSkuMock());
         btnImprimir.disableProperty().bind(botaoDesabilitado);
         configurarSpinnerQtd();
+        configurarSpinnerTmp();
         carregarListaTemplate();
         carredarDadosDash();
         initPrinterCrud();

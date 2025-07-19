@@ -12,6 +12,7 @@ import java.time.LocalDate;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Consumer;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public final class LaserDriver {
@@ -89,7 +90,8 @@ public final class LaserDriver {
             String template,
             String textoV1,
             int qty,
-            Consumer<String> cb) throws IOException {
+            Consumer<String> cb,
+            int espacamento) throws IOException {
 
         if (cb != null) {
             cb.accept("▶ Conectando em " + printer.getIp() + ":" + printer.getPorta());
@@ -100,62 +102,60 @@ public final class LaserDriver {
             OutputStream out = socket.getOutputStream();
             InputStream in = socket.getInputStream();
 
-            /* 1) valida template existente na controladora */
+            // 1) valida template
             List<String> files = fetchFileList(out, in, cb);
             if (files.stream().noneMatch(f -> f.equalsIgnoreCase(template))) {
                 throw new IOException("Template '" + template + "' não encontrado");
             }
 
-            String t1 = textoV1;
-            String t2 = "Data de Fabricacao:";
-            String t3 = "Data de Validade:";
-            String t4 = "01/01/2025 [d]";
-            String t5 = "01/06/2025 [d]";
-            String b1 = "9994567890123";
-
-            String cmdSeta = montarSetaComVariaveis(t1, t2, t3, t4, t5, b1);
+            // 2) monta SETA
+            String cmdSeta = montarSetaComVariaveis(
+                    textoV1,
+                    "Data de Fabricacao:",
+                    "Data de Validade:",
+                    "01/01/2025 [d]",
+                    "01/06/2025 [d]",
+                    "9994567890123");
 
             if (cb != null) {
-                cb.accept(">> Comando SETA enviado: " + cmdSeta);
+                cb.accept(">> Comando SETA: " + cmdSeta);
             }
-            log.debug(">> Comando SETA enviado: {}", cmdSeta);
 
+            // 3) sequência clear ▸ load ▸ seta ▸ start
             sendAndReturn(out, in, "clearbuf", "clearbuf");
             sendAndReturn(out, in, "load:" + template, "load");
             String ack = sendAndReturn(out, in, cmdSeta, "seta");
-
             if (!ack.contains("seta:1")) {
-                cb.accept("A controladora rejeitou o SETA: " + ack);
-                throw new IOException("A controladora rejeitou o SETA: " + ack);
+                throw new IOException("SETA rejeitado: " + ack);
             }
 
-            String dbg = sendAndReturn(out, in, "get_currtext", "dbg_currtext");
-            if (cb != null) {
-                cb.accept("🛈 Conteúdo reconhecido: " + dbg);
-            }
-            if (dbg.contains("[]")) {
-                throw new IOException("Template carregado, mas sem objetos marcáveis — revise Enable Mark e as variáveis no .ncfm");
-            }
-
-            setLimit(out, in, qty, cb);
             sendAndReturn(out, in, "start:", "start");
 
-            /* 4) se ainda não marcou, dispara trimark */
-            SysStatus stInit = getSysStatus(out, in);
-            if (!stInit.isMarking) {
+            // 4) trimark N vezes com espaçamento
+            for (int i = 1; i <= qty; i++) {
                 sendAndReturn(out, in, "trimark", "trimark");
                 if (cb != null) {
-                    cb.accept("🛈 Gatilho software enviado (trimark)");
+                    cb.accept("🛈 Disparo software #" + i);
+                }
+
+                while (getSysStatus(out, in).isMarking) {
+                    try {
+                        Thread.sleep(espacamento);  // espera concluir a marcação atual
+                    } catch (InterruptedException ex) {
+                        Thread.currentThread().interrupt();
+                        throw new IOException("Thread interrompida durante espaçamento", ex);
+                    }
                 }
             }
 
-            /* 5) loop de monitoramento */
+            // 5) loop de monitoramento
             int lastCount = -1, lastWarn = 0;
             while (true) {
                 try {
-                    Thread.sleep(500);
-                } catch (InterruptedException e) {
+                    Thread.sleep(200); // polling rápido
+                } catch (InterruptedException ex) {
                     Thread.currentThread().interrupt();
+                    throw new IOException("Thread interrompida durante monitoramento", ex);
                 }
 
                 int countNow = getCount(out, in);
@@ -167,6 +167,7 @@ public final class LaserDriver {
                     }
                     lastCount = countNow;
                 }
+
                 if (stat.warn > lastWarn) {
                     log.warn("⚠ Avisos: {}", stat.warn);
                     if (cb != null) {
@@ -174,19 +175,22 @@ public final class LaserDriver {
                     }
                     lastWarn = stat.warn;
                 }
+
                 if (stat.err > 0) {
-                    log.error("⛔ Erro detectado (err={}) – enviando stop", stat.err);
+                    log.error("⛔ Erro (err={}): stop", stat.err);
                     sendAndReturn(out, in, "stop:", "stop");
-                    throw new IOException("Erro reportado pela impressora (err=" + stat.err + ")");
+                    throw new IOException("Erro da impressora (err=" + stat.err + ")");
                 }
-                if (!stat.isMarking) {
-                    break;   // lote finalizado
+
+                if (countNow >= qty) {
+                    break; // lote concluído
                 }
             }
 
             if (cb != null) {
                 cb.accept("✅ Lote concluído (" + qty + " peças)");
             }
+
         }
     }
 
@@ -224,7 +228,7 @@ public final class LaserDriver {
             sb.delete(len - 2, len);
         }
 
-        sb.append("+pos#0|0|0|1");
+        //sb.append("+pos#0|0|0|1");
         return sb.toString();
     }
 
@@ -347,5 +351,15 @@ public final class LaserDriver {
             sb.append(String.format("%02X ", b));
         }
         return sb.toString().trim();
+    }
+
+    public void printHex(String comando, Consumer<String> cb) {
+        byte[] frame = frame(comando);
+        String hex = toHex(frame);
+        if (cb != null) {
+            cb.accept("🟩 HEX gerado para o comando '" + comando + "':");
+            cb.accept(hex);
+        }
+        log.info("🟩 HEX gerado para '{}': {}", comando, hex);
     }
 }
