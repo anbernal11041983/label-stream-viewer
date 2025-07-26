@@ -2,6 +2,7 @@ package br.com.automacaowebia.controller;
 
 import br.com.automacaowebia.config.AppInfo;
 import br.com.automacaowebia.config.PermissaoModulo;
+import br.com.automacaowebia.dto.ProdutoLabelData;
 import br.com.automacaowebia.model.*;
 import br.com.automacaowebia.service.HistoricoImpressaoService;
 import br.com.automacaowebia.service.ImpressaoZPLService;
@@ -9,6 +10,7 @@ import br.com.automacaowebia.service.TemplateZPLService;
 import br.com.automacaowebia.service.ZplCacheService;
 import br.com.automacaowebia.service.PrinterService;
 import br.com.automacaowebia.model.Printer;
+import br.com.automacaowebia.parser.ZplParser;
 import br.com.automacaowebia.service.DispositivoService;
 import br.com.automacaowebia.session.Session;
 import br.com.automacaowebia.util.PrintExecutor;
@@ -275,8 +277,8 @@ public class DashboardController implements Initializable {
             }
             if (modulo.btn == dashboard_btn) {
                 carredarDadosDash();
-            } else if (modulo.btn == monitor_btn) {  
-                carregaImpressoraMonitor(); 
+            } else if (modulo.btn == monitor_btn) {
+                carregaImpressoraMonitor();
             }
         } else {
             new Alert(Alert.AlertType.WARNING, "Você não tem permissão para acessar este módulo.").showAndWait();
@@ -380,6 +382,9 @@ public class DashboardController implements Initializable {
         boolean sucesso = templateService.insertTemplate(template);
         if (sucesso) {
             logger.info("Template '{}' salvo com sucesso.", nome);
+            TemplateZPL templateSalvo = templateService.getTemplateByNome(nome);
+            ProdutoLabelData dados = ZplParser.parseFromString(conteudoTemplate);
+            templateService.salvarDadosProduto(templateSalvo.getId(), dados);
             limparCampoTemplate();
             carregarListaTemplate();
         } else {
@@ -753,7 +758,7 @@ public class DashboardController implements Initializable {
             printerService.salvar(p);
             limparCamposPrinter(null);
             carregarListaPrinter();
-            carregaImpressoraMonitor(); 
+            carregaImpressoraMonitor();
 
         } catch (NumberFormatException ex) {
             Alert alert = new Alert(Alert.AlertType.ERROR);

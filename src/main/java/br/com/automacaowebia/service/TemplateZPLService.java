@@ -1,6 +1,7 @@
 package br.com.automacaowebia.service;
 
 import br.com.automacaowebia.config.Database;
+import br.com.automacaowebia.dto.ProdutoLabelData;
 import br.com.automacaowebia.model.TemplateZPL;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -184,5 +185,66 @@ public class TemplateZPLService {
         }
 
         return total;
+    }
+
+    public TemplateZPL getTemplateByNome(String nome) {
+        String sql = "SELECT * FROM template_zpl WHERE nome = ?";
+        try {
+            preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, nome);
+            resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                return new TemplateZPL(
+                        resultSet.getLong("id"),
+                        resultSet.getString("nome"),
+                        resultSet.getString("tipo_arquivo"),
+                        resultSet.getString("conteudo"),
+                        resultSet.getTimestamp("criado_em").toLocalDateTime()
+                );
+            }
+        } catch (Exception e) {
+            logger.error("Erro ao buscar template pelo nome.", e);
+        }
+        return null;
+    }
+
+    public void salvarDadosProduto(Long templateId, ProdutoLabelData d) {
+        String sql = """
+        INSERT INTO produto_label_data (
+            template_id, codigo_barras, url_qr, sif, sku,
+            data_producao, data_validade,
+            desc_completa, desc_reduzida, peso_kg
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        """;
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setLong(1, templateId);
+            ps.setString(2, d.codigoBarras());
+            ps.setString(3, d.urlQrCode());
+            ps.setString(4, d.sif());
+            ps.setString(5, d.sku());
+
+            // datas podem ser nulas
+            if (d.dataProducao() != null) {
+                ps.setObject(6, d.dataProducao());
+            } else {
+                ps.setNull(6, Types.DATE);
+            }
+
+            if (d.dataValidade() != null) {
+                ps.setObject(7, d.dataValidade());
+            } else {
+                ps.setNull(7, Types.DATE);
+            }
+
+            ps.setString(8, d.descCompleta());
+            ps.setString(9, d.descReduzida());
+            ps.setBigDecimal(10, d.pesoKg());
+
+            ps.executeUpdate();
+            logger.info("Dados extraídos do ZPL salvos com sucesso (template_id={}).", templateId);
+        } catch (Exception e) {
+            logger.error("Erro ao salvar dados do template ZPL.", e);
+        }
     }
 }

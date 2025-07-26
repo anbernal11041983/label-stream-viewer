@@ -216,7 +216,7 @@
                                 </Pane>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="template_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="false">
+                        <AnchorPane fx:id="template_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="true">
                             <children>
                                 <Label layoutX="17.0" layoutY="0.0" prefHeight="32.0" prefWidth="267.0" text="Lista de templates">
                                     <font>
@@ -436,7 +436,7 @@
                                 </VBox>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="monitor_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639" prefWidth="820" stylesheets="@dashboard.css" visible="true">
+                        <AnchorPane fx:id="monitor_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639" prefWidth="820" stylesheets="@dashboard.css" visible="false">
 
                             <children>
                                 <VBox alignment="TOP_LEFT" prefHeight="639" prefWidth="820" spacing="11.0">
