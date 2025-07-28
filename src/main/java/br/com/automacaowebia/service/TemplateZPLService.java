@@ -26,32 +26,39 @@ public class TemplateZPLService {
     /**
      * Insere um template ZPL no banco.
      */
-    public boolean insertTemplate(TemplateZPL template) {
-        logger.info("Tentando inserir template: {}", template.getNome());
+    public Long insertTemplate(TemplateZPL template) {
+        final String SQL = "INSERT INTO template_zpl (nome, tipo_arquivo, conteudo) VALUES (?,?,?)";
 
-        if (template.getNome() == null || template.getNome().isBlank()) {
-            logger.warn("Nome do template não pode ser vazio.");
-            throw new IllegalArgumentException("O nome do template é obrigatório.");
-        }
+        try (PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
+            connection.setAutoCommit(false);
 
-        String sql = "INSERT INTO template_zpl (nome, tipo_arquivo, conteudo) VALUES (?, ?, ?)";
-        try {
-            preparedStatement = connection.prepareStatement(sql);
-            preparedStatement.setString(1, template.getNome());
-            preparedStatement.setString(2, template.getTipoArquivo());
-            preparedStatement.setString(3, template.getConteudo());
+            ps.setString(1, template.getNome());
+            ps.setString(2, template.getTipoArquivo());
+            ps.setString(3, template.getConteudo());
+            ps.executeUpdate();
 
-            boolean resultado = preparedStatement.executeUpdate() > 0;
-            if (resultado) {
-                logger.info("Template inserido com sucesso: {}", template.getNome());
-            } else {
-                logger.warn("Falha ao inserir template: {}", template.getNome());
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    long idGerado = rs.getLong(1);
+                    connection.commit();
+                    logger.info("Template salvo (id={})", idGerado);
+                    return idGerado;
+                }
             }
-            return resultado;
+            connection.rollback();
         } catch (Exception e) {
-            logger.error("Erro ao inserir template: {}", template.getNome(), e);
-            return false;
+            try {
+                connection.rollback();
+            } catch (Exception ignore) {
+            }
+            logger.error("Erro ao inserir template", e);
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+            } catch (Exception ignore) {
+            }
         }
+        return null;
     }
 
     /**
@@ -209,42 +216,65 @@ public class TemplateZPLService {
         return null;
     }
 
-    public void salvarDadosProduto(Long templateId, ProdutoLabelData d) {
-        String sql = """
+    public void salvarDadosProduto(Long templateId, ProdutoLabelData dados) {
+
+        final String SQL_PRODUTO = """
         INSERT INTO produto_label_data (
             template_id, codigo_barras, url_qr, sif, sku,
-            data_producao, data_validade,
-            desc_completa, desc_reduzida, peso_kg
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            data_producao, data_validade, desc_completa, desc_reduzida, peso_kg
+        ) VALUES (?,?,?,?,?,?,?,?,?,?)
         """;
-        try (PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setLong(1, templateId);
-            ps.setString(2, d.codigoBarras());
-            ps.setString(3, d.urlQrCode());
-            ps.setString(4, d.sif());
-            ps.setString(5, d.sku());
 
-            // datas podem ser nulas
-            if (d.dataProducao() != null) {
-                ps.setObject(6, d.dataProducao());
-            } else {
-                ps.setNull(6, Types.DATE);
+        /* use o nome de coluna que realmente existe – ajuste se for “campo” */
+        final String SQL_BLUEPRINT = """
+        INSERT INTO template_blueprint (template_id, marcador, campo_dto, ordem, ativo) VALUES
+        (?, 'B1', 'codigo_barras', 1, 1),
+        (?, 'Q1', 'url_qr',        2, 1),
+        (?, 'T4', 'sif',           3, 1),
+        (?, 'T3', 'sku',           4, 1),
+        (?, 'T5', 'data_producao', 5, 1),
+        (?, 'T6', 'data_validade', 6, 1),
+        (?, 'T1', 'desc_completa', 7, 1),
+        (?, 'T2', 'desc_reduzida', 8, 1),
+        (?, 'T7', 'peso',          9, 1)
+        """;
+
+        try (Connection conn = Database.getInstance().connectDB()) {
+            conn.setAutoCommit(false);                // ───► 1 única transacção
+
+            /* ---------- INSERE produto_label_data ---------- */
+            try (PreparedStatement ps = conn.prepareStatement(SQL_PRODUTO)) {
+                ps.setLong(1, templateId);
+                ps.setString(2, dados.codigoBarras());
+                ps.setString(3, dados.urlQrCode());
+                ps.setString(4, dados.sif());
+                ps.setString(5, dados.sku());
+                ps.setObject(6, dados.dataProducao());
+                ps.setObject(7, dados.dataValidade());
+                ps.setString(8, dados.descCompleta());
+                ps.setString(9, dados.descReduzida());
+                ps.setBigDecimal(10, dados.pesoKg());
+                ps.executeUpdate();
             }
 
-            if (d.dataValidade() != null) {
-                ps.setObject(7, d.dataValidade());
-            } else {
-                ps.setNull(7, Types.DATE);
+            /* ---------- INSERE blueprints‑padrão ---------- */
+            try (PreparedStatement ps = conn.prepareStatement(SQL_BLUEPRINT)) {
+                for (int i = 1; i <= 9; i++) {        // 9 “?” na query
+                    ps.setLong(i, templateId);
+                }
+                ps.executeUpdate();
             }
 
-            ps.setString(8, d.descCompleta());
-            ps.setString(9, d.descReduzida());
-            ps.setBigDecimal(10, d.pesoKg());
+            conn.commit();                            // tudo OK
+            logger.info("Produto e blueprints inseridos para template_id {}", templateId);
 
-            ps.executeUpdate();
-            logger.info("Dados extraídos do ZPL salvos com sucesso (template_id={}).", templateId);
         } catch (Exception e) {
-            logger.error("Erro ao salvar dados do template ZPL.", e);
+            logger.error("Falha ao salvar produto/blueprints (template_id={})", templateId, e);
+            /* se a ligação ainda existir, desfazemos a transacção */
+            try {
+                Database.getInstance().connectDB().rollback();
+            } catch (Exception ignore) {
+            }
         }
     }
 }

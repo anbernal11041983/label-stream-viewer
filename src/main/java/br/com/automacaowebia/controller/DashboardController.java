@@ -11,6 +11,7 @@ import br.com.automacaowebia.service.ZplCacheService;
 import br.com.automacaowebia.service.PrinterService;
 import br.com.automacaowebia.model.Printer;
 import br.com.automacaowebia.parser.ZplParser;
+import br.com.automacaowebia.service.BlueprintService;
 import br.com.automacaowebia.service.DispositivoService;
 import br.com.automacaowebia.session.Session;
 import br.com.automacaowebia.util.PrintExecutor;
@@ -49,9 +50,12 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
@@ -198,6 +202,29 @@ public class DashboardController implements Initializable {
     @FXML
     private TextField txtValue;
 
+    @FXML
+    private Button blueprint_btn;
+    @FXML
+    private AnchorPane blueprint_pane;
+
+    @FXML
+    private TableView<TemplateBlueprint> tblBlueprint;
+    @FXML
+    private TableColumn<TemplateBlueprint, String> col_bp_marcador;
+    @FXML
+    private TableColumn<TemplateBlueprint, String> col_bp_campo;
+    @FXML
+    private TableColumn<TemplateBlueprint, Integer> col_bp_ordem;
+    @FXML
+    private TableColumn<TemplateBlueprint, Boolean> col_bp_ativo;
+    @FXML
+    private TableColumn<TemplateBlueprint, Void> col_bp_acao;
+
+    @FXML
+    private ComboBox<String> cb_bp_template;
+    @FXML
+    private Spinner<Integer> sp_bp_order;
+
     private double x;
     private double y;
     private final TemplateZPLService templateService = new TemplateZPLService();
@@ -212,6 +239,8 @@ public class DashboardController implements Initializable {
     private static final Logger logger = LogManager.getLogger(DashboardController.class);
     private final DispositivoService dispositivoService = new DispositivoService();
     private Dispositivo selecionadoDispositivo;
+    private final BlueprintService blueprintService = new BlueprintService();
+    private TemplateBlueprint selecionadoBlueprint;
 
     private ObservableList<VarItem> varsData = FXCollections.observableArrayList();
 
@@ -250,6 +279,8 @@ public class DashboardController implements Initializable {
         impressao_zpl.setVisible(false);
         printer_pane.setVisible(false);
         monitor_pane.setVisible(false);
+        dispositivo_pane.setVisible(false);
+        blueprint_pane.setVisible(false);
 
         // Estilo
         String corOn = "-fx-background-color:linear-gradient(to bottom right , rgba(121,172,255,0.7), rgba(255,106,239,0.7))";
@@ -259,6 +290,8 @@ public class DashboardController implements Initializable {
         impressao_btn.setStyle(corOff);
         printers_btn.setStyle(corOff);
         monitor_btn.setStyle(corOff);
+        dispositivos_btn.setStyle(corOff);
+        blueprint_btn.setStyle(corOff);
 
         // Checa permissão
         User usuario = Session.getInstance().getUser();
@@ -279,6 +312,8 @@ public class DashboardController implements Initializable {
                 carredarDadosDash();
             } else if (modulo.btn == monitor_btn) {
                 carregaImpressoraMonitor();
+            } else if (modulo.btn == blueprint_btn) {
+                carregarComboBlueprint();
             }
         } else {
             new Alert(Alert.AlertType.WARNING, "Você não tem permissão para acessar este módulo.").showAndWait();
@@ -298,6 +333,10 @@ public class DashboardController implements Initializable {
         dasboard_pane.setVisible(true);
         template_pane.setVisible(false);
         impressao_zpl.setVisible(false);
+        printer_pane.setVisible(false);
+        monitor_pane.setVisible(false);
+        dispositivo_pane.setVisible(false);
+        blueprint_pane.setVisible(false);
     }
 
     public void signOut() {
@@ -379,15 +418,18 @@ public class DashboardController implements Initializable {
 
         TemplateZPL template = new TemplateZPL(nome, "TXT", conteudoTemplate);
 
-        boolean sucesso = templateService.insertTemplate(template);
-        if (sucesso) {
-            logger.info("Template '{}' salvo com sucesso.", nome);
-            TemplateZPL templateSalvo = templateService.getTemplateByNome(nome);
+        Long idGerado = templateService.insertTemplate(template);
+
+        if (idGerado != null) {
+            logger.info("Template '{}' salvo com sucesso (id={}).", nome, idGerado);
+
             ProdutoLabelData dados = ZplParser.parseFromString(conteudoTemplate);
-            templateService.salvarDadosProduto(templateSalvo.getId(), dados);
+            templateService.salvarDadosProduto(idGerado, dados);
+
             limparCampoTemplate();
             carregarListaTemplate();
-        } else {
+
+        } else {                                   // falhou
             logger.error("Erro ao salvar template '{}'.", nome);
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Erro");
@@ -1133,6 +1175,16 @@ public class DashboardController implements Initializable {
         limparCamposVar();
     }
 
+    private void removerBlueprint(TemplateBlueprint bp) {
+        Alert c = new Alert(Alert.AlertType.CONFIRMATION,
+                "Remover mapeamento '" + bp.getMarcador() + "'?");
+        c.showAndWait().ifPresent(bt -> {
+            if (bt == ButtonType.OK) {
+                blueprintService.deletar(bp.getId());
+            }
+        });
+    }
+
     private void limparCamposVar() {
         txtKey.clear();
         txtValue.clear();
@@ -1153,6 +1205,72 @@ public class DashboardController implements Initializable {
                 }
             }
         });
+    }
+
+    private void initBlueprintCrud() {
+
+        // ── colunas simples ──
+        col_bp_marcador.setCellValueFactory(new PropertyValueFactory<>("marcador"));
+        col_bp_campo.setCellValueFactory(new PropertyValueFactory<>("campo"));
+        col_bp_ordem.setCellValueFactory(new PropertyValueFactory<>("ordem"));
+
+        // ── checkbox editável, mas SEM persistir automáticamente ──
+        col_bp_ativo.setCellValueFactory(cell -> cell.getValue().ativoProperty());
+        col_bp_ativo.setCellFactory(CheckBoxTableCell.forTableColumn(col_bp_ativo));
+        col_bp_ativo.setEditable(true);
+        tblBlueprint.setEditable(true);
+
+        // ── coluna de ações  (SALVAR + EXCLUIR) ──
+        configurarColunaAcoesBlueprint();
+
+        tblBlueprint.getItems().clear();       // carrega depois do template escolhido
+    }
+
+    private void configurarColunaAcoesBlueprint() {
+        col_bp_acao.setCellFactory(tc -> new TableCell<>() {
+
+            private final Button btnSave = criarBotaoSave();
+            private final Button btnDel = criarBotaoTrash();
+            private final HBox box = new HBox(6, btnSave, btnDel);
+
+            {
+                btnSave.setOnAction(e -> {
+                    TemplateBlueprint bp = getTableView().getItems().get(getIndex());
+
+                    boolean ok = blueprintService.atualizar(bp);   // grava TODOS os campos
+
+                    Alert a = new Alert(ok ? Alert.AlertType.INFORMATION
+                            : Alert.AlertType.ERROR);
+
+                    a.setHeaderText(null);
+                    a.setContentText(ok
+                            ? "Mapeamento salvo com sucesso!"
+                            : "Não foi possível salvar o mapeamento.");
+                    a.showAndWait();
+                });
+
+                btnDel.setOnAction(e -> removerBlueprint(
+                        getTableView().getItems().get(getIndex())));
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                setGraphic(empty ? null : box);
+            }
+        });
+    }
+
+    private Button criarBotaoSave() {
+        Button b = new Button();
+        FontAwesomeIconView icon = new FontAwesomeIconView();
+        icon.setGlyphName("SAVE");
+        icon.setFill(Color.WHITE);
+        icon.setSize("16");
+        b.setGraphic(icon);
+        b.getStyleClass().add("save");
+        b.setTooltip(new Tooltip("Salvar alterações"));
+        return b;
     }
 
     private void carregarListaDispositivo() {
@@ -1210,6 +1328,7 @@ public class DashboardController implements Initializable {
         modulos.put(printers_btn, new PermissaoModulo(printer_pane, printers_btn, List.of("ADMIN", "OPERADOR")));
         modulos.put(monitor_btn, new PermissaoModulo(monitor_pane, monitor_btn, List.of("ADMIN", "OPERADOR")));
         modulos.put(dispositivos_btn, new PermissaoModulo(dispositivo_pane, dispositivos_btn, List.of("ADMIN")));
+        modulos.put(blueprint_btn, new PermissaoModulo(blueprint_pane, blueprint_btn, List.of("ADMIN")));
     }
 
     private void initVarsTable() {
@@ -1224,6 +1343,31 @@ public class DashboardController implements Initializable {
 
         tblVars.setItems(varsData);
         tblVars.setEditable(true);
+    }
+
+    private void initBlueprintTemplateListener() {
+        cb_bp_template.getSelectionModel().selectedItemProperty().addListener(
+                (obs, oldTpl, newTpl) -> {
+                    if (newTpl != null) {
+                        carregarListaBlueprint(newTpl);   // popula tabela
+                        //cb_bp_template.setDisable(true);  // opcional: trava combobox
+                    }
+                });
+    }
+
+    private void carregarListaBlueprint(String nomeTemplate) {
+        TemplateZPL tpl = templateService.getTemplateByNome(nomeTemplate);
+        tblBlueprint.setItems(
+                tpl == null ? FXCollections.observableArrayList()
+                        : blueprintService.listarPorTemplate(tpl.getId()));
+    }
+
+    private void carregarComboBlueprint() {
+        ObservableList<String> templates = templateService.getTemplateList()
+                .stream()
+                .map(TemplateZPL::getNome)
+                .collect(Collectors.toCollection(FXCollections::observableArrayList));
+        cb_bp_template.setItems(templates);
     }
 
     @Override
@@ -1246,10 +1390,13 @@ public class DashboardController implements Initializable {
         // combos / tabelas
         comboUnidade.getSelectionModel().select("inches");
         carregarComboTemplate();
+        carregarComboBlueprint();
         comboSku.setItems(getListaSkuMock());
         carregarListaTemplate();
+        initBlueprintTemplateListener();
         initPrinterCrud();
         initDispositivoCrud();
+        initBlueprintCrud();
         carredarDadosDash();
 
         btnImprimir.disableProperty().bind(botaoDesabilitado);
