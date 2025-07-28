@@ -5,7 +5,6 @@
 <?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ProgressBar?>
@@ -15,7 +14,6 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -225,7 +223,7 @@
                                 </Pane>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="template_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="true">
+                        <AnchorPane fx:id="template_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="false">
                             <children>
                                 <Label layoutX="17.0" layoutY="0.0" prefHeight="32.0" prefWidth="267.0" text="Lista de templates">
                                     <font>
@@ -362,85 +360,78 @@
                                 </Button>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="impressao_zpl" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="false">
+                        <AnchorPane fx:id="impressao_zpl" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="807.0" stylesheets="@dashboard.css" visible="true">
+
                             <children>
-                                <VBox alignment="TOP_LEFT" prefHeight="639.0" prefWidth="820.0" spacing="20.0">
+                                <VBox alignment="TOP_LEFT" prefWidth="820" spacing="20">
                                     <padding>
                                         <Insets bottom="20" left="20" right="20" top="20" />
                                     </padding>
 
-                                    <!-- Seção de seleção -->
-                                    <HBox alignment="CENTER_LEFT" spacing="20.0">
-                                        <children>
-                                            <!-- Template -->
-                                            <Label prefHeight="20.0" prefWidth="100.0" styleClass="label-bold" text="Template:" />
-                                            <ComboBox fx:id="comboTemplate" prefHeight="26.0" prefWidth="242.0" promptText="Selecione um template" />
+                                    <!--  TÍTULO -->
+                                    <Label styleClass="title" text="Impressão de Etiquetas">
+                              <font>
+                                 <Font name="System Bold" size="14.0" />
+                              </font></Label>
 
-                                            <!-- SKU -->
-                                            <Label alignment="CENTER_RIGHT" prefHeight="18.0" prefWidth="100.0" styleClass="label-bold" text="SKU:" />
-                                            <ComboBox fx:id="comboSku" prefHeight="26.0" prefWidth="284.0" promptText="Selecione um SKU" />
-                                        </children>
+                                    <!--  SELEÇÃO TEMPLATE / IMPRESSORA -->
+                                    <HBox alignment="CENTER_LEFT" spacing="20">
+                                        <Label prefWidth="85" styleClass="label-bold" text="Template:" />
+                                        <ComboBox fx:id="comboTemplate" prefWidth="240" promptText="Selecione um template" />
+
+                                        <Label prefWidth="85" styleClass="label-bold" text="Impressora:" />
+                                        <ComboBox fx:id="comboPrinter" prefWidth="240" promptText="Selecione a impressora" />
                                     </HBox>
-                                    <HBox alignment="CENTER_LEFT" prefHeight="42.0" prefWidth="780.0" spacing="20.0">
-                                        <children>
 
-                                            <!-- Quantidade -->
-                                            <Label prefHeight="20.0" prefWidth="80.0" styleClass="label-bold" text="Qtd:" />
-                                            <TextField fx:id="txtQuantidade" prefWidth="60.0" promptText="Qtd" />
+                                    <!--  VISUALIZAÇÃO DAS INFORMAÇÕES DO PRODUTO  -->
+                                    <GridPane hgap="10" vgap="8">
+                                        <columnConstraints>
+                                            <ColumnConstraints prefWidth="120" />
+                                            <ColumnConstraints prefWidth="300" />
+                                        </columnConstraints>
 
-                                            <!-- Tamanho da etiqueta -->
-                                            <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="80.0" styleClass="label-bold" text="Tamanho:" />
-                                            <TextField fx:id="txtWidth" prefWidth="50.0" promptText="Largura" />
-                                            <Label text="x" />
-                                            <TextField fx:id="txtHeight" prefWidth="50.0" promptText="Altura" />
-                                            <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="80.0" styleClass="label-bold" text="Und. Medida" />
-                                            <ComboBox fx:id="comboUnidade" prefWidth="90.0" promptText="Unidade">
-                                                <items>
-                                                    <FXCollections fx:factory="observableArrayList">
-                                                        <String fx:value="inches" />
-                                                        <String fx:value="cm" />
-                                                        <String fx:value="mm" />
-                                                    </FXCollections>
-                                                </items>
-                                            </ComboBox>
-                                            <Button fx:id="btnRefreshTemplates" onAction="#refreshTemplates" prefHeight="27.0" prefWidth="122.0" styleClass="refresh" text="Preview">
-                                                <graphic>
-                                                    <FontAwesomeIconView fill="WHITE" glyphName="REFRESH" size="14.0" />
-                                                </graphic>
-                                            </Button>
-                                        </children>
+                                        <Label styleClass="label-bold" text="Nome produto:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                        <Label fx:id="lblNomeProduto" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+
+                                        <Label styleClass="label-bold" text="Nome reduzido:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                        <Label fx:id="lblNomeReduzido" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+
+                                        <Label styleClass="label-bold" text="SKU:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                        <Label fx:id="lblSku" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+
+                                        <Label styleClass="label-bold" text="Data produção:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                        <Label fx:id="lblDataProducao" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+
+                                        <Label styleClass="label-bold" text="Data validade:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                                        <Label fx:id="lblDataValidade" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                              <rowConstraints>
+                                 <RowConstraints />
+                                 <RowConstraints />
+                                 <RowConstraints />
+                                 <RowConstraints />
+                                 <RowConstraints />
+                              </rowConstraints>
+                                    </GridPane>
+
+                                    <!--  QUANTIDADE / INTERVALO -->
+                                    <HBox alignment="CENTER_LEFT" spacing="20">
+                                        <Label prefWidth="60" styleClass="label-bold" text="Qtd:" />
+                                        <TextField fx:id="txtQuantidade" prefWidth="80" promptText="Qtd" />
+
+                                        <Label prefWidth="100" styleClass="label-bold" text="Intervalo (s):" />
+                                        <TextField fx:id="txtIntervalo" prefWidth="80" promptText="Tempo" />
                                     </HBox>
 
                                     <Separator />
 
-                                    <!-- PREVIEW DA IMAGEM -->
-                                    <VBox spacing="10.0">
-                                        <children>
-                                            <Label styleClass="label-bold" text="Preview da Etiqueta">
-                                                <font>
-                                                    <Font name="System Bold" size="12.0" />
-                                                </font>
-                                            </Label>
-                                            <Pane prefHeight="400.0" prefWidth="748.0" styleClass="preview-container">
-                                                <children>
-                                                    <Label fx:id="lblPreviewPlaceholder" alignment="CENTER" contentDisplay="CENTER" prefHeight="400.0" prefWidth="780.0" text="Selecione um template para visualizar" textAlignment="CENTER" textFill="#888888" wrapText="true" />
-                                                    <ImageView fx:id="imgPreview" fitHeight="400.0" fitWidth="780.0" preserveRatio="true" />
-                                                </children>
-                                            </Pane>
-                                        </children>
-                                    </VBox>
-
-                                    <Separator />
-
-                                    <!-- Barra de progresso e botão de impressão -->
-                                    <HBox alignment="CENTER_RIGHT" spacing="10.0">
-                                        <children>
-                                            <Button fx:id="btnPrint" onAction="#abrirDialogoImpressao" prefHeight="36.0" prefWidth="120.0" styleClass="print" text="Imprimir">
-                                                <graphic>
-                                                    <FontAwesomeIconView fill="WHITE" glyphName="PRINT" size="18.0" />
-                                                </graphic>
-                                            </Button>
-                                        </children>
+                                    <!--  BARRA DE PROGRESSO + BOTÃO IMPRIMIR -->
+                                    <HBox alignment="CENTER_RIGHT" spacing="10">
+                                        <ProgressBar fx:id="barPrint" prefHeight="20" prefWidth="200" progress="0.0" visible="false" />
+                                        <Button fx:id="btnPrint" onAction="#onPrint" prefHeight="36" prefWidth="120" styleClass="print" text="Imprimir">
+                                            <graphic>
+                                                <FontAwesomeIconView fill="WHITE" glyphName="PRINT" size="18" />
+                                            </graphic>
+                                        </Button>
                                     </HBox>
                                 </VBox>
                             </children>
@@ -598,18 +589,12 @@
                                 </Button>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="blueprint_pane"
-                                    layoutX="-1" layoutY="55"
-                                    prefHeight="639" prefWidth="820"
-                                    stylesheets="@dashboard.css"
-                                    visible="false">
+                        <AnchorPane fx:id="blueprint_pane" layoutX="-1" layoutY="55" prefHeight="639" prefWidth="820" stylesheets="@dashboard.css" visible="false">
 
                             <!-- título -->
-                            <Label layoutX="14" layoutY="5"
-                                   styleClass="label-bold"
-                                   text="MAPEAMENTO DO TEMPLATE">
+                            <Label layoutX="14" layoutY="5" styleClass="label-bold" text="MAPEAMENTO DO TEMPLATE">
                                 <font>
-                                    <Font name="Dubai Bold" size="18"/>
+                                    <Font name="Dubai Bold" size="18" />
                                 </font>
                             </Label>
 
@@ -618,26 +603,22 @@
                                 <children>
                                     <Label styleClass="label-bold" text="Template">
                                         <font>
-                                            <Font name="Dubai Bold" size="15"/>
+                                            <Font name="Dubai Bold" size="15" />
                                         </font>
                                     </Label>
 
-                                    <ComboBox fx:id="cb_bp_template"
-                                              prefWidth="260"
-                                              promptText="Selecione um template"/>
+                                    <ComboBox fx:id="cb_bp_template" prefWidth="260" promptText="Selecione um template" />
                                 </children>
                             </HBox>
 
                             <!-- grid – começa vazio; é preenchido quando um template é escolhido -->
-                            <TableView fx:id="tblBlueprint"
-                                       layoutX="13" layoutY="100"
-                                       prefHeight="510" prefWidth="794">
+                            <TableView fx:id="tblBlueprint" layoutX="13" layoutY="100" prefHeight="510" prefWidth="794">
                                 <columns>
-                                    <TableColumn fx:id="col_bp_marcador" prefWidth="180" text="Marcador"/>
-                                    <TableColumn fx:id="col_bp_campo"    prefWidth="170" text="Campo DTO"/>
-                                    <TableColumn fx:id="col_bp_ordem"    prefWidth="100" text="Ordem"/>
-                                    <TableColumn fx:id="col_bp_ativo"    prefWidth="130" text="Ativo"/>
-                                    <TableColumn fx:id="col_bp_acao"     prefWidth="200" text="Ações"/>
+                                    <TableColumn fx:id="col_bp_marcador" prefWidth="180" text="Marcador" />
+                                    <TableColumn fx:id="col_bp_campo" prefWidth="170" text="Campo DTO" />
+                                    <TableColumn fx:id="col_bp_ordem" prefWidth="100" text="Ordem" />
+                                    <TableColumn fx:id="col_bp_ativo" prefWidth="130" text="Ativo" />
+                                    <TableColumn fx:id="col_bp_acao" prefWidth="200" text="Ações" />
                                 </columns>
                             </TableView>
                         </AnchorPane>

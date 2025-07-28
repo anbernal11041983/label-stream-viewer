@@ -13,6 +13,7 @@ import br.com.automacaowebia.model.Printer;
 import br.com.automacaowebia.parser.ZplParser;
 import br.com.automacaowebia.service.BlueprintService;
 import br.com.automacaowebia.service.DispositivoService;
+import br.com.automacaowebia.service.ProdutoLabelDataService;
 import br.com.automacaowebia.session.Session;
 import br.com.automacaowebia.util.PrintExecutor;
 import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView;
@@ -91,8 +92,6 @@ public class DashboardController implements Initializable {
     @FXML
     private ComboBox<String> comboTemplate;
     @FXML
-    private ComboBox<String> comboSku;
-    @FXML
     private ImageView imgPreview;
     @FXML
     private Label lblPreviewPlaceholder;
@@ -112,8 +111,6 @@ public class DashboardController implements Initializable {
     private TextField txtWidth;
     @FXML
     private TextField txtHeight;
-    @FXML
-    private ComboBox<String> comboUnidade;
     @FXML
     private Label lblVersao;
     @FXML
@@ -225,11 +222,32 @@ public class DashboardController implements Initializable {
     @FXML
     private Spinner<Integer> sp_bp_order;
 
+    /* ─── impressao_zpl ──────────────────────────────────────────────── */
+    @FXML
+    private ComboBox<Printer> comboPrinter;
+
+    @FXML
+    private Label lblNomeProduto;
+    @FXML
+    private Label lblNomeReduzido;
+    @FXML
+    private Label lblSku;
+    @FXML
+    private Label lblDataProducao;
+    @FXML
+    private Label lblDataValidade;
+
+    @FXML
+    private TextField txtIntervalo;      // segundos entre impressões
+    @FXML
+    private ProgressBar barPrint;
+
     private double x;
     private double y;
     private final TemplateZPLService templateService = new TemplateZPLService();
     private final ImpressaoZPLService impressaoZPLService = new ImpressaoZPLService();
     private final HistoricoImpressaoService historicoImpressaoService = new HistoricoImpressaoService();
+    private final ProdutoLabelDataService produtoLabelDataService =  new ProdutoLabelDataService();
     private String conteudoTemplate; // Para guardar o conteúdo carregado
     private final PrinterService printerService = new PrinterService(); // >>> NOVO
     private Printer selecionadoPrinter;
@@ -516,20 +534,16 @@ public class DashboardController implements Initializable {
         lista_template.setItems(lista);
     }
 
-    public ObservableList<String> getListaSkuMock() {
-        ObservableList<String> lista = FXCollections.observableArrayList();
-        for (int i = 1; i <= 100; i++) {
-            lista.add(String.format("SKU-%04d", i));
-        }
-        return lista;
-    }
-
     public void carregarComboTemplate() {
         ObservableList<String> templates = templateService.getTemplateList()
                 .stream()
                 .map(TemplateZPL::getNome)
                 .collect(Collectors.toCollection(FXCollections::observableArrayList));
         comboTemplate.setItems(templates);
+
+        // limpa seleção anterior e limpa os campos
+        comboTemplate.getSelectionModel().clearSelection();
+        preencherInfoProduto(null);
     }
 
     public String getConteudoTemplatePorNome(String nome) {
@@ -550,124 +564,6 @@ public class DashboardController implements Initializable {
         });
     }
 
-    public void setupFields() {
-        txtQuantidade.textProperty().addListener((obs, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*")) {
-                txtQuantidade.setText(newValue.replaceAll("[^\\d]", ""));
-            }
-        });
-
-        txtWidth.textProperty().addListener((obs, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*(\\.\\d*)?")) {
-                txtWidth.setText(newValue.replaceAll("[^\\d.]", ""));
-            }
-        });
-
-        txtHeight.textProperty().addListener((obs, oldValue, newValue) -> {
-            if (!newValue.matches("\\d*(\\.\\d*)?")) {
-                txtHeight.setText(newValue.replaceAll("[^\\d.]", ""));
-            }
-        });
-    }
-
-    @FXML
-    public void refreshTemplates() {
-        logger.info("Iniciando geração de preview da etiqueta.");
-
-        // 1. Coleta dos valores digitados / selecionados pelo usuário
-        String template = comboTemplate.getValue();
-        String sku = comboSku.getValue();
-        String qtdTxt = txtQuantidade.getText();
-        String widthTxt = txtWidth.getText();
-        String heightTxt = txtHeight.getText();
-        String unidade = comboUnidade.getValue();
-
-        // 2. Validação dos campos obrigatórios
-        List<String> faltando = new ArrayList<>();
-
-        if (template == null || template.isBlank()) {
-            faltando.add("Template");
-        }
-        if (sku == null || sku.isBlank()) {
-            faltando.add("SKU");
-        }
-        if (qtdTxt == null || qtdTxt.isBlank()) {
-            faltando.add("Quantidade");
-        }
-        if (widthTxt == null || widthTxt.isBlank()) {
-            faltando.add("Largura");
-        }
-        if (heightTxt == null || heightTxt.isBlank()) {
-            faltando.add("Altura");
-        }
-        if (unidade == null || unidade.isBlank()) {
-            faltando.add("Unidade de medida");
-        }
-
-        if (!faltando.isEmpty()) {
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Campos obrigatórios");
-            alert.setHeaderText("Preencha os campos abaixo antes de continuar:");
-            alert.setContentText(String.join(", ", faltando));
-            alert.showAndWait();
-            logger.warn("Campos obrigatórios não preenchidos: {}", faltando);
-            return;
-        }
-
-        // 3. Conversão segura
-        int quantidade;
-        double largura, altura;
-        try {
-            quantidade = Integer.parseInt(qtdTxt);
-            largura = Double.parseDouble(widthTxt.replace(',', '.'));
-            altura = Double.parseDouble(heightTxt.replace(',', '.'));
-        } catch (NumberFormatException ex) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Valor inválido");
-            alert.setHeaderText(null);
-            alert.setContentText("Quantidade deve ser numérica inteira e tamanho deve ser numérico.");
-            alert.showAndWait();
-            logger.error("Erro de conversão numérica.", ex);
-            return;
-        }
-
-        // 4. Gerar chave do cache
-        String cacheKey = gerarCacheKey(template, sku, largura, altura, unidade);
-        logger.info("CacheKey gerada: {}", cacheKey);
-
-        try {
-            // 5. Montagem do ZPL
-            String zplBruto = getConteudoTemplatePorNome(template);
-            String zplFinal = impressaoZPLService.personalizarZpl(zplBruto, sku);
-
-            // 6. Gerar preview da etiqueta
-            Image preview = impressaoZPLService.gerarPreview(zplFinal, largura, altura, unidade, "image/png");
-
-            if (preview != null) {
-                imgPreview.setImage(preview);
-                lblPreviewPlaceholder.setVisible(false);
-
-                // 7. Salvar no cache (tanto o preview quanto o ZPL final)
-                ZplCacheService.salvarPreview(cacheKey, preview);
-                ZplCacheService.salvarZpl(cacheKey, zplFinal);
-
-                logger.info("Preview e ZPL armazenados no cache com sucesso.");
-            } else {
-                logger.error("Falha ao gerar preview da etiqueta.");
-                lblPreviewPlaceholder.setText("Erro ao gerar preview.");
-                lblPreviewPlaceholder.setVisible(true);
-            }
-
-        } catch (Exception e) {
-            logger.error("Erro durante a geração do preview da etiqueta.", e);
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro");
-            alert.setHeaderText(null);
-            alert.setContentText("Ocorreu um erro ao gerar o preview da etiqueta.");
-            alert.showAndWait();
-        }
-    }
-
     public String gerarCacheKey(String template, String sku, double largura, double altura, String unidade) {
         String chave = String.format("%s|%s|%.2f|%.2f|%s",
                 template.trim(),
@@ -678,70 +574,6 @@ public class DashboardController implements Initializable {
 
         logger.info("Gerando cacheKey: {}", chave);
         return chave;
-    }
-
-    @FXML
-    public void abrirDialogoImpressao() {
-        try {
-            // Validar se os campos estão preenchidos
-            String template = comboTemplate.getValue();
-            String sku = comboSku.getValue();
-            String qtdTxt = txtQuantidade.getText();
-            String widthTxt = txtWidth.getText();
-            String heightTxt = txtHeight.getText();
-            String unidade = comboUnidade.getValue();
-
-            if (template == null || sku == null || qtdTxt.isBlank()
-                    || widthTxt.isBlank() || heightTxt.isBlank() || unidade == null) {
-
-                Alert alert = new Alert(Alert.AlertType.WARNING);
-                alert.setTitle("Atenção");
-                alert.setHeaderText("Campos obrigatórios não preenchidos.");
-                alert.setContentText("Preencha Template, SKU, Quantidade e Tamanho.");
-                alert.showAndWait();
-                return;
-            }
-
-            // Conversão segura
-            int quantidade = Integer.parseInt(qtdTxt);
-            double largura = Double.parseDouble(widthTxt.replace(",", "."));
-            double altura = Double.parseDouble(heightTxt.replace(",", "."));
-
-            String cacheKey = gerarCacheKey(template, sku, largura, altura, unidade);
-
-            String zpl = ZplCacheService.getZpl(cacheKey);
-            Image preview = ZplCacheService.getPreview(cacheKey);
-
-            if (zpl == null || preview == null) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Erro");
-                alert.setHeaderText(null);
-                alert.setContentText("Gere o preview antes de imprimir.");
-                alert.showAndWait();
-                return;
-            }
-
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/br/com/automacaowebia/print-dialog.fxml"));
-            Parent root = loader.load();
-
-            PrintDialogController controller = loader.getController();
-            controller.initData(template, sku, largura, altura, unidade, quantidade, preview, cacheKey);
-
-            Stage stage = new Stage();
-            stage.setTitle("Impressão de Etiqueta");
-            stage.setScene(new Scene(root));
-            stage.initModality(Modality.APPLICATION_MODAL); // 🔒 Bloqueia tela principal
-            stage.setResizable(false);
-            stage.showAndWait();
-
-        } catch (Exception e) {
-            logger.error("Erro ao abrir o diálogo de impressão", e);
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro");
-            alert.setHeaderText(null);
-            alert.setContentText("Erro ao abrir o diálogo de impressão.");
-            alert.showAndWait();
-        }
     }
 
     private void initPrinterCrud() {
@@ -1175,6 +1007,11 @@ public class DashboardController implements Initializable {
         limparCamposVar();
     }
 
+    @FXML
+    private void onPrint(ActionEvent e) {
+
+    }
+
     private void removerBlueprint(TemplateBlueprint bp) {
         Alert c = new Alert(Alert.AlertType.CONFIRMATION,
                 "Remover mapeamento '" + bp.getMarcador() + "'?");
@@ -1370,6 +1207,59 @@ public class DashboardController implements Initializable {
         cb_bp_template.setItems(templates);
     }
 
+    private void configurarComboPrinter() {
+        comboPrinter.setItems(printerService.listarTodos());
+        comboPrinter.setCellFactory(lv -> new ListCell<>() {
+            @Override
+            protected void updateItem(Printer p, boolean empty) {
+                super.updateItem(p, empty);
+                setText(empty || p == null ? null
+                        : p.getNome() + "  (" + p.getIp() + ")");
+            }
+        });
+        comboPrinter.setButtonCell(new ListCell<>() {
+            @Override
+            protected void updateItem(Printer p, boolean empty) {
+                super.updateItem(p, empty);
+                setText(empty || p == null ? null
+                        : p.getNome() + "  (" + p.getIp() + ")");
+            }
+        });
+    }
+
+    private void iniciarListenerTemplate() {
+        comboTemplate.getSelectionModel().selectedItemProperty()
+                .addListener((obs, o, n) -> preencherInfoProduto(n));
+    }
+
+    private void preencherInfoProduto(String nomeTemplate) {
+
+        // limpa se nada selecionado
+        if (nomeTemplate == null) {
+            lblNomeProduto.setText("");
+            lblNomeReduzido.setText("");
+            lblSku.setText("");
+            lblDataProducao.setText("");
+            lblDataValidade.setText("");
+            return;
+        }
+
+        TemplateZPL tpl = templateService.getTemplateByNome(nomeTemplate);
+        if (tpl == null) {
+            return;
+        }
+
+        ProdutoLabelData d = produtoLabelDataService.findByTemplateId(tpl.getId());
+
+        lblNomeProduto.setText(d.descCompleta());
+        lblNomeReduzido.setText(d.descReduzida());
+        lblSku.setText(d.sku());
+
+        DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        lblDataProducao.setText(d.dataProducao() != null ? d.dataProducao().format(fmt) : "");
+        lblDataValidade.setText(d.dataValidade() != null ? d.dataValidade().format(fmt) : "");
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Modules.exportAllToAll();
@@ -1383,15 +1273,11 @@ public class DashboardController implements Initializable {
         setUsername();
 
         // campos numéricos
-        setupFields();
         configurarSpinnerQtd();
         configurarSpinnerTmp();
 
-        // combos / tabelas
-        comboUnidade.getSelectionModel().select("inches");
         carregarComboTemplate();
         carregarComboBlueprint();
-        comboSku.setItems(getListaSkuMock());
         carregarListaTemplate();
         initBlueprintTemplateListener();
         initPrinterCrud();
@@ -1400,6 +1286,10 @@ public class DashboardController implements Initializable {
         carredarDadosDash();
 
         btnImprimir.disableProperty().bind(botaoDesabilitado);
+
+        configurarComboPrinter();
+        iniciarListenerTemplate();
+        barPrint.setVisible(false);
 
         activateDashboard();   // por último
     }
