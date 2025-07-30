@@ -19,7 +19,7 @@
         <artifactId>javafx-maven-plugin</artifactId>
         <version>0.0.8</version>
         <configuration>
-          <mainClass>br.com.automacaowebia.app.Launcher</mainClass>
+          <mainClass>br.com.automacaowebia.codilinesimulatorfx.CodilineSimulatorFx</mainClass>
         </configuration>
       </plugin>
       <plugin>
@@ -34,7 +34,7 @@
             <configuration>
               <transformers>
                 <transformer>
-                  <mainClass>br.com.automacaowebia.app.Launcher</mainClass>
+                  <mainClass>br.com.automacaowebia.codilinesimulatorfx.CodilineSimulatorFx</mainClass>
                 </transformer>
                 <transformer>
                   <resource>module-info.class</resource>
@@ -88,7 +88,7 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <javafx.version>23.0.1</javafx.version>
     <log4j.version>2.22.1</log4j.version>
-    <maven.compiler.target>23</maven.compiler.target>
-    <maven.compiler.source>23</maven.compiler.source>
+    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.source>17</maven.compiler.source>
   </properties>
 </project>

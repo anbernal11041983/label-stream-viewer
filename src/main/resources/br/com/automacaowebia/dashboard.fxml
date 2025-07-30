@@ -223,7 +223,7 @@
                                 </Pane>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="template_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="true">
+                        <AnchorPane fx:id="template_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="false">
                             <children>
                                 <Label layoutX="17.0" layoutY="0.0" prefHeight="32.0" prefWidth="267.0" text="Lista de templates">
                                     <font>
@@ -442,7 +442,7 @@
                                 </VBox>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="monitor_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639" prefWidth="820" stylesheets="@dashboard.css" visible="false">
+                        <AnchorPane fx:id="monitor_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639" prefWidth="820" stylesheets="@dashboard.css" visible="true">
 
                             <children>
                                 <VBox alignment="TOP_LEFT" prefHeight="639" prefWidth="820" spacing="11.0">
@@ -461,7 +461,7 @@
                                         <TextArea fx:id="txtLog" editable="false" prefHeight="153.0" prefRowCount="10" prefWidth="780.0" styleClass="log-area" wrapText="true" />
                                     </VBox>
 
-                                    <GridPane hgap="10" vgap="10">
+                                    <GridPane alignment="BOTTOM_LEFT" hgap="10" prefHeight="424.0" prefWidth="780.0" vgap="10">
 
                                         <!-- 4 colunas ⇒ 15 % + 35 %  |  15 % + 35 % -->
                                         <columnConstraints>
@@ -478,10 +478,10 @@
                                         <Label text="Impressora:*" GridPane.columnIndex="2" GridPane.rowIndex="0" />
 
                                         <!-- ─────────── 2ª linha ───────────-->
-                                        <Label text="Tempo de espaçamento" GridPane.columnIndex="0" GridPane.rowIndex="1" />
-                                        <HBox spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                                        <Label text="Tempo de espaço (ms)" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                        <HBox alignment="CENTER_LEFT" prefHeight="35.0" prefWidth="210.0" spacing="6" GridPane.columnIndex="1" GridPane.rowIndex="1">
                                             <children>
-                                                <Spinner fx:id="tmpSpinner" prefWidth="150" />
+                                                <Spinner fx:id="tmpSpinner" prefHeight="26.0" prefWidth="165.0" />
                                             </children>
                                         </HBox>
 
@@ -520,7 +520,7 @@
                                         <rowConstraints>
                                             <RowConstraints />
                                             <RowConstraints />
-                                            <RowConstraints />
+                                            <RowConstraints maxHeight="244.59999389648436" minHeight="221.3999816894531" prefHeight="221.3999816894531" />
                                         </rowConstraints>
 
                                     </GridPane>

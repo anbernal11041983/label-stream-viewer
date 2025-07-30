@@ -918,7 +918,7 @@ public class DashboardController implements Initializable {
     private void configurarSpinnerTmp() {
         // Define ValueFactory
         SpinnerValueFactory.IntegerSpinnerValueFactory valueFactory
-                = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 1, 1);
+                = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000000, 1, 1);
         tmpSpinner.setValueFactory(valueFactory);
 
         // Permite digitar manualmente

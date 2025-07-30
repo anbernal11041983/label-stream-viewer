@@ -106,9 +106,9 @@ public final class LaserDriver {
         }
 
         try (Socket socket = new Socket(printer.getIp(), printer.getPorta())) {
-
+            socket.setTcpNoDelay(true);
             OutputStream out = socket.getOutputStream();
-            InputStream in = socket.getInputStream();
+            InputStream in = new BufferedInputStream(socket.getInputStream());
 
             /* ---------- 1) valida template ---------- */
             List<String> files = fetchFileList(out, in, cb);
@@ -221,8 +221,8 @@ public final class LaserDriver {
 
         // remove o último "; " se existir
         int len = sb.length();
-        if (len >= 2 && sb.substring(len - 2).equals(";")) {
-            sb.delete(len - 2, len);
+        if (len > 0 && sb.charAt(len - 1) == ';') {
+            sb.deleteCharAt(len - 1);
         }
         return sb.toString();
     }
@@ -233,23 +233,40 @@ public final class LaserDriver {
         byte[] frame = frame(payload);
         log.debug(">> [{}] {}", etapa, toHex(frame));
         out.write(frame);
+        out.flush();
 
         ByteArrayOutputStream buf = new ByteArrayOutputStream();
         int b;
-        while ((b = in.read()) != -1) {          // lê até ETX
+        while ((b = in.read()) != -1) {
             buf.write(b);
-            if (b == ETX) {
+            if (b == ETX) {           // ETX encontrado
+                int xor = in.read();  // ← lê sempre 1 byte  (checksum)
+                if (xor != -1) {
+                    buf.write(xor);
+                }
                 break;
             }
         }
+
         byte[] resp = buf.toByteArray();
         log.debug("<< [{}] {}", etapa, toHex(resp));
 
         /* ---------- SUCESSO ---------- */
         if (resp.length >= 2 && resp[0] == STX1 && resp[1] == 0x06) {
-            return new String(resp, 2, resp.length - 3, StandardCharsets.US_ASCII);
+            // acha a posição real do ETX (0x03)
+            int etxIdx = -1;
+            for (int i = 2; i < resp.length; i++) {
+                if (resp[i] == ETX) {        // ETX encontrado
+                    etxIdx = i;
+                    break;
+                }
+            }
+            if (etxIdx == -1) {              // segurança: se ETX não encontrado
+                etxIdx = resp.length - 1;    // usa último byte como limite
+            }
+            // extrai somente o payload ASCII (entre ACK e ETX)
+            return new String(resp, 2, etxIdx - 2, StandardCharsets.US_ASCII);
         }
-
         /* ---------- FALHA: pega motivo em ASCII para log ---------- */
         String asciiDetail = (resp.length >= 4)
                 ? new String(resp, 2, resp.length - 3, StandardCharsets.US_ASCII) // só payload
@@ -277,7 +294,9 @@ public final class LaserDriver {
         if (idx == -1) {
             return -1;
         }
-        String num = resp.substring(idx + "getcount:".length(), resp.length() - 1);
+        String num = resp.substring(idx + "getcount:".length())
+                 .replace(";", "")      // ← elimina o ; caso exista
+                 .trim();
         return Integer.parseInt(num.trim());
     }
 
@@ -339,19 +358,25 @@ public final class LaserDriver {
      *  Helpers de framing e logging
      * ============================================================ */
     private static byte[] frame(String payload) {
-        byte[] data = payload.getBytes(StandardCharsets.US_ASCII);
-        //byte[] data = payload.getBytes(StandardCharsets.ISO_8859_1);
-        //byte[] data = payload.getBytes(Charset.forName("Cp1252"));
+        byte[] payloadBytes = payload.getBytes(StandardCharsets.US_ASCII);
+
+        // monta 02 05 <payload> 03
+        byte[] body = new byte[payloadBytes.length + 3];
+        body[0] = STX1;                // 0x02
+        body[1] = STX2;                // 0x05
+        System.arraycopy(payloadBytes, 0, body, 2, payloadBytes.length);
+        body[body.length - 1] = ETX;   // 0x03
+
+        // XOR de tudo entre 0x02 e 0x03 (índices 1 .. body.length‑2)
         byte xor = 0;
-        for (byte b : data) {
-            xor ^= b;
+        for (int i = 1; i < body.length - 1; i++) {
+            xor ^= body[i];
         }
-        return ByteBuffer.allocate(data.length + 4)
-                .put(STX1).put(STX2)
-                .put(data)
-                .put(ETX)
-                .put(xor)
-                .array();
+
+        // devolve array body + XOR
+        byte[] frame = Arrays.copyOf(body, body.length + 1);
+        frame[frame.length - 1] = xor;
+        return frame;
     }
 
     private static String toHex(byte[] bytes) {

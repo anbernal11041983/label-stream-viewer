@@ -1,861 +1,301 @@
-[2025-06-21 11:29:35] [INFO ] LoginService - Tentando autenticar usuário: admin
-[2025-06-21 11:29:36] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[2025-06-21 11:29:39] [ERROR] LoginController - Error loading dashboard.fxml
-javafx.fxml.LoadException: Error resolving onAction='#activateDashboard', either the event handler is not in the Namespace or there is an error in the script.
-/D:/projects-future/JCSofware/label-stream-viewer/target/classes/br/com/automacaowebia/dashboard.fxml:29
-
-	at javafx.fxml.FXMLLoader.constructLoadException(FXMLLoader.java:2703) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader$Element.processEventHandlerAttributes(FXMLLoader.java:621) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader$ValueElement.processEndElement(FXMLLoader.java:781) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader.processEndElement(FXMLLoader.java:2924) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2639) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2548) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3331) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3287) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3255) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3227) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3203) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader.load(FXMLLoader.java:3196) ~[javafx-fxml-19-win.jar:?]
-	at br.com.automacaowebia.controller.LoginController.login(LoginController.java:98) ~[classes/:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:?]
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:566) ~[?:?]
-	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:77) ~[javafx-base-19-win.jar:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:?]
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:566) ~[?:?]
-	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:275) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1854) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1724) ~[javafx-fxml-19-win.jar:?]
-	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:234) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49) ~[javafx-base-19-win.jar:?]
-	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx-base-19-win.jar:?]
-	at javafx.scene.Node.fireEvent(Node.java:8923) ~[javafx-graphics-19-win.jar:?]
-	at javafx.scene.control.Button.fire(Button.java:203) ~[javafx-controls-19-win.jar:?]
-	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:207) ~[javafx-controls-19-win.jar:?]
-	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274) ~[javafx-controls-19-win.jar:?]
-	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:234) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54) ~[javafx-base-19-win.jar:?]
-	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx-base-19-win.jar:?]
-	at javafx.scene.Scene$MouseHandler.process(Scene.java:3894) ~[javafx-graphics-19-win.jar:?]
-	at javafx.scene.Scene.processMouseEvent(Scene.java:1887) ~[javafx-graphics-19-win.jar:?]
-	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2620) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301) ~[javafx-graphics-19-win.jar:?]
-	at java.base/java.security.AccessController.doPrivileged(Native Method) ~[?:?]
-	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.glass.ui.View.handleMouseEvent(View.java:551) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.glass.ui.View.notifyMouse(View.java:937) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:184) ~[javafx-graphics-19-win.jar:?]
-	at java.base/java.lang.Thread.run(Thread.java:829) [?:?]
-[2025-06-21 11:49:42] [INFO ] LoginService - Tentando autenticar usuário: admin
-[2025-06-21 11:49:43] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[2025-06-21 11:49:45] [ERROR] LoginController - Error loading dashboard.fxml
-javafx.fxml.LoadException: 
-/D:/projects-future/JCSofware/label-stream-viewer/target/classes/br/com/automacaowebia/dashboard.fxml:17
-
-	at javafx.fxml.FXMLLoader.constructLoadException(FXMLLoader.java:2707) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader$ValueElement.processAttribute(FXMLLoader.java:933) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader$InstanceDeclarationElement.processAttribute(FXMLLoader.java:981) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader$Element.processStartElement(FXMLLoader.java:230) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader$ValueElement.processStartElement(FXMLLoader.java:755) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader.processStartElement(FXMLLoader.java:2808) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2634) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2548) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3331) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3287) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3255) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3227) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3203) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader.load(FXMLLoader.java:3196) ~[javafx-fxml-19-win.jar:?]
-	at br.com.automacaowebia.controller.LoginController.login(LoginController.java:98) ~[classes/:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:?]
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:566) ~[?:?]
-	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:77) ~[javafx-base-19-win.jar:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:?]
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:566) ~[?:?]
-	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:275) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1854) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1724) ~[javafx-fxml-19-win.jar:?]
-	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:234) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49) ~[javafx-base-19-win.jar:?]
-	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx-base-19-win.jar:?]
-	at javafx.scene.Node.fireEvent(Node.java:8923) ~[javafx-graphics-19-win.jar:?]
-	at javafx.scene.control.Button.fire(Button.java:203) ~[javafx-controls-19-win.jar:?]
-	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:207) ~[javafx-controls-19-win.jar:?]
-	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274) ~[javafx-controls-19-win.jar:?]
-	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:234) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54) ~[javafx-base-19-win.jar:?]
-	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx-base-19-win.jar:?]
-	at javafx.scene.Scene$MouseHandler.process(Scene.java:3894) ~[javafx-graphics-19-win.jar:?]
-	at javafx.scene.Scene.processMouseEvent(Scene.java:1887) ~[javafx-graphics-19-win.jar:?]
-	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2620) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301) ~[javafx-graphics-19-win.jar:?]
-	at java.base/java.security.AccessController.doPrivileged(Native Method) ~[?:?]
-	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.glass.ui.View.handleMouseEvent(View.java:551) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.glass.ui.View.notifyMouse(View.java:937) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:184) ~[javafx-graphics-19-win.jar:?]
-	at java.base/java.lang.Thread.run(Thread.java:829) [?:?]
-Caused by: java.lang.ClassNotFoundException: br.com.automacaowebia.controller.DashboardController
-	at java.base/jdk.internal.loader.BuiltinClassLoader.loadClass(BuiltinClassLoader.java:581) ~[?:?]
-	at java.base/jdk.internal.loader.ClassLoaders$AppClassLoader.loadClass(ClassLoaders.java:178) ~[?:?]
-	at java.base/java.lang.ClassLoader.loadClass(ClassLoader.java:527) ~[?:?]
-	at javafx.fxml.FXMLLoader$ValueElement.processAttribute(FXMLLoader.java:931) ~[javafx-fxml-19-win.jar:?]
-	... 75 more
-[2025-06-21 11:54:24] [INFO ] LoginService - Tentando autenticar usuário: admin
-[2025-06-21 11:54:24] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[2025-06-21 12:01:44] [INFO ] LoginService - Tentando autenticar usuário: admin
-[2025-06-21 12:01:44] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[2025-06-21 12:04:35] [INFO ] LoginService - Tentando autenticar usuário: admin
-[2025-06-21 12:04:35] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[2025-06-21 12:07:27] [INFO ] LoginService - Tentando autenticar usuário: admin
-[2025-06-21 12:07:28] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[2025-06-21 13:50:20] [INFO ] LoginService - Tentando autenticar usuário: admin
-[2025-06-21 13:50:21] [ERROR] LoginService - Erro ao autenticar usuário: admin
-java.lang.NullPointerException: null
-	at br.com.automacaowebia.service.LoginService.autenticar(LoginService.java:26) ~[classes/:?]
-	at br.com.automacaowebia.controller.LoginController.login(LoginController.java:86) ~[classes/:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
-	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62) ~[?:?]
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:566) ~[?:?]
-	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:77) ~[javafx-base-19-win.jar:?]
-	at jdk.internal.reflect.GeneratedMethodAccessor3.invoke(Unknown Source) ~[?:?]
-	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:566) ~[?:?]
-	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:275) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1854) ~[javafx-fxml-19-win.jar:?]
-	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1724) ~[javafx-fxml-19-win.jar:?]
-	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:234) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49) ~[javafx-base-19-win.jar:?]
-	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx-base-19-win.jar:?]
-	at javafx.scene.Node.fireEvent(Node.java:8923) ~[javafx-graphics-19-win.jar:?]
-	at javafx.scene.control.Button.fire(Button.java:203) ~[javafx-controls-19-win.jar:?]
-	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:207) ~[javafx-controls-19-win.jar:?]
-	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274) ~[javafx-controls-19-win.jar:?]
-	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:234) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:191) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx-base-19-win.jar:?]
-	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54) ~[javafx-base-19-win.jar:?]
-	at javafx.event.Event.fireEvent(Event.java:198) ~[javafx-base-19-win.jar:?]
-	at javafx.scene.Scene$MouseHandler.process(Scene.java:3894) ~[javafx-graphics-19-win.jar:?]
-	at javafx.scene.Scene.processMouseEvent(Scene.java:1887) ~[javafx-graphics-19-win.jar:?]
-	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2620) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301) ~[javafx-graphics-19-win.jar:?]
-	at java.base/java.security.AccessController.doPrivileged(Native Method) ~[?:?]
-	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:424) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.glass.ui.View.handleMouseEvent(View.java:551) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.glass.ui.View.notifyMouse(View.java:937) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx-graphics-19-win.jar:?]
-	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:184) ~[javafx-graphics-19-win.jar:?]
-	at java.base/java.lang.Thread.run(Thread.java:829) [?:?]
-[2025-06-21 13:52:41] [INFO ] LoginService - Tentando autenticar usuário: admin
-[2025-06-21 13:52:41] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[2025-06-21 14:03:35] [INFO ] LoginService - Tentando autenticar usuário: ADMIN
-[2025-06-21 14:03:35] [WARN ] LoginService - Falha na autenticação para o usuário: ADMIN
-[2025-06-21 14:03:43] [INFO ] LoginService - Tentando autenticar usuário: admin
-[2025-06-21 14:03:43] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[2025-06-21 14:07:58] [INFO ] LoginService - Tentando autenticar usuário: admin
-[2025-06-21 14:07:58] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[2025-06-21 14:18:33] [INFO ] LoginService - Tentando autenticar usuário: admin
-[2025-06-21 14:18:34] [WARN ] LoginService - Falha na autenticação para o usuário: admin
-[2025-06-21 14:18:39] [INFO ] LoginService - Tentando autenticar usuário: admin
-[2025-06-21 14:18:39] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[2025-06-21 14:19:35] [INFO ] LoginService - Tentando autenticar usuário: admin
-[2025-06-21 14:19:35] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[2025-06-21 14:20:26] [INFO ] LoginService - Tentando autenticar usuário: admin
-[2025-06-21 14:20:26] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[2025-06-21 14:21:09] [INFO ] LoginService - Tentando autenticar usuário: admin
-[2025-06-21 14:21:09] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[10-07-2025 07:39:43] [INFO ] App - Iniciando aplicação...
-[10-07-2025 07:39:44] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[10-07-2025 07:39:44] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[10-07-2025 07:39:44] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[10-07-2025 07:39:44] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[10-07-2025 07:39:44] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
-[10-07-2025 07:39:44] [INFO ] App - Dispositivo autorizado. Carregando sistema...
-[10-07-2025 07:39:44] [INFO ] App - Carregando tela de login...
-[10-07-2025 07:39:46] [INFO ] App - Tela de login carregada com sucesso.
-[10-07-2025 07:39:52] [INFO ] LoginService - Tentando autenticar usuário: admin
-[10-07-2025 07:39:52] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[10-07-2025 07:39:52] [INFO ] TemplateZPLService - Buscando lista de templates.
-[10-07-2025 07:39:52] [INFO ] TemplateZPLService - Total de templates encontrados: 2
-[10-07-2025 07:39:52] [INFO ] TemplateZPLService - Buscando lista de templates.
-[10-07-2025 07:39:52] [INFO ] TemplateZPLService - Total de templates encontrados: 2
-[10-07-2025 07:39:53] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=1801, totalJobs=7, totalDia=0, totalMes=0, totalAno=1801}
-[10-07-2025 07:39:53] [INFO ] PrinterService - Lista de impressoras carregada. Total: 4
-[10-07-2025 07:39:57] [INFO ] TemplateZPLService - Buscando lista de templates.
-[10-07-2025 07:39:57] [INFO ] TemplateZPLService - Total de templates encontrados: 2
-[10-07-2025 07:40:10] [INFO ] DashboardController - Iniciando geração de preview da etiqueta.
-[10-07-2025 07:40:10] [INFO ] DashboardController - Gerando cacheKey: 2048|SKU-0001|6,00|7,00|inches
-[10-07-2025 07:40:10] [INFO ] DashboardController - CacheKey gerada: 2048|SKU-0001|6,00|7,00|inches
-[10-07-2025 07:40:10] [INFO ] TemplateZPLService - Buscando lista de templates.
-[10-07-2025 07:40:10] [INFO ] TemplateZPLService - Total de templates encontrados: 2
-[10-07-2025 07:40:10] [INFO ] ImpressaoZPLService - Iniciando personalização do ZPL.
-[10-07-2025 07:40:10] [INFO ] ImpressaoZPLService - Personalização do ZPL concluída.
-[10-07-2025 07:40:12] [INFO ] ZplCacheService - Salvando Preview no cache para chave: 2048|SKU-0001|6,00|7,00|inches
-[10-07-2025 07:40:12] [INFO ] ZplCacheService - Salvando ZPL no cache para chave: 2048|SKU-0001|6,00|7,00|inches
-[10-07-2025 07:40:12] [INFO ] DashboardController - Preview e ZPL armazenados no cache com sucesso.
-[10-07-2025 07:40:22] [INFO ] DashboardController - Gerando cacheKey: 2048|SKU-0001|6,00|7,00|inches
-[10-07-2025 07:40:22] [INFO ] ZplCacheService - Buscando ZPL no cache para chave: 2048|SKU-0001|6,00|7,00|inches
-[10-07-2025 07:40:22] [INFO ] ZplCacheService - Buscando Preview no cache para chave: 2048|SKU-0001|6,00|7,00|inches
-[10-07-2025 07:40:22] [INFO ] PrinterService - Lista de impressoras carregada. Total: 4
-[10-07-2025 09:03:28] [INFO ] App - Iniciando aplicação...
-[10-07-2025 09:03:29] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[10-07-2025 09:03:29] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[10-07-2025 09:03:29] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[10-07-2025 09:03:29] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[10-07-2025 09:03:29] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
-[10-07-2025 09:03:29] [INFO ] App - Dispositivo autorizado. Carregando sistema...
-[10-07-2025 09:03:29] [INFO ] App - Carregando tela de login...
-[10-07-2025 09:03:30] [INFO ] App - Tela de login carregada com sucesso.
-[10-07-2025 09:03:35] [INFO ] LoginService - Tentando autenticar usuário: admin
-[10-07-2025 09:03:35] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[10-07-2025 09:03:36] [INFO ] TemplateZPLService - Buscando lista de templates.
-[10-07-2025 09:03:36] [INFO ] TemplateZPLService - Total de templates encontrados: 2
-[10-07-2025 09:03:36] [INFO ] TemplateZPLService - Buscando lista de templates.
-[10-07-2025 09:03:36] [INFO ] TemplateZPLService - Total de templates encontrados: 2
-[10-07-2025 09:03:36] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=1801, totalJobs=7, totalDia=0, totalMes=0, totalAno=1801}
-[10-07-2025 09:03:36] [INFO ] PrinterService - Lista de impressoras carregada. Total: 4
-[10-07-2025 09:04:53] [INFO ] App - Iniciando aplicação...
-[10-07-2025 09:04:54] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[10-07-2025 09:04:54] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[10-07-2025 09:04:54] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[10-07-2025 09:04:54] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[10-07-2025 09:04:54] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
-[10-07-2025 09:04:54] [INFO ] App - Dispositivo autorizado. Carregando sistema...
-[10-07-2025 09:04:54] [INFO ] App - Carregando tela de login...
-[10-07-2025 09:04:55] [INFO ] App - Tela de login carregada com sucesso.
-[10-07-2025 09:05:03] [INFO ] LoginService - Tentando autenticar usuário: admin
-[10-07-2025 09:05:03] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[10-07-2025 09:05:03] [INFO ] TemplateZPLService - Buscando lista de templates.
-[10-07-2025 09:05:03] [INFO ] TemplateZPLService - Total de templates encontrados: 2
-[10-07-2025 09:05:03] [INFO ] TemplateZPLService - Buscando lista de templates.
-[10-07-2025 09:05:03] [INFO ] TemplateZPLService - Total de templates encontrados: 2
-[10-07-2025 09:05:03] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=1801, totalJobs=7, totalDia=0, totalMes=0, totalAno=1801}
-[10-07-2025 09:05:04] [INFO ] PrinterService - Lista de impressoras carregada. Total: 4
-[10-07-2025 09:06:10] [INFO ] App - Iniciando aplicação...
-[10-07-2025 09:06:10] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[10-07-2025 09:06:11] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[10-07-2025 09:06:11] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[10-07-2025 09:06:11] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[10-07-2025 09:06:11] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
-[10-07-2025 09:06:11] [INFO ] App - Dispositivo autorizado. Carregando sistema...
-[10-07-2025 09:06:11] [INFO ] App - Carregando tela de login...
-[10-07-2025 09:06:12] [INFO ] App - Tela de login carregada com sucesso.
-[10-07-2025 09:06:18] [INFO ] LoginService - Tentando autenticar usuário: admin
-[10-07-2025 09:06:18] [WARN ] LoginService - Falha na autenticação para o usuário: admin
-[10-07-2025 09:06:25] [INFO ] LoginService - Tentando autenticar usuário: admin
-[10-07-2025 09:06:25] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[10-07-2025 09:06:25] [INFO ] TemplateZPLService - Buscando lista de templates.
-[10-07-2025 09:06:25] [INFO ] TemplateZPLService - Total de templates encontrados: 2
-[10-07-2025 09:06:25] [INFO ] TemplateZPLService - Buscando lista de templates.
-[10-07-2025 09:06:25] [INFO ] TemplateZPLService - Total de templates encontrados: 2
-[10-07-2025 09:06:25] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=1801, totalJobs=7, totalDia=0, totalMes=0, totalAno=1801}
-[10-07-2025 09:06:25] [INFO ] PrinterService - Lista de impressoras carregada. Total: 4
-[10-07-2025 09:11:21] [INFO ] App - Iniciando aplicação...
-[10-07-2025 09:11:22] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[10-07-2025 09:11:22] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[10-07-2025 09:11:22] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[10-07-2025 09:11:22] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[10-07-2025 09:11:22] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
-[10-07-2025 09:11:22] [INFO ] App - Dispositivo autorizado. Carregando sistema...
-[10-07-2025 09:11:22] [INFO ] App - Carregando tela de login...
-[10-07-2025 09:11:23] [INFO ] App - Tela de login carregada com sucesso.
-[10-07-2025 09:11:29] [INFO ] LoginService - Tentando autenticar usuário: admin
-[10-07-2025 09:11:29] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[10-07-2025 09:11:30] [INFO ] TemplateZPLService - Buscando lista de templates.
-[10-07-2025 09:11:30] [INFO ] TemplateZPLService - Total de templates encontrados: 2
-[10-07-2025 09:11:30] [INFO ] TemplateZPLService - Buscando lista de templates.
-[10-07-2025 09:11:30] [INFO ] TemplateZPLService - Total de templates encontrados: 2
-[10-07-2025 09:11:30] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=1801, totalJobs=7, totalDia=0, totalMes=0, totalAno=1801}
-[10-07-2025 09:11:30] [INFO ] PrinterService - Lista de impressoras carregada. Total: 4
-[10-07-2025 12:02:09] [INFO ] App - Iniciando aplicação...
-[10-07-2025 12:02:10] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[10-07-2025 12:02:10] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[10-07-2025 12:02:10] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[10-07-2025 12:02:10] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[10-07-2025 12:02:10] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
-[10-07-2025 12:02:10] [INFO ] App - Dispositivo autorizado. Carregando sistema...
-[10-07-2025 12:02:10] [INFO ] App - Carregando tela de login...
-[10-07-2025 12:02:12] [INFO ] App - Tela de login carregada com sucesso.
-[10-07-2025 12:02:39] [INFO ] LoginService - Tentando autenticar usuário: admin
-[10-07-2025 12:02:39] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[10-07-2025 12:02:39] [INFO ] TemplateZPLService - Buscando lista de templates.
-[10-07-2025 12:02:40] [INFO ] TemplateZPLService - Total de templates encontrados: 2
-[10-07-2025 12:02:40] [INFO ] TemplateZPLService - Buscando lista de templates.
-[10-07-2025 12:02:40] [INFO ] TemplateZPLService - Total de templates encontrados: 2
-[10-07-2025 12:02:40] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=1801, totalJobs=7, totalDia=0, totalMes=0, totalAno=1801}
-[10-07-2025 12:02:40] [INFO ] PrinterService - Lista de impressoras carregada. Total: 4
-[10-07-2025 12:02:46] [INFO ] DashboardController - Iniciando teste na impressora 127.0.0.1:100
-[10-07-2025 12:02:46] [INFO ] LaserDriver - Iniciando teste na impressora Setor 09 (127.0.0.1:100)
-[10-07-2025 12:02:46] [ERROR] DashboardController - Falha de conexão em 127.0.0.1:100 – Connection refused: connect
-[10-07-2025 12:06:38] [INFO ] App - Iniciando aplicação...
-[10-07-2025 12:06:39] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[10-07-2025 12:06:39] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[10-07-2025 12:06:39] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[10-07-2025 12:06:39] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[10-07-2025 12:06:39] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
-[10-07-2025 12:06:39] [INFO ] App - Dispositivo autorizado. Carregando sistema...
-[10-07-2025 12:06:39] [INFO ] App - Carregando tela de login...
-[10-07-2025 12:06:41] [INFO ] App - Tela de login carregada com sucesso.
-[10-07-2025 12:08:32] [INFO ] LoginService - Tentando autenticar usuário: admin
-[10-07-2025 12:08:32] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[10-07-2025 12:08:33] [INFO ] TemplateZPLService - Buscando lista de templates.
-[10-07-2025 12:08:33] [INFO ] TemplateZPLService - Total de templates encontrados: 2
-[10-07-2025 12:08:33] [INFO ] TemplateZPLService - Buscando lista de templates.
-[10-07-2025 12:08:33] [INFO ] TemplateZPLService - Total de templates encontrados: 2
-[10-07-2025 12:08:33] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=1801, totalJobs=7, totalDia=0, totalMes=0, totalAno=1801}
-[10-07-2025 12:08:33] [INFO ] PrinterService - Lista de impressoras carregada. Total: 4
-[10-07-2025 12:08:42] [INFO ] DashboardController - Iniciando teste na impressora 127.0.0.0.1:9257
-[10-07-2025 12:08:42] [INFO ] LaserDriver - Iniciando teste na impressora Setor 12 (127.0.0.0.1:9257)
-[10-07-2025 12:08:42] [ERROR] DashboardController - Erro de I/O durante teste na impressora 127.0.0.0.1:9257
-java.net.UnknownHostException: 127.0.0.0.1
-	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:567) ~[?:?]
-	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[?:?]
-	at java.base/java.net.Socket.connect(Socket.java:760) ~[?:?]
-	at java.base/java.net.Socket.connect(Socket.java:695) ~[?:?]
-	at java.base/java.net.Socket.<init>(Socket.java:564) ~[?:?]
-	at java.base/java.net.Socket.<init>(Socket.java:328) ~[?:?]
-	at br.com.automacaowebia.printer.LaserDriver.testPrint(LaserDriver.java:36) ~[classes/:?]
-	at br.com.automacaowebia.service.PrinterService.teste(PrinterService.java:59) ~[classes/:?]
-	at br.com.automacaowebia.controller.DashboardController$2.call(DashboardController.java:725) ~[classes/:?]
-	at br.com.automacaowebia.controller.DashboardController$2.call(DashboardController.java:721) ~[classes/:?]
-	at javafx.concurrent.Task$TaskCallable.call(Task.java:1401) ~[javafx-graphics-23.0.1-win.jar:?]
-	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317) ~[?:?]
-	at java.base/java.lang.Thread.run(Thread.java:1575) [?:?]
-[10-07-2025 12:08:45] [INFO ] DashboardController - Iniciando teste na impressora 127.0.0.0.1:9257
-[10-07-2025 12:08:45] [INFO ] LaserDriver - Iniciando teste na impressora Setor 12 (127.0.0.0.1:9257)
-[10-07-2025 12:08:45] [ERROR] DashboardController - Erro de I/O durante teste na impressora 127.0.0.0.1:9257
-java.net.UnknownHostException: 127.0.0.0.1
-	at java.base/sun.nio.ch.NioSocketImpl.connect(NioSocketImpl.java:567) ~[?:?]
-	at java.base/java.net.SocksSocketImpl.connect(SocksSocketImpl.java:327) ~[?:?]
-	at java.base/java.net.Socket.connect(Socket.java:760) ~[?:?]
-	at java.base/java.net.Socket.connect(Socket.java:695) ~[?:?]
-	at java.base/java.net.Socket.<init>(Socket.java:564) ~[?:?]
-	at java.base/java.net.Socket.<init>(Socket.java:328) ~[?:?]
-	at br.com.automacaowebia.printer.LaserDriver.testPrint(LaserDriver.java:36) ~[classes/:?]
-	at br.com.automacaowebia.service.PrinterService.teste(PrinterService.java:59) ~[classes/:?]
-	at br.com.automacaowebia.controller.DashboardController$2.call(DashboardController.java:725) ~[classes/:?]
-	at br.com.automacaowebia.controller.DashboardController$2.call(DashboardController.java:721) ~[classes/:?]
-	at javafx.concurrent.Task$TaskCallable.call(Task.java:1401) ~[javafx-graphics-23.0.1-win.jar:?]
-	at java.base/java.util.concurrent.FutureTask.run(FutureTask.java:317) ~[?:?]
-	at java.base/java.lang.Thread.run(Thread.java:1575) [?:?]
-[10-07-2025 12:08:49] [INFO ] DashboardController - Iniciando teste na impressora 127.0.0.1:100
-[10-07-2025 12:08:49] [INFO ] LaserDriver - Iniciando teste na impressora Setor 09 (127.0.0.1:100)
-[10-07-2025 12:08:49] [ERROR] DashboardController - Falha de conexão em 127.0.0.1:100 – Connection refused: connect
-[19-07-2025 08:42:26] [INFO ] App - Iniciando aplicação...
-[19-07-2025 08:42:27] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[19-07-2025 08:42:27] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[19-07-2025 08:42:27] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 08:42:27] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 08:42:27] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
-[19-07-2025 08:42:27] [INFO ] App - Dispositivo autorizado. Carregando sistema...
-[19-07-2025 08:42:27] [INFO ] App - Carregando tela de login...
-[19-07-2025 08:42:28] [INFO ] App - Tela de login carregada com sucesso.
-[19-07-2025 08:42:34] [INFO ] LoginService - Tentando autenticar usuário: admin
-[19-07-2025 08:42:34] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[19-07-2025 08:42:35] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 08:42:35] [INFO ] TemplateZPLService - Total de templates encontrados: 2
-[19-07-2025 08:42:35] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 08:42:35] [INFO ] TemplateZPLService - Total de templates encontrados: 2
-[19-07-2025 08:42:35] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=1801, totalJobs=7, totalDia=0, totalMes=0, totalAno=1801}
-[19-07-2025 08:42:35] [INFO ] PrinterService - Lista de impressoras carregada. Total: 4
-[19-07-2025 08:42:50] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 08:42:50] [INFO ] TemplateZPLService - Total de templates encontrados: 2
-[19-07-2025 08:42:52] [INFO ] PrinterService - Lista de impressoras carregada. Total: 4
-[19-07-2025 08:42:53] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 08:42:53] [INFO ] TemplateZPLService - Total de templates encontrados: 2
-[19-07-2025 08:42:58] [INFO ] PrinterService - Lista de impressoras carregada. Total: 4
-[19-07-2025 11:09:16] [INFO ] App - Iniciando aplicação...
-[19-07-2025 11:09:16] [WARN ] App - Não foi possível conectar ao banco de dados.
-Verifique se o banco está online.
-[19-07-2025 11:09:40] [INFO ] App - Iniciando aplicação...
-[19-07-2025 11:09:40] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[19-07-2025 11:09:40] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[19-07-2025 11:09:40] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 11:09:40] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 11:09:40] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
-[19-07-2025 11:09:40] [INFO ] App - Dispositivo autorizado. Carregando sistema...
-[19-07-2025 11:09:40] [INFO ] App - Carregando tela de login...
-[19-07-2025 11:09:41] [INFO ] App - Tela de login carregada com sucesso.
-[19-07-2025 11:09:49] [INFO ] LoginService - Tentando autenticar usuário: admin
-[19-07-2025 11:09:49] [WARN ] LoginService - Falha na autenticação para o usuário: admin
-[19-07-2025 11:09:55] [INFO ] LoginService - Tentando autenticar usuário: admin
-[19-07-2025 11:09:55] [WARN ] LoginService - Falha na autenticação para o usuário: admin
-[19-07-2025 11:13:17] [INFO ] App - Iniciando aplicação...
-[19-07-2025 11:13:18] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[19-07-2025 11:13:18] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[19-07-2025 11:13:18] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 11:13:18] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 11:13:18] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
-[19-07-2025 11:13:18] [INFO ] App - Dispositivo autorizado. Carregando sistema...
-[19-07-2025 11:13:18] [INFO ] App - Carregando tela de login...
-[19-07-2025 11:13:19] [INFO ] App - Tela de login carregada com sucesso.
-[19-07-2025 11:13:24] [INFO ] LoginService - Tentando autenticar usuário: admin
-[19-07-2025 11:13:24] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[19-07-2025 11:13:25] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 11:13:25] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 11:13:25] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 11:13:25] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 11:13:25] [ERROR] HistoricoImpressaoService - Erro ao obter resumo do dashboard: [SQLITE_ERROR] SQL error or missing database (no such table: dash_impressao_agg)
-org.sqlite.SQLiteException: [SQLITE_ERROR] SQL error or missing database (no such table: dash_impressao_agg)
-	at org.sqlite.core.DB.newSQLException(DB.java:1179) ~[sqlite-jdbc-3.50.2.0.jar:?]
-	at org.sqlite.core.DB.newSQLException(DB.java:1190) ~[sqlite-jdbc-3.50.2.0.jar:?]
-	at org.sqlite.core.DB.throwex(DB.java:1150) ~[sqlite-jdbc-3.50.2.0.jar:?]
-	at org.sqlite.core.NativeDB.prepare_utf8(Native Method) ~[sqlite-jdbc-3.50.2.0.jar:?]
-	at org.sqlite.core.NativeDB.prepare(NativeDB.java:135) ~[sqlite-jdbc-3.50.2.0.jar:?]
-	at org.sqlite.core.DB.prepare(DB.java:264) ~[sqlite-jdbc-3.50.2.0.jar:?]
-	at org.sqlite.jdbc3.JDBC3Statement.lambda$executeQuery$1(JDBC3Statement.java:87) ~[sqlite-jdbc-3.50.2.0.jar:?]
-	at org.sqlite.jdbc3.JDBC3Statement.withConnectionTimeout(JDBC3Statement.java:458) ~[sqlite-jdbc-3.50.2.0.jar:?]
-	at org.sqlite.jdbc3.JDBC3Statement.executeQuery(JDBC3Statement.java:85) ~[sqlite-jdbc-3.50.2.0.jar:?]
-	at br.com.automacaowebia.service.HistoricoImpressaoService.getResumoDashboard(HistoricoImpressaoService.java:44) ~[classes/:?]
-	at br.com.automacaowebia.controller.DashboardController.carredarDadosDash(DashboardController.java:179) ~[classes/:?]
-	at br.com.automacaowebia.controller.DashboardController.initialize(DashboardController.java:1055) ~[classes/:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2675) ~[javafx-fxml-23.0.1-win.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:2568) ~[javafx-fxml-23.0.1-win.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3381) ~[javafx-fxml-23.0.1-win.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3337) ~[javafx-fxml-23.0.1-win.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3305) ~[javafx-fxml-23.0.1-win.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3277) ~[javafx-fxml-23.0.1-win.jar:?]
-	at javafx.fxml.FXMLLoader.loadImpl(FXMLLoader.java:3253) ~[javafx-fxml-23.0.1-win.jar:?]
-	at javafx.fxml.FXMLLoader.load(FXMLLoader.java:3246) ~[javafx-fxml-23.0.1-win.jar:?]
-	at br.com.automacaowebia.controller.LoginController.login(LoginController.java:101) ~[classes/:?]
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
-	at com.sun.javafx.reflect.Trampoline.invoke(MethodUtil.java:72) ~[javafx-base-23.0.1-win.jar:?]
-	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[?:?]
-	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[?:?]
-	at com.sun.javafx.reflect.MethodUtil.invoke(MethodUtil.java:270) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.fxml.MethodHelper.invoke(MethodHelper.java:84) ~[javafx-fxml-23.0.1-win.jar:?]
-	at javafx.fxml.FXMLLoader$MethodHandler.invoke(FXMLLoader.java:1860) ~[javafx-fxml-23.0.1-win.jar:?]
-	at javafx.fxml.FXMLLoader$ControllerMethodEventHandler.handle(FXMLLoader.java:1731) ~[javafx-fxml-23.0.1-win.jar:?]
-	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:86) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:49) ~[javafx-base-23.0.1-win.jar:?]
-	at javafx.event.Event.fireEvent(Event.java:199) ~[javafx-base-23.0.1-win.jar:?]
-	at javafx.scene.Node.fireEvent(Node.java:8963) ~[javafx-graphics-23.0.1-win.jar:?]
-	at javafx.scene.control.Button.fire(Button.java:203) ~[javafx-controls-23.0.1-win.jar:?]
-	at com.sun.javafx.scene.control.behavior.ButtonBehavior.mouseReleased(ButtonBehavior.java:207) ~[javafx-controls-23.0.1-win.jar:?]
-	at com.sun.javafx.scene.control.inputmap.InputMap.handle(InputMap.java:274) ~[javafx-controls-23.0.1-win.jar:?]
-	at com.sun.javafx.event.CompositeEventHandler$NormalEventHandlerRecord.handleBubblingEvent(CompositeEventHandler.java:247) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.CompositeEventHandler.dispatchBubblingEvent(CompositeEventHandler.java:80) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:232) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.EventHandlerManager.dispatchBubblingEvent(EventHandlerManager.java:189) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.CompositeEventDispatcher.dispatchBubblingEvent(CompositeEventDispatcher.java:59) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:58) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.BasicEventDispatcher.dispatchEvent(BasicEventDispatcher.java:56) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.EventDispatchChainImpl.dispatchEvent(EventDispatchChainImpl.java:114) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.EventUtil.fireEventImpl(EventUtil.java:74) ~[javafx-base-23.0.1-win.jar:?]
-	at com.sun.javafx.event.EventUtil.fireEvent(EventUtil.java:54) ~[javafx-base-23.0.1-win.jar:?]
-	at javafx.event.Event.fireEvent(Event.java:199) ~[javafx-base-23.0.1-win.jar:?]
-	at javafx.scene.Scene$MouseHandler.process(Scene.java:3987) ~[javafx-graphics-23.0.1-win.jar:?]
-	at javafx.scene.Scene.processMouseEvent(Scene.java:1893) ~[javafx-graphics-23.0.1-win.jar:?]
-	at javafx.scene.Scene$ScenePeerListener.mouseEvent(Scene.java:2711) ~[javafx-graphics-23.0.1-win.jar:?]
-	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:411) ~[javafx-graphics-23.0.1-win.jar:?]
-	at com.sun.javafx.tk.quantum.GlassViewEventHandler$MouseEventNotification.run(GlassViewEventHandler.java:301) ~[javafx-graphics-23.0.1-win.jar:?]
-	at java.base/java.security.AccessController.doPrivileged(AccessController.java:400) ~[?:?]
-	at com.sun.javafx.tk.quantum.GlassViewEventHandler.lambda$handleMouseEvent$2(GlassViewEventHandler.java:450) ~[javafx-graphics-23.0.1-win.jar:?]
-	at com.sun.javafx.tk.quantum.QuantumToolkit.runWithoutRenderLock(QuantumToolkit.java:430) ~[javafx-graphics-23.0.1-win.jar:?]
-	at com.sun.javafx.tk.quantum.GlassViewEventHandler.handleMouseEvent(GlassViewEventHandler.java:449) ~[javafx-graphics-23.0.1-win.jar:?]
-	at com.sun.glass.ui.View.handleMouseEvent(View.java:560) ~[javafx-graphics-23.0.1-win.jar:?]
-	at com.sun.glass.ui.View.notifyMouse(View.java:946) ~[javafx-graphics-23.0.1-win.jar:?]
-	at com.sun.glass.ui.win.WinApplication._runLoop(Native Method) ~[javafx-graphics-23.0.1-win.jar:?]
-	at com.sun.glass.ui.win.WinApplication.lambda$runLoop$3(WinApplication.java:184) ~[javafx-graphics-23.0.1-win.jar:?]
-	at java.base/java.lang.Thread.run(Thread.java:1575) [?:?]
-[19-07-2025 11:13:25] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 11:16:38] [INFO ] App - Iniciando aplicação...
-[19-07-2025 11:16:39] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[19-07-2025 11:16:39] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[19-07-2025 11:16:39] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 11:16:39] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 11:16:39] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
-[19-07-2025 11:16:39] [INFO ] App - Dispositivo autorizado. Carregando sistema...
-[19-07-2025 11:16:39] [INFO ] App - Carregando tela de login...
-[19-07-2025 11:16:40] [INFO ] App - Tela de login carregada com sucesso.
-[19-07-2025 11:16:45] [INFO ] LoginService - Tentando autenticar usuário: admin
-[19-07-2025 11:16:45] [INFO ] LoginService - Autenticação bem-sucedida para o usuário: admin
-[19-07-2025 11:16:46] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 11:16:46] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 11:16:46] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 11:16:46] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 11:16:46] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
-[19-07-2025 11:16:46] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 11:17:18] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 11:17:20] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 11:17:20] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 12:33:45] [INFO ] App - Iniciando aplicação...
-[19-07-2025 12:33:45] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[19-07-2025 12:33:46] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[19-07-2025 12:33:46] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 12:33:46] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 12:33:46] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
-[19-07-2025 12:33:46] [INFO ] App - Dispositivo autorizado. Carregando sistema...
-[19-07-2025 12:33:46] [INFO ] App - Carregando tela de login...
-[19-07-2025 12:33:46] [INFO ] App - Tela de login carregada com sucesso.
-[19-07-2025 12:35:11] [INFO ] App - Iniciando aplicação...
-[19-07-2025 12:35:12] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[19-07-2025 12:35:12] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[19-07-2025 12:35:12] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 12:35:12] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 12:35:12] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
-[19-07-2025 12:35:12] [INFO ] App - Dispositivo autorizado. Carregando sistema...
-[19-07-2025 12:35:12] [INFO ] App - Carregando tela de login...
-[19-07-2025 12:35:13] [INFO ] App - Tela de login carregada com sucesso.
-[19-07-2025 12:35:58] [INFO ] App - Iniciando aplicação...
-[19-07-2025 12:35:58] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[19-07-2025 12:35:58] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[19-07-2025 12:35:58] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 12:35:58] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 12:35:58] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
-[19-07-2025 12:35:58] [INFO ] App - Dispositivo autorizado. Carregando sistema...
-[19-07-2025 12:35:58] [INFO ] App - Carregando tela de login...
-[19-07-2025 12:35:59] [INFO ] App - Tela de login carregada com sucesso.
-[19-07-2025 12:40:46] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 12:40:46] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 12:40:46] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 12:40:46] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 12:40:46] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
-[19-07-2025 12:40:46] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 12:40:50] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 12:40:50] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 12:40:53] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
-[19-07-2025 12:40:54] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 12:40:54] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 12:40:55] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 12:40:55] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 12:40:57] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
-[19-07-2025 12:41:47] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 12:41:47] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 12:41:47] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 12:41:47] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 12:41:47] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
-[19-07-2025 12:41:47] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 12:42:07] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 12:42:07] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 12:42:14] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 12:42:14] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 12:46:40] [INFO ] App - Iniciando aplicação...
-[19-07-2025 12:46:41] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[19-07-2025 12:46:41] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[19-07-2025 12:46:41] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 12:46:41] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 12:46:41] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
-[19-07-2025 12:46:41] [INFO ] App - Dispositivo autorizado. Carregando sistema...
-[19-07-2025 12:46:41] [INFO ] App - Carregando tela de login...
-[19-07-2025 12:46:42] [INFO ] App - Tela de login carregada com sucesso.
-[19-07-2025 12:46:57] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 12:46:57] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 12:46:57] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 12:46:57] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 12:46:57] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
-[19-07-2025 12:46:57] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 12:51:11] [INFO ] App - Iniciando aplicação...
-[19-07-2025 12:51:11] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[19-07-2025 12:51:11] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[19-07-2025 12:51:11] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 12:51:11] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 12:51:11] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
-[19-07-2025 12:51:11] [INFO ] App - Dispositivo autorizado. Carregando sistema...
-[19-07-2025 12:51:11] [INFO ] App - Carregando tela de login...
-[19-07-2025 12:51:12] [INFO ] App - Tela de login carregada com sucesso.
-[19-07-2025 12:51:21] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 12:51:21] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 12:51:21] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 12:51:21] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 12:51:21] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
-[19-07-2025 12:51:21] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 12:51:28] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 12:51:28] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 12:51:31] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
-[19-07-2025 12:51:33] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 12:51:33] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 12:51:35] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
-[19-07-2025 12:51:49] [INFO ] App - Iniciando aplicação...
-[19-07-2025 12:51:49] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[19-07-2025 12:51:49] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[19-07-2025 12:51:49] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 12:51:49] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 12:51:49] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
-[19-07-2025 12:51:49] [INFO ] App - Dispositivo autorizado. Carregando sistema...
-[19-07-2025 12:51:49] [INFO ] App - Carregando tela de login...
-[19-07-2025 12:51:50] [INFO ] App - Tela de login carregada com sucesso.
-[19-07-2025 12:52:00] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 12:52:00] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 12:52:00] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 12:52:00] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 12:52:00] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
-[19-07-2025 12:52:00] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 12:52:03] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 12:52:03] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 12:52:05] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
-[19-07-2025 12:55:25] [INFO ] App - Iniciando aplicação...
-[19-07-2025 12:55:25] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[19-07-2025 12:55:25] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[19-07-2025 12:55:25] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 12:55:25] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 12:55:25] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
-[19-07-2025 12:55:25] [INFO ] App - Dispositivo autorizado. Carregando sistema...
-[19-07-2025 12:55:25] [INFO ] App - Carregando tela de login...
-[19-07-2025 12:55:26] [INFO ] App - Tela de login carregada com sucesso.
-[19-07-2025 12:55:35] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 12:55:35] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 12:55:35] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 12:55:35] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 12:55:35] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
-[19-07-2025 12:55:35] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 12:55:52] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 12:55:52] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 12:55:55] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 12:55:55] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:11:02] [INFO ] App - Iniciando aplicação...
-[19-07-2025 13:11:02] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[19-07-2025 13:11:02] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[19-07-2025 13:11:02] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 13:11:02] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 13:11:02] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
-[19-07-2025 13:11:02] [INFO ] App - Dispositivo autorizado. Carregando sistema...
-[19-07-2025 13:11:02] [INFO ] App - Carregando tela de login...
-[19-07-2025 13:11:03] [INFO ] App - Tela de login carregada com sucesso.
-[19-07-2025 13:11:11] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:11:11] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:11:11] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:11:11] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:11:11] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
-[19-07-2025 13:11:11] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 13:11:11] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 13:11:18] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:11:18] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:11:21] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:11:21] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:11:24] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:11:24] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:11:25] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:11:25] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:11:30] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:11:30] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:14:02] [INFO ] App - Iniciando aplicação...
-[19-07-2025 13:14:03] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[19-07-2025 13:14:03] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[19-07-2025 13:14:03] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 13:14:03] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 13:14:03] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
-[19-07-2025 13:14:03] [INFO ] App - Dispositivo autorizado. Carregando sistema...
-[19-07-2025 13:14:03] [INFO ] App - Carregando tela de login...
-[19-07-2025 13:14:04] [INFO ] App - Tela de login carregada com sucesso.
-[19-07-2025 13:14:12] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:14:12] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:14:12] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:14:12] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:14:12] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
-[19-07-2025 13:14:12] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 13:14:12] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 13:14:17] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:14:17] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:14:27] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:14:27] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:14:27] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:14:27] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:14:27] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
-[19-07-2025 13:14:27] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 13:14:27] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 13:15:22] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:15:22] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:15:22] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:15:22] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:15:22] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
-[19-07-2025 13:15:22] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 13:15:22] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 13:15:45] [INFO ] App - Iniciando aplicação...
-[19-07-2025 13:15:46] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[19-07-2025 13:15:46] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[19-07-2025 13:15:46] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 13:15:46] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 13:15:46] [INFO ] LicencaService - Dispositivo encontrado: BLOQUEADO
-[19-07-2025 13:15:46] [WARN ] App - Dispositivo bloqueado.
-Entre em contato para ativação.
-[19-07-2025 13:16:12] [INFO ] App - Iniciando aplicação...
-[19-07-2025 13:16:13] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[19-07-2025 13:16:13] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[19-07-2025 13:16:13] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 13:16:13] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 13:16:13] [INFO ] LicencaService - Dispositivo encontrado: BLOQUEADO
-[19-07-2025 13:16:13] [WARN ] App - Dispositivo bloqueado.
-Entre em contato para ativação.
-[19-07-2025 13:36:19] [INFO ] App - Iniciando aplicação...
-[19-07-2025 13:36:19] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[19-07-2025 13:36:20] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[19-07-2025 13:36:20] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 13:36:20] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 13:36:20] [INFO ] LicencaService - Dispositivo encontrado: BLOQUEADO
-[19-07-2025 13:36:20] [INFO ] App - Carregando tela de login...
-[19-07-2025 13:36:20] [INFO ] App - Tela de login carregada com sucesso.
-[19-07-2025 13:37:10] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:37:10] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:37:10] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:37:10] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:37:11] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
-[19-07-2025 13:37:11] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 13:37:11] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 13:37:11] [INFO ] LoginController - Usuário logado: Administrador | Perfil: ADMIN
-[19-07-2025 13:37:36] [INFO ] App - Iniciando aplicação...
-[19-07-2025 13:37:36] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[19-07-2025 13:37:36] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[19-07-2025 13:37:36] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 13:37:36] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 13:37:36] [INFO ] LicencaService - Dispositivo não encontrado no banco.
-[19-07-2025 13:37:36] [INFO ] LicencaService - Cadastrando novo dispositivo MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34 com status BLOQUEADO
-[19-07-2025 13:37:36] [INFO ] LicencaService - Dispositivo cadastrado com sucesso.
-[19-07-2025 13:37:36] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 13:37:36] [INFO ] LicencaService - Dispositivo encontrado: BLOQUEADO
-[19-07-2025 13:37:36] [INFO ] App - Carregando tela de login...
-[19-07-2025 13:37:37] [INFO ] App - Tela de login carregada com sucesso.
-[19-07-2025 13:38:02] [INFO ] App - Iniciando aplicação...
-[19-07-2025 13:38:03] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[19-07-2025 13:38:03] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[19-07-2025 13:38:03] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 13:38:03] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 13:38:03] [INFO ] LicencaService - Dispositivo encontrado: BLOQUEADO
-[19-07-2025 13:38:03] [INFO ] App - Carregando tela de login...
-[19-07-2025 13:38:04] [INFO ] App - Tela de login carregada com sucesso.
-[19-07-2025 13:38:33] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:38:33] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:38:33] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:38:33] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:38:33] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
-[19-07-2025 13:38:33] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 13:38:33] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 13:38:33] [INFO ] LoginController - Usuário logado: Administrador | Perfil: ADMIN
-[19-07-2025 13:38:53] [INFO ] App - Iniciando aplicação...
-[19-07-2025 13:38:54] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
-[19-07-2025 13:38:54] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
-[19-07-2025 13:38:54] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 13:38:54] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
-[19-07-2025 13:38:54] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
-[19-07-2025 13:38:54] [INFO ] App - Carregando tela de login...
-[19-07-2025 13:38:55] [INFO ] App - Tela de login carregada com sucesso.
-[19-07-2025 13:39:32] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:39:32] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:39:32] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:39:32] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:39:32] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
-[19-07-2025 13:39:32] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 13:39:32] [INFO ] PrinterService - Lista de impressoras carregada. Total: 0
-[19-07-2025 13:39:33] [INFO ] LoginController - Usuário logado: Operação | Perfil: OPERADOR
-[19-07-2025 13:39:38] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:39:38] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:39:40] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
-[19-07-2025 13:39:41] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:39:41] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:39:41] [INFO ] TemplateZPLService - Buscando lista de templates.
-[19-07-2025 13:39:41] [INFO ] TemplateZPLService - Total de templates encontrados: 0
-[19-07-2025 13:39:43] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=0, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[30-07-2025 09:38:48] [INFO ] App - Iniciando aplicação...
+[30-07-2025 09:38:49] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[30-07-2025 09:38:49] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[30-07-2025 09:38:49] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 09:38:49] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 09:38:49] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[30-07-2025 09:38:49] [INFO ] App - Carregando tela de login...
+[30-07-2025 09:38:51] [INFO ] App - Tela de login carregada com sucesso.
+[30-07-2025 09:39:18] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 09:39:18] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 09:39:18] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 09:39:18] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 09:39:18] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 09:39:18] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 09:39:18] [INFO ] PrinterService - Lista de impressoras carregada. Total: 2
+[30-07-2025 09:39:18] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[30-07-2025 09:39:18] [INFO ] PrinterService - Lista de impressoras carregada. Total: 2
+[30-07-2025 09:39:19] [INFO ] LoginController - Usuário logado: Administrador | Perfil: ADMIN
+[30-07-2025 09:39:23] [INFO ] PrinterService - Lista de impressoras carregada. Total: 2
+[30-07-2025 09:49:43] [INFO ] App - Iniciando aplicação...
+[30-07-2025 09:49:44] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[30-07-2025 09:49:44] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[30-07-2025 09:49:44] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 09:49:44] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 09:49:44] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[30-07-2025 09:49:44] [INFO ] App - Carregando tela de login...
+[30-07-2025 09:49:45] [INFO ] App - Tela de login carregada com sucesso.
+[30-07-2025 09:49:50] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 09:49:50] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 09:49:50] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 09:49:50] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 09:49:50] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 09:49:50] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 09:49:50] [INFO ] PrinterService - Lista de impressoras carregada. Total: 2
+[30-07-2025 09:49:50] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[30-07-2025 09:49:50] [INFO ] PrinterService - Lista de impressoras carregada. Total: 2
+[30-07-2025 09:49:51] [INFO ] LoginController - Usuário logado: Administrador | Perfil: ADMIN
+[30-07-2025 09:49:53] [INFO ] PrinterService - Lista de impressoras carregada. Total: 2
+[30-07-2025 09:56:05] [INFO ] App - Iniciando aplicação...
+[30-07-2025 09:56:06] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[30-07-2025 09:56:06] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[30-07-2025 09:56:06] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 09:56:06] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 09:56:06] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[30-07-2025 09:56:06] [INFO ] App - Carregando tela de login...
+[30-07-2025 09:56:07] [INFO ] App - Tela de login carregada com sucesso.
+[30-07-2025 09:56:10] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 09:56:10] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 09:56:10] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 09:56:10] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 09:56:10] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 09:56:10] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 09:56:10] [INFO ] PrinterService - Lista de impressoras carregada. Total: 2
+[30-07-2025 09:56:10] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[30-07-2025 09:56:10] [INFO ] PrinterService - Lista de impressoras carregada. Total: 2
+[30-07-2025 09:56:11] [INFO ] LoginController - Usuário logado: Administrador | Perfil: ADMIN
+[30-07-2025 09:56:14] [INFO ] PrinterService - Lista de impressoras carregada. Total: 2
+[30-07-2025 10:20:01] [INFO ] App - Iniciando aplicação...
+[30-07-2025 10:20:01] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[30-07-2025 10:20:01] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[30-07-2025 10:20:01] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 10:20:01] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 10:20:01] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[30-07-2025 10:20:01] [INFO ] App - Carregando tela de login...
+[30-07-2025 10:20:03] [INFO ] App - Tela de login carregada com sucesso.
+[30-07-2025 10:20:07] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 10:20:07] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 10:20:17] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 10:20:17] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 10:20:17] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 10:20:17] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 10:20:17] [INFO ] PrinterService - Lista de impressoras carregada. Total: 2
+[30-07-2025 10:20:17] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[30-07-2025 10:20:17] [INFO ] PrinterService - Lista de impressoras carregada. Total: 2
+[30-07-2025 10:20:18] [INFO ] LoginController - Usuário logado: Administrador | Perfil: ADMIN
+[30-07-2025 10:20:22] [INFO ] PrinterService - Lista de impressoras carregada. Total: 2
+[30-07-2025 12:02:28] [INFO ] App - Iniciando aplicação...
+[30-07-2025 12:02:29] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[30-07-2025 12:02:29] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[30-07-2025 12:02:29] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 12:02:29] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 12:02:29] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[30-07-2025 12:02:29] [INFO ] App - Carregando tela de login...
+[30-07-2025 12:02:30] [INFO ] App - Tela de login carregada com sucesso.
+[30-07-2025 12:02:32] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 12:02:32] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 12:02:32] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 12:02:32] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 12:02:32] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 12:02:32] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 12:02:32] [INFO ] PrinterService - Lista de impressoras carregada. Total: 2
+[30-07-2025 12:02:32] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[30-07-2025 12:02:32] [INFO ] PrinterService - Lista de impressoras carregada. Total: 2
+[30-07-2025 12:02:33] [INFO ] LoginController - Usuário logado: Administrador | Perfil: ADMIN
+[30-07-2025 12:02:55] [INFO ] PrinterService - Impressora ID 2 atualizada com sucesso.
+[30-07-2025 12:02:55] [INFO ] PrinterService - Lista de impressoras carregada. Total: 2
+[30-07-2025 12:02:55] [INFO ] PrinterService - Lista de impressoras carregada. Total: 2
+[30-07-2025 12:02:57] [INFO ] PrinterService - Lista de impressoras carregada. Total: 2
+[30-07-2025 12:03:06] [INFO ] PrinterService - Impressora ID 1 removida com sucesso.
+[30-07-2025 12:03:06] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 12:03:07] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 12:20:28] [INFO ] App - Iniciando aplicação...
+[30-07-2025 12:20:29] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[30-07-2025 12:20:29] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[30-07-2025 12:20:29] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 12:20:29] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 12:20:29] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[30-07-2025 12:20:29] [INFO ] App - Carregando tela de login...
+[30-07-2025 12:20:30] [INFO ] App - Tela de login carregada com sucesso.
+[30-07-2025 12:20:40] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 12:20:40] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 12:20:40] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 12:20:40] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 12:20:40] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 12:20:40] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 12:20:40] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 12:20:40] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[30-07-2025 12:20:40] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 12:20:41] [INFO ] LoginController - Usuário logado: Administrador | Perfil: ADMIN
+[30-07-2025 12:20:43] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 12:36:12] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 12:44:28] [ERROR] LaserDriver - ACK ausente em clearbuf – quadro: 45 02 06 63 6C 65 61 72 62 75 66 3A 31 3B 03 – detalhe ASCII: clearbuf:1;
+[30-07-2025 12:48:38] [INFO ] LaserDriver - ➡ Início da marcação #1
+[30-07-2025 12:48:40] [INFO ] LaserDriver - ✅ Marca #1 concluída – gravação  326 ms | ciclo 1548 ms
+[30-07-2025 12:48:40] [INFO ] LaserDriver - ➡ Início da marcação #2
+[30-07-2025 12:48:42] [INFO ] LaserDriver - ✅ Marca #2 concluída – gravação  313 ms | ciclo 1542 ms
+[30-07-2025 12:48:42] [INFO ] LaserDriver - ➡ Início da marcação #3
+[30-07-2025 12:48:43] [INFO ] LaserDriver - ✅ Marca #3 concluída – gravação  316 ms | ciclo 1542 ms
+[30-07-2025 12:48:43] [INFO ] LaserDriver - ➡ Início da marcação #4
+[30-07-2025 12:48:45] [INFO ] LaserDriver - ✅ Marca #4 concluída – gravação  311 ms | ciclo 1543 ms
+[30-07-2025 12:48:45] [INFO ] PrinterService - Impressão enviado a 127.0.0.1:9100
+[30-07-2025 12:50:33] [INFO ] LaserDriver - ➡ Início da marcação #1
+[30-07-2025 12:50:36] [INFO ] LaserDriver - ✅ Marca #1 concluída – gravação  314 ms | ciclo 3001 ms
+[30-07-2025 12:50:36] [INFO ] LaserDriver - ➡ Início da marcação #2
+[30-07-2025 12:50:39] [INFO ] LaserDriver - ✅ Marca #2 concluída – gravação  310 ms | ciclo 3000 ms
+[30-07-2025 12:50:39] [INFO ] LaserDriver - ➡ Início da marcação #3
+[30-07-2025 12:50:42] [INFO ] LaserDriver - ✅ Marca #3 concluída – gravação  307 ms | ciclo 3001 ms
+[30-07-2025 12:50:42] [INFO ] LaserDriver - ➡ Início da marcação #4
+[30-07-2025 12:50:45] [INFO ] LaserDriver - ✅ Marca #4 concluída – gravação  310 ms | ciclo 3001 ms
+[30-07-2025 12:50:46] [INFO ] PrinterService - Impressão enviado a 127.0.0.1:9100
+[30-07-2025 14:25:56] [INFO ] App - Iniciando aplicação...
+[30-07-2025 14:25:57] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[30-07-2025 14:25:57] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[30-07-2025 14:25:57] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 14:25:57] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 14:25:57] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[30-07-2025 14:25:57] [INFO ] App - Carregando tela de login...
+[30-07-2025 14:25:58] [INFO ] App - Tela de login carregada com sucesso.
+[30-07-2025 14:26:01] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 14:26:01] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 14:26:01] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 14:26:01] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 14:26:01] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 14:26:01] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 14:26:01] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 14:26:01] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[30-07-2025 14:26:01] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 14:26:02] [INFO ] LoginController - Usuário logado: Administrador | Perfil: ADMIN
+[30-07-2025 14:26:05] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 14:33:56] [INFO ] App - Iniciando aplicação...
+[30-07-2025 14:33:57] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[30-07-2025 14:33:57] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[30-07-2025 14:33:57] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 14:33:57] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 14:33:57] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[30-07-2025 14:33:57] [INFO ] App - Carregando tela de login...
+[30-07-2025 14:33:59] [INFO ] App - Tela de login carregada com sucesso.
+[30-07-2025 14:34:01] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 14:34:01] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 14:34:01] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 14:34:01] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 14:34:01] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 14:34:01] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 14:34:01] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 14:34:01] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[30-07-2025 14:34:01] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 14:34:02] [INFO ] LoginController - Usuário logado: Administrador | Perfil: ADMIN
+[30-07-2025 14:34:06] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 16:20:50] [INFO ] App - Iniciando aplicação...
+[30-07-2025 16:20:51] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[30-07-2025 16:20:51] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[30-07-2025 16:20:51] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 16:20:51] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 16:20:51] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[30-07-2025 16:20:51] [INFO ] App - Carregando tela de login...
+[30-07-2025 16:20:52] [INFO ] App - Tela de login carregada com sucesso.
+[30-07-2025 16:20:54] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 16:20:54] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 16:20:54] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 16:20:54] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 16:20:54] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 16:20:54] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 16:20:54] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 16:20:54] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[30-07-2025 16:20:54] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 16:20:55] [INFO ] LoginController - Usuário logado: Administrador | Perfil: ADMIN
+[30-07-2025 16:20:57] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 16:32:41] [INFO ] App - Iniciando aplicação...
+[30-07-2025 16:32:42] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[30-07-2025 16:32:42] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[30-07-2025 16:32:42] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 16:32:42] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 16:32:42] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[30-07-2025 16:32:42] [INFO ] App - Carregando tela de login...
+[30-07-2025 16:32:44] [INFO ] App - Tela de login carregada com sucesso.
+[30-07-2025 16:32:46] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 16:32:46] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 16:32:46] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 16:32:46] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 16:32:46] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 16:32:46] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 16:32:46] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 16:32:46] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[30-07-2025 16:32:46] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 16:32:47] [INFO ] LoginController - Usuário logado: Administrador | Perfil: ADMIN
+[30-07-2025 16:32:50] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 16:40:29] [INFO ] App - Iniciando aplicação...
+[30-07-2025 16:40:30] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[30-07-2025 16:40:30] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[30-07-2025 16:40:30] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 16:40:30] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 16:40:30] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[30-07-2025 16:40:30] [INFO ] App - Carregando tela de login...
+[30-07-2025 16:40:32] [INFO ] App - Tela de login carregada com sucesso.
+[30-07-2025 16:40:35] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 16:40:35] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 16:40:35] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 16:40:35] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 16:40:35] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 16:40:35] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 16:40:35] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 16:40:35] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[30-07-2025 16:40:35] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 16:40:36] [INFO ] LoginController - Usuário logado: Administrador | Perfil: ADMIN
+[30-07-2025 16:40:38] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 17:15:36] [INFO ] LaserDriver - ➡ Início da marcação #1
+[30-07-2025 17:15:39] [INFO ] LaserDriver - ✅ Marca #1 concluída – gravação  352 ms | ciclo 2522 ms
+[30-07-2025 17:15:39] [INFO ] LaserDriver - ➡ Início da marcação #2
+[30-07-2025 17:15:41] [INFO ] LaserDriver - ✅ Marca #2 concluída – gravação  333 ms | ciclo 2501 ms
+[30-07-2025 17:15:41] [INFO ] LaserDriver - ➡ Início da marcação #3
+[30-07-2025 17:15:44] [INFO ] LaserDriver - ✅ Marca #3 concluída – gravação  315 ms | ciclo 2500 ms
+[30-07-2025 17:15:44] [INFO ] LaserDriver - ➡ Início da marcação #4
+[30-07-2025 17:15:46] [INFO ] LaserDriver - ✅ Marca #4 concluída – gravação  314 ms | ciclo 2501 ms
+[30-07-2025 17:17:50] [INFO ] LaserDriver - ➡ Início da marcação #1
+[30-07-2025 17:17:56] [INFO ] LaserDriver - ✅ Marca #1 concluída – gravação  311 ms | ciclo 5538 ms
+[30-07-2025 17:17:56] [INFO ] LaserDriver - ➡ Início da marcação #2
+[30-07-2025 17:18:02] [INFO ] LaserDriver - ✅ Marca #2 concluída – gravação  309 ms | ciclo 5538 ms
+[30-07-2025 17:18:02] [INFO ] LaserDriver - ➡ Início da marcação #3
+[30-07-2025 17:18:07] [INFO ] LaserDriver - ✅ Marca #3 concluída – gravação  309 ms | ciclo 5536 ms
+[30-07-2025 17:18:07] [INFO ] LaserDriver - ➡ Início da marcação #4
+[30-07-2025 17:18:13] [INFO ] LaserDriver - ✅ Marca #4 concluída – gravação  318 ms | ciclo 5539 ms
+[30-07-2025 17:20:09] [INFO ] LaserDriver - ➡ Início da marcação #1
+[30-07-2025 17:20:12] [INFO ] LaserDriver - ✅ Marca #1 concluída – gravação  325 ms | ciclo 3001 ms
+[30-07-2025 17:20:12] [INFO ] LaserDriver - ➡ Início da marcação #2
+[30-07-2025 17:20:15] [INFO ] LaserDriver - ✅ Marca #2 concluída – gravação  423 ms | ciclo 3001 ms
+[30-07-2025 17:20:15] [INFO ] LaserDriver - ➡ Início da marcação #3
+[30-07-2025 17:20:18] [INFO ] LaserDriver - ✅ Marca #3 concluída – gravação  312 ms | ciclo 3000 ms
+[30-07-2025 18:51:56] [INFO ] App - Iniciando aplicação...
+[30-07-2025 18:51:57] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[30-07-2025 18:51:57] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[30-07-2025 18:51:57] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 18:51:57] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 18:51:57] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[30-07-2025 18:51:57] [INFO ] App - Carregando tela de login...
+[30-07-2025 18:51:58] [INFO ] App - Tela de login carregada com sucesso.
+[30-07-2025 18:52:01] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 18:52:01] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 18:52:01] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 18:52:01] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 18:52:01] [INFO ] TemplateZPLService - Buscando lista de templates.
+[30-07-2025 18:52:01] [INFO ] TemplateZPLService - Total de templates encontrados: 2
+[30-07-2025 18:52:01] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 18:52:01] [INFO ] HistoricoImpressaoService - Resumo do dashboard carregado: DashResumo{totalTemplates=2, totalLabels=0, totalJobs=0, totalDia=0, totalMes=0, totalAno=0}
+[30-07-2025 18:52:01] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 18:52:02] [INFO ] LoginController - Usuário logado: Administrador | Perfil: ADMIN
+[30-07-2025 18:52:08] [INFO ] PrinterService - Lista de impressoras carregada. Total: 1
+[30-07-2025 18:53:38] [INFO ] LaserDriver - ➡ Início da marcação #1
+[30-07-2025 18:53:43] [INFO ] LaserDriver - ✅ Marca #1 concluída – gravação  326 ms | ciclo 5005 ms
+[30-07-2025 18:53:43] [INFO ] LaserDriver - ➡ Início da marcação #2
+[30-07-2025 18:53:48] [INFO ] LaserDriver - ✅ Marca #2 concluída – gravação  315 ms | ciclo 5001 ms
+[30-07-2025 18:53:48] [INFO ] LaserDriver - ➡ Início da marcação #3
+[30-07-2025 18:53:53] [INFO ] LaserDriver - ✅ Marca #3 concluída – gravação  313 ms | ciclo 5001 ms
+[30-07-2025 18:53:53] [INFO ] LaserDriver - ➡ Início da marcação #4
+[30-07-2025 18:53:58] [INFO ] LaserDriver - ✅ Marca #4 concluída – gravação  314 ms | ciclo 5001 ms
+[30-07-2025 18:53:58] [INFO ] LaserDriver - ➡ Início da marcação #5
+[30-07-2025 18:54:03] [INFO ] LaserDriver - ✅ Marca #5 concluída – gravação  313 ms | ciclo 5002 ms
+[30-07-2025 18:54:03] [INFO ] LaserDriver - ➡ Início da marcação #6
+[30-07-2025 18:54:08] [INFO ] LaserDriver - ✅ Marca #6 concluída – gravação  314 ms | ciclo 5002 ms
+[30-07-2025 18:54:08] [INFO ] LaserDriver - ➡ Início da marcação #7
+[30-07-2025 18:54:13] [INFO ] LaserDriver - ✅ Marca #7 concluída – gravação  310 ms | ciclo 5002 ms
+[30-07-2025 18:54:13] [INFO ] LaserDriver - ➡ Início da marcação #8
+[30-07-2025 18:54:18] [INFO ] LaserDriver - ✅ Marca #8 concluída – gravação  309 ms | ciclo 5002 ms
+[30-07-2025 18:54:19] [INFO ] PrinterService - Impressão enviado a 127.0.0.1:9100
+[30-07-2025 18:56:14] [INFO ] App - Iniciando aplicação...
+[30-07-2025 18:56:15] [INFO ] HardwareFingerprintUtil - MACAddress encontrado: 5C:CD:5B:0C:4F:13
+[30-07-2025 18:56:15] [INFO ] HardwareFingerprintUtil - SerialNumber encontrado: PE0513T7
+[30-07-2025 18:56:15] [INFO ] App - Fingerprint detectado: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 18:56:15] [INFO ] LicencaService - Buscando dispositivo com MAC: 5D4039DD16D5FFE78FA395CC12304B9CF080EB8D72E590E4EBF97DD090451F34
+[30-07-2025 18:56:15] [INFO ] LicencaService - Dispositivo encontrado: ATIVADO
+[30-07-2025 18:56:15] [INFO ] App - Carregando tela de login...
+[30-07-2025 18:56:17] [INFO ] App - Tela de login carregada com sucesso.
