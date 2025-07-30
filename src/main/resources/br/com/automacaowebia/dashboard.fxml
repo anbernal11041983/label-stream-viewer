@@ -223,7 +223,7 @@
                                 </Pane>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="template_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="false">
+                        <AnchorPane fx:id="template_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="820.0" stylesheets="@dashboard.css" visible="true">
                             <children>
                                 <Label layoutX="17.0" layoutY="0.0" prefHeight="32.0" prefWidth="267.0" text="Lista de templates">
                                     <font>
@@ -246,12 +246,12 @@
                                     </font>
                                 </Label>
 
-                                <Label layoutX="28.0" layoutY="370.0" text="Nome">
+                                <Label layoutX="28.0" layoutY="370.0" prefHeight="28.0" prefWidth="61.0" text="Nome">
                                     <font>
                                         <Font name="Dubai Bold" size="15.0" />
                                     </font>
                                 </Label>
-                                <TextField fx:id="template_nome" layoutX="151.0" layoutY="370.0" prefHeight="26.0" prefWidth="421.0" promptText="Digite o nome do template" styleClass="textfield" />
+                                <TextField fx:id="template_nome" layoutX="179.0" layoutY="370.0" prefHeight="26.0" prefWidth="394.0" promptText="Digite o nome do template" styleClass="textfield" />
 
                                 <Button fx:id="btnLoadTemplate" layoutX="591.0" layoutY="370.0" onAction="#loadTemplate" prefHeight="26.0" prefWidth="166.0" styleClass="add" text="Carregar Template">
                                     <graphic>
@@ -259,7 +259,7 @@
                                     </graphic>
                                 </Button>
 
-                                <Label fx:id="inv_num" layoutX="151.0" layoutY="405.0" prefHeight="22.0" prefWidth="600.0" style="-fx-font-size: 12px; -fx-text-fill: gray;" text="Nenhum arquivo carregado." />
+                                <Label fx:id="inv_num" layoutX="180.0" layoutY="405.0" prefHeight="22.0" prefWidth="571.0" style="-fx-font-size: 12px; -fx-text-fill: gray;" text="Nenhum arquivo carregado." />
 
                                 <Button fx:id="btn_salvar_template" layoutX="685.0" layoutY="563.0" mnemonicParsing="false" onAction="#salvarTemplate" prefHeight="38.0" prefWidth="91.0" styleClass="save" text="Salvar">
                                     <graphic>
@@ -278,6 +278,12 @@
                                         <Font name="Dubai Bold" size="16.0" />
                                     </font>
                                 </Button>
+                        <Label layoutX="28.0" layoutY="427.0" prefHeight="28.0" prefWidth="150.0" text="Template impresssora">
+                           <font>
+                              <Font name="Dubai Bold" size="15.0" />
+                           </font>
+                        </Label>
+                        <TextField fx:id="txtTemplateImpressora" layoutX="179.0" layoutY="429.0" prefHeight="26.0" prefWidth="210.0" promptText="HELLO.ncfm" />
 
                             </children>
                         </AnchorPane>
@@ -360,7 +366,7 @@
                                 </Button>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="impressao_zpl" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="807.0" stylesheets="@dashboard.css" visible="true">
+                        <AnchorPane fx:id="impressao_zpl" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="807.0" stylesheets="@dashboard.css" visible="false">
 
                             <children>
                                 <VBox alignment="TOP_LEFT" prefWidth="820" spacing="20">

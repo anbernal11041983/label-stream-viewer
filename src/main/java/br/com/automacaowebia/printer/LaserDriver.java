@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.*;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
@@ -82,14 +83,23 @@ public final class LaserDriver {
         }
     }
 
-    /* ============================================================
-     *  NOVO – impressão em lote com monitoramento
-     * ============================================================ */
+    /**
+     * Imprime um lote (qty) com atraso mínimo “espacamento” (ms) entre ciclos.
+     *
+     * @param printer impressora/laser
+     * @param template arquivo .ncfm já gravado na controladora
+     * @param qty quantidade de peças
+     * @param cb callback para UI (TextArea) – pode ser null
+     * @param espacamento ciclo mínimo desejado em ms (duração real + delay
+     * extra)
+     * @param vars mapa chave→valor para substituir no SETA (v1, v2 …)
+     */
     public void printBatch(Printer printer,
             String template,
             int qty,
             Consumer<String> cb,
-            int espacamento, Map<String, String> vars) throws IOException {
+            int espacamento,
+            Map<String, String> vars) throws IOException {
 
         if (cb != null) {
             cb.accept("▶ Conectando em " + printer.getIp() + ":" + printer.getPorta());
@@ -100,58 +110,73 @@ public final class LaserDriver {
             OutputStream out = socket.getOutputStream();
             InputStream in = socket.getInputStream();
 
-            // 1) valida template
+            /* ---------- 1) valida template ---------- */
             List<String> files = fetchFileList(out, in, cb);
             if (files.stream().noneMatch(f -> f.equalsIgnoreCase(template))) {
                 throw new IOException("Template '" + template + "' não encontrado");
             }
 
-
+            /* ---------- 2) SETA com variáveis ---------- */
             String cmdSeta = montarSetaComVariaveis(vars);
-
             if (cb != null) {
                 cb.accept(">> Comando SETA: " + cmdSeta);
             }
 
-            // 3) sequência clear ▸ load ▸ seta ▸ start
+            /* ---------- 3) sequência clear ▸ load ▸ seta ▸ start ---------- */
             sendAndReturn(out, in, "clearbuf", "clearbuf");
             sendAndReturn(out, in, "load:" + template, "load");
             String ack = sendAndReturn(out, in, cmdSeta, "seta");
             if (!ack.contains("seta:1")) {
                 throw new IOException("SETA rejeitado: " + ack);
             }
-
             sendAndReturn(out, in, "start:", "start");
 
-            // 4) trimark N vezes com espaçamento
+            /* ---------- 4) trimark repetitivo + espaçamento ---------- */
             for (int i = 1; i <= qty; i++) {
-                sendAndReturn(out, in, "trimark", "trimark");
+
+                /* ① DISPARO */
+                long t0 = System.currentTimeMillis();
+                String ini = String.format("➡ Início da marcação #%d", i);
+                log.info(ini);
                 if (cb != null) {
-                    cb.accept("🛈 Disparo software #" + i);
+                    cb.accept(ini);
                 }
 
+                sendAndReturn(out, in, "trimark", "trimark");
+
+                /* ② AGUARDA laser concluir */
                 while (getSysStatus(out, in).isMarking) {
-                    try {
-                        Thread.sleep(espacamento);  // espera concluir a marcação atual
-                    } catch (InterruptedException ex) {
-                        Thread.currentThread().interrupt();
-                        throw new IOException("Thread interrompida durante espaçamento", ex);
+                    Thread.sleep(100);          // polling a cada 100 ms
+                }
+                long duracao = System.currentTimeMillis() - t0;
+
+                /* ③ APLICA DELAY até completar “espacamento” */
+                long delayExtra = espacamento - duracao;
+                if (delayExtra > 0) {
+                    log.debug("⏳ Delay extra {} ms", delayExtra);
+                    if (cb != null) {
+                        cb.accept("⏳ Delay " + delayExtra + " ms");
                     }
+                    Thread.sleep(delayExtra);
+                }
+
+                /* ④ LOG DE FIM */
+                long cicloTotal = System.currentTimeMillis() - t0;
+                String fim = String.format(
+                        "✅ Marca #%d concluída – gravação %4d ms | ciclo %4d ms",
+                        i, duracao, cicloTotal);
+                log.info(fim);
+                if (cb != null) {
+                    cb.accept(fim);
                 }
             }
 
-            // 5) loop de monitoramento
+            /* ---------- 5) monitoramento global ---------- */
             int lastCount = -1, lastWarn = 0;
             while (true) {
-                try {
-                    Thread.sleep(200); // polling rápido
-                } catch (InterruptedException ex) {
-                    Thread.currentThread().interrupt();
-                    throw new IOException("Thread interrompida durante monitoramento", ex);
-                }
-
+                Thread.sleep(200);                       // polling
                 int countNow = getCount(out, in);
-                SysStatus stat = getSysStatus(out, in);
+                SysStatus st = getSysStatus(out, in);
 
                 if (countNow != lastCount) {
                     if (cb != null) {
@@ -159,30 +184,29 @@ public final class LaserDriver {
                     }
                     lastCount = countNow;
                 }
-
-                if (stat.warn > lastWarn) {
-                    log.warn("⚠ Avisos: {}", stat.warn);
+                if (st.warn > lastWarn) {
+                    log.warn("⚠ Avisos: {}", st.warn);
                     if (cb != null) {
-                        cb.accept("⚠ Avisos: " + stat.warn);
+                        cb.accept("⚠ Avisos: " + st.warn);
                     }
-                    lastWarn = stat.warn;
+                    lastWarn = st.warn;
                 }
-
-                if (stat.err > 0) {
-                    log.error("⛔ Erro (err={}): stop", stat.err);
+                if (st.err > 0) {
+                    log.error("⛔ Erro (err={}) – stop", st.err);
                     sendAndReturn(out, in, "stop:", "stop");
-                    throw new IOException("Erro da impressora (err=" + stat.err + ")");
+                    throw new IOException("Erro da impressora (err=" + st.err + ")");
                 }
-
                 if (countNow >= qty) {
-                    break; // lote concluído
+                    break;              // lote finalizado
                 }
             }
 
             if (cb != null) {
                 cb.accept("✅ Lote concluído (" + qty + " peças)");
             }
-
+        } catch (InterruptedException ie) {
+            Thread.currentThread().interrupt();
+            throw new IOException("Thread interrompida", ie);
         }
     }
 
@@ -191,13 +215,13 @@ public final class LaserDriver {
 
         vars.forEach((k, v) -> {
             if (v != null && !v.isBlank()) {
-                sb.append(k).append('=').append(v).append("; ");
+                sb.append(k).append('=').append(v).append(";");
             }
         });
 
         // remove o último "; " se existir
         int len = sb.length();
-        if (len >= 2 && sb.substring(len - 2).equals("; ")) {
+        if (len >= 2 && sb.substring(len - 2).equals(";")) {
             sb.delete(len - 2, len);
         }
         return sb.toString();
@@ -212,7 +236,7 @@ public final class LaserDriver {
 
         ByteArrayOutputStream buf = new ByteArrayOutputStream();
         int b;
-        while ((b = in.read()) != -1) {
+        while ((b = in.read()) != -1) {          // lê até ETX
             buf.write(b);
             if (b == ETX) {
                 break;
@@ -221,10 +245,22 @@ public final class LaserDriver {
         byte[] resp = buf.toByteArray();
         log.debug("<< [{}] {}", etapa, toHex(resp));
 
-        if (resp.length < 2 || resp[0] != STX1 || resp[1] != 0x06) {
-            throw new IOException("ACK ausente em " + etapa + " – resp=" + toHex(resp));
+        /* ---------- SUCESSO ---------- */
+        if (resp.length >= 2 && resp[0] == STX1 && resp[1] == 0x06) {
+            return new String(resp, 2, resp.length - 3, StandardCharsets.US_ASCII);
         }
-        return new String(resp, StandardCharsets.US_ASCII);
+
+        /* ---------- FALHA: pega motivo em ASCII para log ---------- */
+        String asciiDetail = (resp.length >= 4)
+                ? new String(resp, 2, resp.length - 3, StandardCharsets.US_ASCII) // só payload
+                : "(payload vazio)";
+
+        String msg = "ACK ausente em " + etapa
+                + " – quadro: " + toHex(resp)
+                + " – detalhe ASCII: " + asciiDetail;
+
+        log.error(msg);              // já fica registrado no log
+        throw new IOException(msg);  // propaga p/ sua UI
     }
 
     private static void setLimit(OutputStream out, InputStream in,
@@ -304,6 +340,8 @@ public final class LaserDriver {
      * ============================================================ */
     private static byte[] frame(String payload) {
         byte[] data = payload.getBytes(StandardCharsets.US_ASCII);
+        //byte[] data = payload.getBytes(StandardCharsets.ISO_8859_1);
+        //byte[] data = payload.getBytes(Charset.forName("Cp1252"));
         byte xor = 0;
         for (byte b : data) {
             xor ^= b;

@@ -9,22 +9,25 @@ public class TemplateZPL {
     private String nome;
     private String tipoArquivo;
     private String conteudo;
+    private String templateImpressora;
     private LocalDateTime criadoEm;
 
     public TemplateZPL() {
     }
 
-    public TemplateZPL(Long id, String nome, String tipoArquivo, String conteudo, LocalDateTime criadoEm) {
+    public TemplateZPL(Long id, String nome, String tipoArquivo, String conteudo, String templateImpressora, LocalDateTime criadoEm) {
         this.id = id;
         this.nome = nome;
         this.tipoArquivo = tipoArquivo;
         this.conteudo = conteudo;
+        this.templateImpressora = templateImpressora;
         this.criadoEm = criadoEm;
     }
 
-    public TemplateZPL(String nome, String tipoArquivo, String conteudo) {
+    public TemplateZPL(String nome, String tipoArquivo, String conteudo, String templateImpressora) {
         this.nome = nome;
         this.tipoArquivo = tipoArquivo;
+        this.templateImpressora = templateImpressora;
         this.conteudo = conteudo;
     }
 
@@ -73,5 +76,19 @@ public class TemplateZPL {
 
     public void setCriadoEm(LocalDateTime criadoEm) {
         this.criadoEm = criadoEm;
+    }
+
+    /**
+     * @return the templateImpressora
+     */
+    public String getTemplateImpressora() {
+        return templateImpressora;
+    }
+
+    /**
+     * @param templateImpressora the templateImpressora to set
+     */
+    public void setTemplateImpressora(String templateImpressora) {
+        this.templateImpressora = templateImpressora;
     }
 }

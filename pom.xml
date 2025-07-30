@@ -7,7 +7,7 @@
 
     <groupId>br.com.automacaowebia</groupId>
     <artifactId>label-stream-viewer</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.3</version>
     <name>Label Stream Viewer</name>
 
     <properties>

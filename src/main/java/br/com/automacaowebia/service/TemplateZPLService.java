@@ -27,7 +27,7 @@ public class TemplateZPLService {
      * Insere um template ZPL no banco.
      */
     public Long insertTemplate(TemplateZPL template) {
-        final String SQL = "INSERT INTO template_zpl (nome, tipo_arquivo, conteudo) VALUES (?,?,?)";
+        final String SQL = "INSERT INTO template_zpl (nome, tipo_arquivo, conteudo,template_impressora) VALUES (?,?,?,?)";
 
         try (PreparedStatement ps = connection.prepareStatement(SQL, Statement.RETURN_GENERATED_KEYS)) {
             connection.setAutoCommit(false);
@@ -35,6 +35,7 @@ public class TemplateZPLService {
             ps.setString(1, template.getNome());
             ps.setString(2, template.getTipoArquivo());
             ps.setString(3, template.getConteudo());
+            ps.setString(4, template.getTemplateImpressora());
             ps.executeUpdate();
 
             try (ResultSet rs = ps.getGeneratedKeys()) {
@@ -131,6 +132,7 @@ public class TemplateZPLService {
                         resultSet.getString("nome"),
                         resultSet.getString("tipo_arquivo"),
                         resultSet.getString("conteudo"),
+                        resultSet.getString("template_impressora"),
                         resultSet.getTimestamp("criado_em").toLocalDateTime()
                 );
                 list.add(template);
@@ -161,6 +163,7 @@ public class TemplateZPLService {
                         resultSet.getString("nome"),
                         resultSet.getString("tipo_arquivo"),
                         resultSet.getString("conteudo"),
+                        resultSet.getString("template_impressora"),
                         resultSet.getTimestamp("criado_em").toLocalDateTime()
                 );
                 logger.info("Template encontrado: {}", template.getNome());
@@ -207,6 +210,7 @@ public class TemplateZPLService {
                         resultSet.getString("nome"),
                         resultSet.getString("tipo_arquivo"),
                         resultSet.getString("conteudo"),
+                        resultSet.getString("template_impressora"),
                         resultSet.getTimestamp("criado_em").toLocalDateTime()
                 );
             }

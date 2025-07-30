@@ -86,7 +86,7 @@ public class DashboardController implements Initializable {
     @FXML
     private Label user;
     @FXML
-    private TextField template_nome;
+    private TextField template_nome, txtTemplateImpressora;
     @FXML
     private TableView<TemplateZPL> lista_template;
     @FXML
@@ -247,7 +247,7 @@ public class DashboardController implements Initializable {
     private final TemplateZPLService templateService = new TemplateZPLService();
     private final ImpressaoZPLService impressaoZPLService = new ImpressaoZPLService();
     private final HistoricoImpressaoService historicoImpressaoService = new HistoricoImpressaoService();
-    private final ProdutoLabelDataService produtoLabelDataService =  new ProdutoLabelDataService();
+    private final ProdutoLabelDataService produtoLabelDataService = new ProdutoLabelDataService();
     private String conteudoTemplate; // Para guardar o conteúdo carregado
     private final PrinterService printerService = new PrinterService(); // >>> NOVO
     private Printer selecionadoPrinter;
@@ -411,6 +411,7 @@ public class DashboardController implements Initializable {
 
     public void salvarTemplate() {
         String nome = template_nome.getText();
+        String templateImpressora = txtTemplateImpressora.getText();
 
         logger.info("Tentando salvar template com nome '{}'.", nome);
 
@@ -420,6 +421,16 @@ public class DashboardController implements Initializable {
             alert.setTitle("Atenção");
             alert.setHeaderText(null);
             alert.setContentText("O nome do template é obrigatório.");
+            alert.showAndWait();
+            return;
+        }
+
+        if (templateImpressora == null || templateImpressora.isBlank()) {
+            logger.warn("Nome do template da imperssora não preenchido.");
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setTitle("Atenção");
+            alert.setHeaderText(null);
+            alert.setContentText("O nome do template da imperssora é obrigatório.");
             alert.showAndWait();
             return;
         }
@@ -434,7 +445,7 @@ public class DashboardController implements Initializable {
             return;
         }
 
-        TemplateZPL template = new TemplateZPL(nome, "TXT", conteudoTemplate);
+        TemplateZPL template = new TemplateZPL(nome, "TXT", conteudoTemplate,templateImpressora);
 
         Long idGerado = templateService.insertTemplate(template);
 
@@ -460,6 +471,7 @@ public class DashboardController implements Initializable {
 
     public void limparCampoTemplate() {
         template_nome.setText("");
+        txtTemplateImpressora.setText("");
         inv_num.setText("");
     }
 
@@ -888,7 +900,7 @@ public class DashboardController implements Initializable {
     private void configurarSpinnerQtd() {
         // Define ValueFactory
         SpinnerValueFactory.IntegerSpinnerValueFactory valueFactory
-                = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 1000, 1, 1);
+                = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100000, 1, 1);
         qtdSpinner.setValueFactory(valueFactory);
 
         // Permite digitar manualmente
