@@ -295,7 +295,7 @@ public final class LaserDriver {
             return -1;
         }
         String num = resp.substring(idx + "getcount:".length())
-                 .replace(";", "")      // ← elimina o ; caso exista
+                 .replace(";", "")    
                  .trim();
         return Integer.parseInt(num.trim());
     }

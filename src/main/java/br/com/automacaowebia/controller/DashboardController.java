@@ -7,7 +7,6 @@ import br.com.automacaowebia.model.*;
 import br.com.automacaowebia.service.HistoricoImpressaoService;
 import br.com.automacaowebia.service.ImpressaoZPLService;
 import br.com.automacaowebia.service.TemplateZPLService;
-import br.com.automacaowebia.service.ZplCacheService;
 import br.com.automacaowebia.service.PrinterService;
 import br.com.automacaowebia.model.Printer;
 import br.com.automacaowebia.parser.ZplParser;
@@ -38,12 +37,13 @@ import static java.nio.charset.StandardCharsets.ISO_8859_1;
 import java.nio.file.Files;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
 import java.util.stream.Collectors;
 import javafx.application.Platform;
 import javafx.beans.property.BooleanProperty;
@@ -51,15 +51,12 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
-import javafx.geometry.Pos;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-import javafx.stage.Modality;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -92,10 +89,6 @@ public class DashboardController implements Initializable {
     @FXML
     private ComboBox<String> comboTemplate;
     @FXML
-    private ImageView imgPreview;
-    @FXML
-    private Label lblPreviewPlaceholder;
-    @FXML
     private TableColumn<TemplateZPL, String> col_template_nome;
     @FXML
     private TableColumn<TemplateZPL, String> col_template_tipo;
@@ -107,10 +100,6 @@ public class DashboardController implements Initializable {
     private Button signout_btn;
     @FXML
     private TextField txtQuantidade;
-    @FXML
-    private TextField txtWidth;
-    @FXML
-    private TextField txtHeight;
     @FXML
     private Label lblVersao;
     @FXML
@@ -156,7 +145,6 @@ public class DashboardController implements Initializable {
     private TextField txtTemplate;
     @FXML
     private ComboBox<Printer> cmbImpressora;
-    @FXML
     private FontAwesomeIconView icoStatus;
     @FXML
     private ProgressBar barStatus;
@@ -195,9 +183,15 @@ public class DashboardController implements Initializable {
     private Button btnRemVar;
 
     @FXML
+    private Button btnPrint;
+
+    @FXML
     private TextField txtKey;
     @FXML
     private TextField txtValue;
+
+    @FXML
+    private TextArea txtLogPrint;
 
     @FXML
     private Button blueprint_btn;
@@ -219,8 +213,6 @@ public class DashboardController implements Initializable {
 
     @FXML
     private ComboBox<String> cb_bp_template;
-    @FXML
-    private Spinner<Integer> sp_bp_order;
 
     /* ─── impressao_zpl ──────────────────────────────────────────────── */
     @FXML
@@ -261,7 +253,25 @@ public class DashboardController implements Initializable {
     private TemplateBlueprint selecionadoBlueprint;
 
     private ObservableList<VarItem> varsData = FXCollections.observableArrayList();
+    @FXML
+    private Button btnLoadTemplate;
+    @FXML
+    private Button btn_salvar_template;
+    @FXML
+    private Button bill_clear;
+    @FXML
+    private Button btn_salvar_printer;
+    @FXML
+    private Button btn_clear_printer;
+    @FXML
+    private Button btn_test_printer;
 
+    @FXML
+    private Button btn_salvar_disp;
+    @FXML
+    private Button btn_clear_disp;
+
+    @FXML
     public void onExit() {
         PrintExecutor.POOL.shutdown();
         System.exit(0);
@@ -279,6 +289,7 @@ public class DashboardController implements Initializable {
 
     }
 
+    @FXML
     public void activateAnchorPane() {
 
         configurarPermissoes();
@@ -347,6 +358,7 @@ public class DashboardController implements Initializable {
         }
     }
 
+    @FXML
     public void activateDashboard() {
         dasboard_pane.setVisible(true);
         template_pane.setVisible(false);
@@ -357,6 +369,7 @@ public class DashboardController implements Initializable {
         blueprint_pane.setVisible(false);
     }
 
+    @FXML
     public void signOut() {
         PrintExecutor.POOL.shutdown();
         signout_btn.getScene().getWindow().hide();
@@ -387,6 +400,7 @@ public class DashboardController implements Initializable {
 
     }
 
+    @FXML
     public void loadTemplate() {
         FileChooser fc = new FileChooser();
         fc.setTitle("Selecionar Template TXT");
@@ -409,6 +423,7 @@ public class DashboardController implements Initializable {
         }
     }
 
+    @FXML
     public void salvarTemplate() {
         String nome = template_nome.getText();
         String templateImpressora = txtTemplateImpressora.getText();
@@ -445,7 +460,7 @@ public class DashboardController implements Initializable {
             return;
         }
 
-        TemplateZPL template = new TemplateZPL(nome, "TXT", conteudoTemplate,templateImpressora);
+        TemplateZPL template = new TemplateZPL(nome, "TXT", conteudoTemplate, templateImpressora);
 
         Long idGerado = templateService.insertTemplate(template);
 
@@ -469,6 +484,7 @@ public class DashboardController implements Initializable {
         }
     }
 
+    @FXML
     public void limparCampoTemplate() {
         template_nome.setText("");
         txtTemplateImpressora.setText("");
@@ -722,6 +738,7 @@ public class DashboardController implements Initializable {
         th.start();
     }
 
+    @FXML
     public void imprimir() {
         String template = txtTemplate.getText().trim();
         Printer prSelecionada = cmbImpressora.getSelectionModel().getSelectedItem();
@@ -791,8 +808,16 @@ public class DashboardController implements Initializable {
 
     public void appendLog(String line) {
         Platform.runLater(() -> {
-            txtLog.appendText(LocalTime.now() + " " + line + "\n");
-            txtLog.setScrollTop(Double.MAX_VALUE);
+            String msg = LocalTime.now() + " " + line + "\n";
+
+            if (txtLog != null) {              // aba Monitor
+                txtLog.appendText(msg);
+                txtLog.setScrollTop(Double.MAX_VALUE);
+            }
+            if (txtLogPrint != null) {         // aba Impressão
+                txtLogPrint.appendText(msg);
+                txtLogPrint.setScrollTop(Double.MAX_VALUE);
+            }
         });
     }
 
@@ -944,13 +969,11 @@ public class DashboardController implements Initializable {
         });
     }
 
-    @FXML
     public void onMinimize() {
         Stage stage = (Stage) template_btn.getScene().getWindow();
         stage.setIconified(true); // Minimiza a janela
     }
 
-    @FXML
     public void onMaximize() {
         Stage stage = (Stage) template_btn.getScene().getWindow();
         stage.setMaximized(!stage.isMaximized()); // Alterna entre maximizado e restaurado
@@ -1022,6 +1045,146 @@ public class DashboardController implements Initializable {
     @FXML
     private void onPrint(ActionEvent e) {
 
+        String templateNomeUI = comboTemplate.getSelectionModel().getSelectedItem();
+        Printer prSelecionada = comboPrinter.getSelectionModel().getSelectedItem();
+
+        /* ---------- validações numéricas já existentes ---------- */
+        int qtdImpressao, espacamento;
+        try {
+            qtdImpressao = Integer.parseInt(txtQuantidade.getText().trim());
+            espacamento = Integer.parseInt(txtIntervalo.getText().trim());
+        } catch (NumberFormatException ex) {
+            appendLog("⚠ Quantidade e intervalo precisam ser numéricos.");
+            return;
+        }
+        if (qtdImpressao <= 0) {
+            appendLog("⚠ Informe uma quantidade > 0.");
+            return;
+        }
+        if (espacamento < 200) {
+            appendLog("⚠ Intervalo mínimo é 200 ms.");
+            return;
+        }
+
+        if (templateNomeUI == null || templateNomeUI.isBlank() || prSelecionada == null) {
+            appendLog("⚠ Selecione template e impressora.");
+            return;
+        }
+
+        TemplateZPL tpl = templateService.getTemplateByNome(templateNomeUI);
+        if (tpl == null) {
+            appendLog("⚠ Template não encontrado no banco.");
+            return;
+        }
+        String templateImpressora = tpl.getTemplateImpressora();   // ← ex.: HELLO.ncfm
+        if (templateImpressora == null || templateImpressora.isBlank()) {
+            appendLog("⚠ Campo template_impressora vazio para esse template.");
+            return;
+        }
+
+        Map<String, String> mapVars = buildMapVars(tpl.getId());
+        if (mapVars.isEmpty()) {
+            appendLog("⚠ Nenhum blueprint ativo para este template.");
+            return;
+        }
+
+        /* ---------- impressora atualizada ---------- */
+        Printer pr = printerService.buscarPorId(prSelecionada.getId());
+        if (pr == null) {
+            appendLog("⚠ Impressora não encontrada na base.");
+            return;
+        }
+
+        /* ---------- UI ---------- */
+        barPrint.setVisible(true);
+        botaoDesabilitado.set(true);
+
+        /* ---------- cópia final para o Task ---------- */
+        final int delayMs = espacamento;
+        final int qtd = qtdImpressao;
+
+        Task<Void> job = new Task<>() {
+            @Override
+            protected Void call() throws Exception {
+                printerService.imprimir(
+                        pr,
+                        templateImpressora, // ← usa o valor certo!
+                        qtd,
+                        line -> appendLog(line),
+                        delayMs,
+                        mapVars);
+                return null;
+            }
+        };
+
+        job.setOnSucceeded(ev -> {
+            barPrint.setVisible(false);
+            botaoDesabilitado.set(false);   // libera o botão
+            appendLog("✔ Impressão concluída com sucesso.");
+        });
+
+        job.setOnFailed(ev -> {
+            barPrint.setVisible(false);
+            botaoDesabilitado.set(false);   // libera mesmo em erro
+            appendLog("✖ Falha: " + job.getException().getMessage());
+        });
+
+        new Thread(job, "print-job").start();
+    }
+
+    private Map<String, String> buildMapVars(long templateId) {
+
+        ProdutoLabelData dados = produtoLabelDataService.findByTemplateId(templateId);
+        if (dados == null) {
+            appendLog("⚠ Nenhum dado de produto para o template.");
+            return Map.of();
+        }
+
+        List<TemplateBlueprint> ativos = blueprintService
+                .listarPorTemplate(templateId)
+                .stream()
+                .filter(TemplateBlueprint::isAtivo)
+                .sorted(Comparator.comparing(
+                        bp -> bp.getOrdem() == null ? 0 : bp.getOrdem()))
+                .toList();
+
+        Map<String, String> map = new LinkedHashMap<>();
+
+        DateTimeFormatter df = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        for (TemplateBlueprint bp : ativos) {
+            String valor = switch (bp.getCampo()) {
+                case "codigo_barras" ->
+                    dados.codigoBarras();
+                case "url_qr" ->
+                    dados.urlQrCode();
+                case "sif" ->
+                    dados.sif();
+                case "sku" ->
+                    dados.sku();
+                case "data_producao" ->
+                    dados.dataProducao() == null ? null
+                    : dados.dataProducao().format(df);
+                case "data_validade" ->
+                    dados.dataValidade() == null ? null
+                    : dados.dataValidade().format(df);
+                case "desc_completa" ->
+                    dados.descCompleta();
+                case "desc_reduzida" ->
+                    dados.descReduzida();
+                case "peso" ->
+                    dados.pesoKg() == null
+                    ? null : dados.pesoKg()
+                    .stripTrailingZeros()
+                    .toPlainString();
+                default ->
+                    null;
+            };
+
+            if (valor != null && !valor.isBlank()) {
+                map.put(bp.getMarcador(), valor);
+            }
+        }
+        return map;
     }
 
     private void removerBlueprint(TemplateBlueprint bp) {
@@ -1272,6 +1435,20 @@ public class DashboardController implements Initializable {
         lblDataValidade.setText(d.dataValidade() != null ? d.dataValidade().format(fmt) : "");
     }
 
+    private void configuraTxtIntervalo() {
+        UnaryOperator<TextFormatter.Change> onlyDigits = change -> {
+            String newText = change.getControlNewText();
+            return newText.matches("\\d*") ? change : null;
+        };
+        txtIntervalo.setTextFormatter(new TextFormatter<>(onlyDigits));
+        txtIntervalo.setText("200");
+    }
+
+    private int getIntervaloMs() {
+        int val = Integer.parseInt(txtIntervalo.getText());
+        return Math.max(val, 200);
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Modules.exportAllToAll();
@@ -1287,7 +1464,7 @@ public class DashboardController implements Initializable {
         // campos numéricos
         configurarSpinnerQtd();
         configurarSpinnerTmp();
-
+        configuraTxtIntervalo();
         carregarComboTemplate();
         carregarComboBlueprint();
         carregarListaTemplate();
@@ -1298,7 +1475,7 @@ public class DashboardController implements Initializable {
         carredarDadosDash();
 
         btnImprimir.disableProperty().bind(botaoDesabilitado);
-
+        btnPrint.disableProperty().bind(botaoDesabilitado);
         configurarComboPrinter();
         iniciarListenerTemplate();
         barPrint.setVisible(false);

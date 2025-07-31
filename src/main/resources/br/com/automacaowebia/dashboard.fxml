@@ -278,12 +278,12 @@
                                         <Font name="Dubai Bold" size="16.0" />
                                     </font>
                                 </Button>
-                        <Label layoutX="28.0" layoutY="427.0" prefHeight="28.0" prefWidth="150.0" text="Template impresssora">
-                           <font>
-                              <Font name="Dubai Bold" size="15.0" />
-                           </font>
-                        </Label>
-                        <TextField fx:id="txtTemplateImpressora" layoutX="179.0" layoutY="429.0" prefHeight="26.0" prefWidth="210.0" promptText="HELLO.ncfm" />
+                                <Label layoutX="28.0" layoutY="427.0" prefHeight="28.0" prefWidth="150.0" text="Template impresssora">
+                                    <font>
+                                        <Font name="Dubai Bold" size="15.0" />
+                                    </font>
+                                </Label>
+                                <TextField fx:id="txtTemplateImpressora" layoutX="179.0" layoutY="429.0" prefHeight="26.0" prefWidth="210.0" promptText="HELLO.ncfm" />
 
                             </children>
                         </AnchorPane>
@@ -366,7 +366,7 @@
                                 </Button>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="impressao_zpl" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="807.0" stylesheets="@dashboard.css" visible="false">
+                        <AnchorPane fx:id="impressao_zpl" layoutX="-1.0" layoutY="55.0" prefHeight="639.0" prefWidth="807.0" stylesheets="@dashboard.css" visible="true">
 
                             <children>
                                 <VBox alignment="TOP_LEFT" prefWidth="820" spacing="20">
@@ -376,9 +376,10 @@
 
                                     <!--  TÍTULO -->
                                     <Label styleClass="title" text="Impressão de Etiquetas">
-                              <font>
-                                 <Font name="System Bold" size="14.0" />
-                              </font></Label>
+                                        <font>
+                                            <Font name="System Bold" size="14.0" />
+                                        </font>
+                                    </Label>
 
                                     <!--  SELEÇÃO TEMPLATE / IMPRESSORA -->
                                     <HBox alignment="CENTER_LEFT" spacing="20">
@@ -390,7 +391,7 @@
                                     </HBox>
 
                                     <!--  VISUALIZAÇÃO DAS INFORMAÇÕES DO PRODUTO  -->
-                                    <GridPane hgap="10" vgap="8">
+                                    <GridPane hgap="10" prefHeight="82.0" prefWidth="637.0" vgap="8">
                                         <columnConstraints>
                                             <ColumnConstraints prefWidth="120" />
                                             <ColumnConstraints prefWidth="300" />
@@ -410,13 +411,13 @@
 
                                         <Label styleClass="label-bold" text="Data validade:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
                                         <Label fx:id="lblDataValidade" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                              <rowConstraints>
-                                 <RowConstraints />
-                                 <RowConstraints />
-                                 <RowConstraints />
-                                 <RowConstraints />
-                                 <RowConstraints />
-                              </rowConstraints>
+                                        <rowConstraints>
+                                            <RowConstraints />
+                                            <RowConstraints />
+                                            <RowConstraints />
+                                            <RowConstraints />
+                                            <RowConstraints />
+                                        </rowConstraints>
                                     </GridPane>
 
                                     <!--  QUANTIDADE / INTERVALO -->
@@ -424,15 +425,31 @@
                                         <Label prefWidth="60" styleClass="label-bold" text="Qtd:" />
                                         <TextField fx:id="txtQuantidade" prefWidth="80" promptText="Qtd" />
 
-                                        <Label prefWidth="100" styleClass="label-bold" text="Intervalo (s):" />
+                                        <Label prefWidth="100" styleClass="label-bold" text="Intervalo (ms):" />
                                         <TextField fx:id="txtIntervalo" prefWidth="80" promptText="Tempo" />
+
+                                        <!-- NOVO: tabela-resumo ms → s -->
+                                        <Label style="-fx-font-size: 11;" text="Ex.: 200 ms=0,2 s | 500=0,5 s | 1000=1 s | 1500=1,5 s | 3000=3 s" textFill="#57407b">
+                                            <font>
+                                                <Font name="Arial Bold" size="21.0" />
+                                            </font>
+                                        </Label>
                                     </HBox>
 
                                     <Separator />
-
+                                    <VBox spacing="6">
+                                        <Label styleClass="label-bold" text="Log de impressão" />
+                                        <TextArea fx:id="txtLogPrint"
+                                                  editable="false"
+                                                  prefHeight="150.0"
+                                                  prefWidth="780.0"
+                                                  wrapText="true"
+                                                  styleClass="log-area"/>
+                                    </VBox>
+                                    <Separator />
                                     <!--  BARRA DE PROGRESSO + BOTÃO IMPRIMIR -->
                                     <HBox alignment="CENTER_RIGHT" spacing="10">
-                                        <ProgressBar fx:id="barPrint" prefHeight="20" prefWidth="200" progress="0.0" visible="false" />
+                                        <ProgressBar fx:id="barPrint" prefHeight="20" prefWidth="430.0" progress="0.0" visible="false" />
                                         <Button fx:id="btnPrint" onAction="#onPrint" prefHeight="36" prefWidth="120" styleClass="print" text="Imprimir">
                                             <graphic>
                                                 <FontAwesomeIconView fill="WHITE" glyphName="PRINT" size="18" />
@@ -442,7 +459,7 @@
                                 </VBox>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="monitor_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639" prefWidth="820" stylesheets="@dashboard.css" visible="true">
+                        <AnchorPane fx:id="monitor_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639" prefWidth="820" stylesheets="@dashboard.css" visible="false">
 
                             <children>
                                 <VBox alignment="TOP_LEFT" prefHeight="639" prefWidth="820" spacing="11.0">
