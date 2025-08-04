@@ -106,9 +106,9 @@ public final class LaserDriver {
         }
 
         try (Socket socket = new Socket(printer.getIp(), printer.getPorta())) {
-            socket.setTcpNoDelay(true);
+
             OutputStream out = socket.getOutputStream();
-            InputStream in = new BufferedInputStream(socket.getInputStream());
+            InputStream in = socket.getInputStream();
 
             /* ---------- 1) valida template ---------- */
             List<String> files = fetchFileList(out, in, cb);
@@ -211,20 +211,11 @@ public final class LaserDriver {
     }
 
     private static String montarSetaComVariaveis(Map<String, String> vars) {
-        StringBuilder sb = new StringBuilder("seta:data#");
-
-        vars.forEach((k, v) -> {
-            if (v != null && !v.isBlank()) {
-                sb.append(k).append('=').append(v).append(";");
-            }
-        });
-
-        // remove o último "; " se existir
-        int len = sb.length();
-        if (len > 0 && sb.charAt(len - 1) == ';') {
-            sb.deleteCharAt(len - 1);
-        }
-        return sb.toString();
+        return "seta:data#"
+                + vars.entrySet().stream()
+                        .filter(e -> e.getValue() != null && !e.getValue().isBlank())
+                        .map(e -> e.getKey() + "=" + e.getValue())
+                        .collect(Collectors.joining(";"));
     }
 
     private static String sendAndReturn(OutputStream out, InputStream in,
@@ -233,51 +224,22 @@ public final class LaserDriver {
         byte[] frame = frame(payload);
         log.debug(">> [{}] {}", etapa, toHex(frame));
         out.write(frame);
-        out.flush();
 
         ByteArrayOutputStream buf = new ByteArrayOutputStream();
         int b;
         while ((b = in.read()) != -1) {
             buf.write(b);
-            if (b == ETX) {           // ETX encontrado
-                int xor = in.read();  // ← lê sempre 1 byte  (checksum)
-                if (xor != -1) {
-                    buf.write(xor);
-                }
+            if (b == ETX) {
                 break;
             }
         }
-
         byte[] resp = buf.toByteArray();
         log.debug("<< [{}] {}", etapa, toHex(resp));
 
-        /* ---------- SUCESSO ---------- */
-        if (resp.length >= 2 && resp[0] == STX1 && resp[1] == 0x06) {
-            // acha a posição real do ETX (0x03)
-            int etxIdx = -1;
-            for (int i = 2; i < resp.length; i++) {
-                if (resp[i] == ETX) {        // ETX encontrado
-                    etxIdx = i;
-                    break;
-                }
-            }
-            if (etxIdx == -1) {              // segurança: se ETX não encontrado
-                etxIdx = resp.length - 1;    // usa último byte como limite
-            }
-            // extrai somente o payload ASCII (entre ACK e ETX)
-            return new String(resp, 2, etxIdx - 2, StandardCharsets.US_ASCII);
+        if (resp.length < 2 || resp[0] != STX1 || resp[1] != 0x06) {
+            throw new IOException("ACK ausente em " + etapa + " – resp=" + toHex(resp));
         }
-        /* ---------- FALHA: pega motivo em ASCII para log ---------- */
-        String asciiDetail = (resp.length >= 4)
-                ? new String(resp, 2, resp.length - 3, StandardCharsets.US_ASCII) // só payload
-                : "(payload vazio)";
-
-        String msg = "ACK ausente em " + etapa
-                + " – quadro: " + toHex(resp)
-                + " – detalhe ASCII: " + asciiDetail;
-
-        log.error(msg);              // já fica registrado no log
-        throw new IOException(msg);  // propaga p/ sua UI
+        return new String(resp, StandardCharsets.US_ASCII);
     }
 
     private static void setLimit(OutputStream out, InputStream in,
@@ -295,8 +257,8 @@ public final class LaserDriver {
             return -1;
         }
         String num = resp.substring(idx + "getcount:".length())
-                 .replace(";", "")    
-                 .trim();
+                .replace(";", "")
+                .trim();
         return Integer.parseInt(num.trim());
     }
 
@@ -358,25 +320,19 @@ public final class LaserDriver {
      *  Helpers de framing e logging
      * ============================================================ */
     private static byte[] frame(String payload) {
-        byte[] payloadBytes = payload.getBytes(StandardCharsets.US_ASCII);
-
-        // monta 02 05 <payload> 03
-        byte[] body = new byte[payloadBytes.length + 3];
-        body[0] = STX1;                // 0x02
-        body[1] = STX2;                // 0x05
-        System.arraycopy(payloadBytes, 0, body, 2, payloadBytes.length);
-        body[body.length - 1] = ETX;   // 0x03
-
-        // XOR de tudo entre 0x02 e 0x03 (índices 1 .. body.length‑2)
+        //byte[] data = payload.getBytes(StandardCharsets.US_ASCII);
+        //byte[] data = payload.getBytes(StandardCharsets.ISO_8859_1);
+        byte[] data = payload.getBytes(Charset.forName("Cp1252"));
         byte xor = 0;
-        for (int i = 1; i < body.length - 1; i++) {
-            xor ^= body[i];
+        for (byte b : data) {
+            xor ^= b;
         }
-
-        // devolve array body + XOR
-        byte[] frame = Arrays.copyOf(body, body.length + 1);
-        frame[frame.length - 1] = xor;
-        return frame;
+        return ByteBuffer.allocate(data.length + 4)
+                .put(STX1).put(STX2)
+                .put(data)
+                .put(ETX)
+                .put(xor)
+                .array();
     }
 
     private static String toHex(byte[] bytes) {
