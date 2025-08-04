@@ -1338,7 +1338,7 @@ public class DashboardController implements Initializable {
         modulos.put(template_btn, new PermissaoModulo(template_pane, template_btn, List.of("ADMIN", "OPERADOR")));
         modulos.put(impressao_btn, new PermissaoModulo(impressao_zpl, impressao_btn, List.of("ADMIN", "OPERADOR")));
         modulos.put(printers_btn, new PermissaoModulo(printer_pane, printers_btn, List.of("ADMIN", "OPERADOR")));
-        modulos.put(monitor_btn, new PermissaoModulo(monitor_pane, monitor_btn, List.of("ADMIN", "OPERADOR")));
+        modulos.put(monitor_btn, new PermissaoModulo(monitor_pane, monitor_btn, List.of("ADMIN")));
         modulos.put(dispositivos_btn, new PermissaoModulo(dispositivo_pane, dispositivos_btn, List.of("ADMIN")));
         modulos.put(blueprint_btn, new PermissaoModulo(blueprint_pane, blueprint_btn, List.of("ADMIN")));
     }
