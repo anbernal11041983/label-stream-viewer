@@ -251,6 +251,7 @@ public class DashboardController implements Initializable {
     private Dispositivo selecionadoDispositivo;
     private final BlueprintService blueprintService = new BlueprintService();
     private TemplateBlueprint selecionadoBlueprint;
+    private TemplateZPL selecionadoTemplate;
 
     private ObservableList<VarItem> varsData = FXCollections.observableArrayList();
     @FXML
@@ -426,64 +427,85 @@ public class DashboardController implements Initializable {
 
     @FXML
     public void salvarTemplate() {
-        String nome = template_nome.getText();
-        String input = txtTemplateImpressora.getText().trim();
-        String templateImpressora = input.replaceAll("(?i)\\.ncfm$", "").toUpperCase() + ".ncfm";
 
-        logger.info("Tentando salvar template com nome '{}'.", nome);
+        String nome = template_nome.getText();
+        String templateImpressora = normalizarNomeArquivo(txtTemplateImpressora.getText());
+
+        logger.info("Tentando salvar/atualizar template '{}'.", nome);
 
         if (nome == null || nome.isBlank()) {
-            logger.warn("Nome do template não preenchido.");
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Atenção");
-            alert.setHeaderText(null);
-            alert.setContentText("O nome do template é obrigatório.");
-            alert.showAndWait();
+            showWarn("O nome do template é obrigatório.");
+            return;
+        }
+        if (templateImpressora.isBlank()) {
+            showWarn("O nome do template da impressora é obrigatório.");
             return;
         }
 
-        if (templateImpressora == null || templateImpressora.isBlank()) {
-            logger.warn("Nome do template da imperssora não preenchido.");
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Atenção");
-            alert.setHeaderText(null);
-            alert.setContentText("O nome do template da imperssora é obrigatório.");
-            alert.showAndWait();
-            return;
+        // Se o usuário não carregou novo .txt mas está em modo edição, reaproveite o conteúdo já salvo
+        if ((conteudoTemplate == null || conteudoTemplate.isBlank()) && selecionadoTemplate != null) {
+            conteudoTemplate = selecionadoTemplate.getConteudo();
         }
-
         if (conteudoTemplate == null || conteudoTemplate.isBlank()) {
-            logger.warn("Nenhum conteúdo de template carregado para salvar.");
-            Alert alert = new Alert(Alert.AlertType.WARNING);
-            alert.setTitle("Atenção");
-            alert.setHeaderText(null);
-            alert.setContentText("Nenhum arquivo foi carregado");
-            alert.showAndWait();
+            showWarn("Nenhum arquivo foi carregado.");
             return;
         }
 
-        TemplateZPL template = new TemplateZPL(nome, "TXT", conteudoTemplate, templateImpressora);
+        boolean sucesso;
 
-        Long idGerado = templateService.insertTemplate(template);
+        if (selecionadoTemplate == null) {     // -------- INSERT ---------
+            TemplateZPL novo = new TemplateZPL(nome, "TXT", conteudoTemplate, templateImpressora);
+            Long idGerado = templateService.insertTemplate(novo);
 
-        if (idGerado != null) {
-            logger.info("Template '{}' salvo com sucesso (id={}).", nome, idGerado);
+            sucesso = (idGerado != null);
+            if (sucesso) {
+                logger.info("Template '{}' inserido com id {}.", nome, idGerado);
 
-            ProdutoLabelData dados = ZplParser.parseFromString(conteudoTemplate);
-            templateService.salvarDadosProduto(idGerado, dados);
+                // grava dados de produto
+                ProdutoLabelData dados = ZplParser.parseFromString(conteudoTemplate);
+                templateService.salvarDadosProduto(idGerado, dados);
+            }
 
-            limparCampoTemplate();
-            carregarListaTemplate();
+        } else {
+            TemplateZPL tpl = selecionadoTemplate;
+            tpl.setNome(nome);
+            tpl.setTemplateImpressora(templateImpressora);
+            tpl.setConteudo(conteudoTemplate);
 
-        } else {                                   // falhou
-            logger.error("Erro ao salvar template '{}'.", nome);
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("Erro");
-            alert.setHeaderText(null);
-            alert.setContentText("Erro ao salvar template.");
-            alert.showAndWait();
-            limparCampoTemplate();
+            sucesso = templateService.updateTemplate(tpl); 
+            if (sucesso) {
+                logger.info("Template '{}' (id={}) atualizado.", nome, tpl.getId());
+            }
         }
+
+        /* ---------- feedback UI ---------- */
+        if (sucesso) {
+            limparCampoTemplate();
+            selecionarNenhumTemplate();          // limpa seleção na tabela
+            carregarListaTemplate();
+            showInfo("Template salvo com sucesso!");
+        } else {
+            logger.error("Falha ao gravar template '{}'.", nome);
+            showError("Erro ao salvar template.");
+        }
+    }
+
+    private static String normalizarNomeArquivo(String txt) {
+        if (txt == null) {
+            return "";
+        }
+        return txt.trim()
+                .replaceAll("(?i)\\.ncfm$", "") // remove se já existir no fim
+                .toUpperCase() + ".ncfm";        // acrescenta minúsculo
+    }
+
+    private void showWarn(String msg) {
+        new Alert(Alert.AlertType.WARNING, msg).showAndWait();
+    }
+
+    private void selecionarNenhumTemplate() {
+        lista_template.getSelectionModel().clearSelection();
+        selecionadoTemplate = null;
     }
 
     @FXML
@@ -491,6 +513,8 @@ public class DashboardController implements Initializable {
         template_nome.setText("");
         txtTemplateImpressora.setText("");
         inv_num.setText("");
+        lista_template.getSelectionModel().clearSelection();
+        selecionadoTemplate = null;
     }
 
     public void carregarListaTemplate() {
@@ -742,8 +766,7 @@ public class DashboardController implements Initializable {
 
     @FXML
     public void imprimir() {
-        String input = txtTemplate.getText().trim();
-        String template = input.replaceAll("(?i)\\.ncfm$", "").toUpperCase() + ".ncfm";
+        String template = normalizarNomeArquivo(txtTemplate.getText());
         Printer prSelecionada = cmbImpressora.getSelectionModel().getSelectedItem();
         Integer qtdImpressao = qtdSpinner.getValue();
         Integer espacamento = tmpSpinner.getValue();
@@ -1484,6 +1507,21 @@ public class DashboardController implements Initializable {
         txtLogPrint.clear();
     }
 
+    private void configurarSelecaoTemplate() {
+        lista_template.getSelectionModel().selectedItemProperty().addListener(
+                (obs, anterior, novo) -> {
+                    if (novo != null) {
+                        selecionadoTemplate = novo;
+
+                        template_nome.setText(novo.getNome());
+                        txtTemplateImpressora.setText(novo.getTemplateImpressora());
+                        conteudoTemplate = novo.getConteudo();
+
+                        inv_num.setText("Conteúdo carregado do banco.");
+                    }
+                });
+    }
+
     @Override
     public void initialize(URL url, ResourceBundle rb) {
         Modules.exportAllToAll();
@@ -1508,6 +1546,7 @@ public class DashboardController implements Initializable {
         initDispositivoCrud();
         initBlueprintCrud();
         carredarDadosDash();
+        configurarSelecaoTemplate();
 
         btnImprimir.disableProperty().bind(botaoDesabilitado);
         btnPrint.disableProperty().bind(botaoDesabilitado);

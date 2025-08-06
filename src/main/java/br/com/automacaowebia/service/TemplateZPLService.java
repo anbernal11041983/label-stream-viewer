@@ -68,13 +68,14 @@ public class TemplateZPLService {
     public boolean updateTemplate(TemplateZPL template) {
         logger.info("Tentando atualizar template ID {}: {}", template.getId(), template.getNome());
 
-        String sql = "UPDATE template_zpl SET nome=?, tipo_arquivo=?, conteudo=? WHERE id=?";
+        String sql = "UPDATE template_zpl SET nome=?, tipo_arquivo=?, conteudo=?, template_impressora=? WHERE id=?";
         try {
             preparedStatement = connection.prepareStatement(sql);
             preparedStatement.setString(1, template.getNome());
             preparedStatement.setString(2, template.getTipoArquivo());
             preparedStatement.setString(3, template.getConteudo());
-            preparedStatement.setLong(4, template.getId());
+            preparedStatement.setString(4, template.getTemplateImpressora());
+            preparedStatement.setLong(5, template.getId());
 
             boolean resultado = preparedStatement.executeUpdate() > 0;
             if (resultado) {
