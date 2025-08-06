@@ -427,7 +427,8 @@ public class DashboardController implements Initializable {
     @FXML
     public void salvarTemplate() {
         String nome = template_nome.getText();
-        String templateImpressora = txtTemplateImpressora.getText();
+        String input = txtTemplateImpressora.getText().trim();
+        String templateImpressora = input.replaceAll("(?i)\\.ncfm$", "").toUpperCase() + ".ncfm";
 
         logger.info("Tentando salvar template com nome '{}'.", nome);
 
