@@ -283,7 +283,7 @@
                                         <Font name="Dubai Bold" size="15.0" />
                                     </font>
                                 </Label>
-                                <TextField fx:id="txtTemplateImpressora" layoutX="179.0" layoutY="429.0" prefHeight="26.0" prefWidth="210.0" promptText="HELLO.ncfm" />
+                                <TextField fx:id="txtTemplateImpressora" layoutX="179.0" layoutY="429.0" prefHeight="26.0" prefWidth="210.0" promptText="HELLO" />
 
                             </children>
                         </AnchorPane>
