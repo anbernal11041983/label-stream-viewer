@@ -303,6 +303,7 @@ public class DashboardController implements Initializable {
 
     private void showPaneComPermissao(PermissaoModulo modulo) {
         // Esconde todos
+        limparUI();
         dasboard_pane.setVisible(false);
         template_pane.setVisible(false);
         impressao_zpl.setVisible(false);
@@ -1447,6 +1448,38 @@ public class DashboardController implements Initializable {
     private int getIntervaloMs() {
         int val = Integer.parseInt(txtIntervalo.getText());
         return Math.max(val, 200);
+    }
+
+    private void limparUI() {
+
+        /* —— abas Template —— */
+        template_nome.clear();
+        txtTemplateImpressora.clear();
+        inv_num.setText("");
+
+        /* —— aba Impressão —— */
+        txtTemplate.clear();
+        txtQuantidade.clear();
+        txtIntervalo.setText("200");                 // valor mínimo sugerido
+        cmbImpressora.getSelectionModel().clearSelection();
+        qtdSpinner.getValueFactory().setValue(1);
+        tmpSpinner.getValueFactory().setValue(200);
+        varsData.clear();
+        tblVars.refresh();
+
+        /* —— aba Printers —— */
+        limparCamposPrinter(null);                   // já existe
+
+        /* —— aba Dispositivos —— */
+        limparCamposDispositivo();                   // já existe
+
+        /* —— aba Blueprint —— */
+        tblBlueprint.getItems().clear();
+        cb_bp_template.getSelectionModel().clearSelection();
+
+        /* —— LOGs —— */
+        txtLog.clear();
+        txtLogPrint.clear();
     }
 
     @Override
