@@ -490,7 +490,7 @@
 
                                         <!-- ─────────── 1ª linha ───────────-->
                                         <Label text="Template:*" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                                        <TextField fx:id="txtTemplate" promptText="HELLO.ncfm" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                        <TextField fx:id="txtTemplate" promptText="HELLO" GridPane.columnIndex="1" GridPane.rowIndex="0" />
 
                                         <Label text="Impressora:*" GridPane.columnIndex="2" GridPane.rowIndex="0" />
 

@@ -741,7 +741,8 @@ public class DashboardController implements Initializable {
 
     @FXML
     public void imprimir() {
-        String template = txtTemplate.getText().trim();
+        String input = txtTemplate.getText().trim();
+        String template = input.replaceAll("(?i)\\.ncfm$", "").toUpperCase() + ".ncfm";
         Printer prSelecionada = cmbImpressora.getSelectionModel().getSelectedItem();
         Integer qtdImpressao = qtdSpinner.getValue();
         Integer espacamento = tmpSpinner.getValue();
