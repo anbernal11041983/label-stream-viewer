@@ -3,5 +3,10 @@ shade
 /.idea/
 /nbactions.xml
 /logs/
+db/
 /db/
 /logs/
+application.log
+db_emulador.db
+db_emulador.db-shm
+db_emulador.db-wal
