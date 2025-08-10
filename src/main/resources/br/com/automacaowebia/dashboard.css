@@ -138,3 +138,7 @@
     -fx-border-color: #333333;          /* borda sutil */
     -fx-border-width: 1px;
 }
+
+#startButton:hover {
+    -fx-background-color: linear-gradient(to bottom right, #388E3C, #2E7D32); /* hover verde só no Start */
+}

@@ -148,8 +148,7 @@ public class DashboardController implements Initializable {
     private FontAwesomeIconView icoStatus;
     @FXML
     private ProgressBar barStatus;
-    @FXML
-    private Button btnImprimir;
+
     @FXML
     private Spinner<Integer> qtdSpinner;
     @FXML
@@ -177,10 +176,11 @@ public class DashboardController implements Initializable {
     private TableColumn<VarItem, String> colKey;
     @FXML
     private TableColumn<VarItem, String> colValue;
+
     @FXML
-    private Button btnAddVar;
+    private Button btnStart;
     @FXML
-    private Button btnRemVar;
+    private Button btnStop;
 
     @FXML
     private Button btnPrint;
@@ -472,7 +472,7 @@ public class DashboardController implements Initializable {
             tpl.setTemplateImpressora(templateImpressora);
             tpl.setConteudo(conteudoTemplate);
 
-            sucesso = templateService.updateTemplate(tpl); 
+            sucesso = templateService.updateTemplate(tpl);
             if (sucesso) {
                 logger.info("Template '{}' (id={}) atualizado.", nome, tpl.getId());
             }
@@ -820,6 +820,91 @@ public class DashboardController implements Initializable {
         new Thread(job).start();
     }
 
+    @FXML
+    public void onStart() {
+        String template = normalizarNomeArquivo(txtTemplate.getText());
+        Printer prSelecionada = cmbImpressora.getSelectionModel().getSelectedItem();
+        Integer qtdImpressao = qtdSpinner.getValue();         // pode ser null/0 → contínuo
+        Integer espacamento = tmpSpinner.getValue();
+
+        Map<String, String> mapVars = varsData.stream()
+                .collect(Collectors.toMap(
+                        VarItem::getKey,
+                        VarItem::getValue,
+                        (a, b) -> b,
+                        LinkedHashMap::new));
+
+        // -------- validações mínimas --------
+        if (template.isEmpty() || prSelecionada == null) {
+            appendLog("⚠ Selecione template e impressora.");
+            return;
+        }
+        if (mapVars.isEmpty()) {
+            appendLog("⚠ Adicione ao menos uma variável antes de imprimir.");
+            return;
+        }
+        if (espacamento == null || espacamento < 1) {
+            appendLog("⚠ Informe um espaçamento (ms) válido.");
+            return;
+        }
+
+        // quantidade é OPCIONAL: <=0 ou null ⇒ contínuo
+        Integer qty = (qtdImpressao != null && qtdImpressao > 0) ? qtdImpressao : null;
+
+        // impressora “fresh” do banco
+        Printer pr = printerService.buscarPorId(prSelecionada.getId());
+        if (pr == null) {
+            appendLog("⚠ Impressora não encontrada na base.");
+            return;
+        }
+
+        try {
+            printerService.iniciarImpressao(
+                    pr,
+                    template,
+                    qty,
+                    espacamento,
+                    mapVars,
+                    line -> appendLog(line)
+            );
+        } catch (IllegalStateException dup) {
+            appendLog("ℹ Já existe um job em execução para " + pr.getIp() + ":" + pr.getPorta());
+            return;
+        }
+
+        barStatus.setVisible(true);
+        if (btnStart != null) {
+            btnStart.setDisable(true);
+        }
+        if (btnStop != null) {
+            btnStop.setDisable(false);
+        }
+    }
+
+    @FXML
+    public void onStop() {
+        Printer prSelecionada = cmbImpressora.getSelectionModel().getSelectedItem();
+        if (prSelecionada == null) {
+            appendLog("ℹ Selecione a impressora para parar.");
+            return;
+        }
+        Printer pr = printerService.buscarPorId(prSelecionada.getId());
+        if (pr == null) {
+            appendLog("⚠ Impressora não encontrada na base.");
+            return;
+        }
+
+        printerService.pararImpressao(pr, line -> appendLog(line));
+
+        barStatus.setVisible(false);
+        if (btnStart != null) {
+            btnStart.setDisable(false);
+        }
+        if (btnStop != null) {
+            btnStop.setDisable(true);
+        }
+    }
+
     public BooleanProperty botaoDesabilitadoProperty() {
         return botaoDesabilitado;
     }
@@ -951,7 +1036,7 @@ public class DashboardController implements Initializable {
     private void configurarSpinnerQtd() {
         // Define ValueFactory
         SpinnerValueFactory.IntegerSpinnerValueFactory valueFactory
-                = new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 100000, 1, 1);
+                = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 100000, 0, 10);
         qtdSpinner.setValueFactory(valueFactory);
 
         // Permite digitar manualmente
@@ -1534,6 +1619,14 @@ public class DashboardController implements Initializable {
         lblVersao.setText("Versão: " + AppInfo.getVersion());
         setUsername();
 
+        if (btnStop != null) {
+            btnStop.setDisable(true);
+        }
+        if (btnStart != null) {
+            btnStart.setDisable(false);
+        }
+        barStatus.setVisible(false);
+
         // campos numéricos
         configurarSpinnerQtd();
         configurarSpinnerTmp();
@@ -1548,7 +1641,6 @@ public class DashboardController implements Initializable {
         carredarDadosDash();
         configurarSelecaoTemplate();
 
-        btnImprimir.disableProperty().bind(botaoDesabilitado);
         btnPrint.disableProperty().bind(botaoDesabilitado);
         configurarComboPrinter();
         iniciarListenerTemplate();

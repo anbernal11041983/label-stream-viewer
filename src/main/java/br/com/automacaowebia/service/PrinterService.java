@@ -19,7 +19,7 @@ public class PrinterService {
 
     private static final Logger logger = LogManager.getLogger(PrinterService.class);
     private final LaserDriver laserDriver = new LaserDriver();
-        private final Map<String, ContinuousPrinter> jobs = new ConcurrentHashMap<>();
+    private final Map<String, ContinuousPrinter> jobs = new ConcurrentHashMap<>();
 
     public ObservableList<Printer> listarTodos() {
         ObservableList<Printer> lista = FXCollections.observableArrayList();
@@ -156,7 +156,7 @@ public class PrinterService {
 
         return null;
     }
-    
+
     private static String key(Printer pr) {
         return pr.getIp() + ":" + pr.getPorta();
     }
@@ -167,34 +167,63 @@ public class PrinterService {
             int espacamentoMs,
             Map<String, String> vars,
             Consumer<String> logCallback) {
-
         final String k = key(pr);
 
-        // evita 2 starts simultâneos na mesma impressora
         ContinuousPrinter existing = jobs.get(k);
-        if (existing != null && existing.isRunning()) { // requer o getter no ContinuousPrinter
+        if (existing != null && existing.isRunning()) {
             throw new IllegalStateException("Já existe um job em execução para " + k);
         }
 
-        // cria o job conforme a presença (ou não) de quantidade
-        ContinuousPrinter job = (quantidade != null && quantidade > 0)
-                ? new ContinuousPrinter(pr, template, espacamentoMs, vars, logCallback, quantidade)
-                : new ContinuousPrinter(pr, template, espacamentoMs, vars, logCallback);
+        Consumer<String> cb = (logCallback != null) ? logCallback : (s) -> {
+        };
+        ContinuousPrinter job = new ContinuousPrinter(pr, template, espacamentoMs, vars, cb);
 
         jobs.put(k, job);
 
         if (quantidade != null && quantidade > 0) {
             job.start(quantidade);
-            if (logCallback != null) {
-                logCallback.accept("▶ Iniciando lote de " + quantidade + " peça(s) em " + k);
-            }
+            cb.accept("▶ Iniciando lote de " + quantidade + " peça(s) em " + k);
             logger.info("Iniciando lote ({} peças) em {}", quantidade, k);
         } else {
             job.start();
-            if (logCallback != null) {
-                logCallback.accept("▶ Iniciando impressão contínua em " + k);
-            }
+            cb.accept("▶ Iniciando impressão contínua em " + k);
             logger.info("Iniciando impressão contínua em {}", k);
         }
+
+        // watcher para auto-limpeza do mapa quando o job terminar
+        new Thread(() -> {
+            try {
+                while (job.isRunning()) {
+                    Thread.sleep(250);
+                }
+            } catch (InterruptedException ignored) {
+                Thread.currentThread().interrupt();
+            } finally {
+                jobs.remove(k, job);
+                cb.accept("ℹ Job finalizado em " + k);
+                logger.info("Job finalizado e removido do mapa: {}", k);
+            }
+        }, "job-watch-" + k).start();
+    }
+
+    public void pararImpressao(Printer pr, Consumer<String> logCallback) {
+        final String k = key(pr);
+        ContinuousPrinter job = jobs.get(k);
+        if (job == null || !job.isRunning()) {
+            if (logCallback != null) {
+                logCallback.accept("ℹ Nenhum job ativo em " + k);
+            }
+            return;
+        }
+        job.stop(); // ContinuousPrinter envia "stop:" ao sair
+        if (logCallback != null) {
+            logCallback.accept("⏹ STOP solicitado em " + k);
+        }
+        logger.info("STOP solicitado em {}", k);
+    }
+
+    public boolean isExecutando(Printer pr) {
+        ContinuousPrinter job = jobs.get(key(pr));
+        return job != null && job.isRunning();
     }
 }
