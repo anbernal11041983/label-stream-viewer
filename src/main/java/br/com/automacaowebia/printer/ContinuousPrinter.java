@@ -25,7 +25,7 @@ public final class ContinuousPrinter implements Runnable {
     private final int espacamentoMs;
     private final Map<String, String> vars;
     private final Consumer<String> cb;
-    private static final Logger log = LogManager.getLogger(LaserDriver.class);
+    private static final Logger log = LogManager.getLogger(ContinuousPrinter.class); // ⭐
 
     private static final byte STX1 = 0x02;
     private static final byte STX2 = 0x05;
@@ -33,6 +33,8 @@ public final class ContinuousPrinter implements Runnable {
 
     private final AtomicBoolean running = new AtomicBoolean(false);
     private Thread worker;
+
+    private volatile Integer qtyAlvo = null;
 
     public ContinuousPrinter(Printer printer,
             String template,
@@ -46,30 +48,43 @@ public final class ContinuousPrinter implements Runnable {
         this.cb = cb;
     }
 
-    /* ========= API pública ========= */
+    public ContinuousPrinter(Printer printer,
+            String template,
+            int espacamentoMs,
+            Map<String, String> vars,
+            Consumer<String> cb,
+            Integer qty) {
+        this(printer, template, espacamentoMs, vars, cb);
+        this.qtyAlvo = (qty != null && qty > 0) ? qty : null;
+    }
+
+    public synchronized void start() { // ⭐
+        start(null);
+    }
+
     /**
-     * Acionado pelo botão “Start”
+     * Start com quantidade → para sozinho ao atingir qty
      */
-    public synchronized void start() {
+    public synchronized void start(Integer qty) {
         if (running.get()) {
-            return;              // já em execução
+            return;
         }
+        this.qtyAlvo = (qty != null && qty > 0) ? qty : null;
         running.set(true);
         worker = new Thread(this, "laser-job");
         worker.start();
     }
 
     /**
-     * Acionado pelo botão “Stop”
+     * Acionado pelo botão “Stop” — para sempre (mesmo com quantidade)
      */
     public synchronized void stop() {
         running.set(false);
         if (worker != null) {
-            worker.interrupt(); // acorda a thread se estiver em sleep
+            worker.interrupt();
         }
     }
 
-    /* ========= Lógica de marcação ========= */
     @Override
     public void run() {
         try (Socket socket = new Socket(printer.getIp(), printer.getPorta())) {
@@ -92,18 +107,20 @@ public final class ContinuousPrinter implements Runnable {
             }
             sendAndReturn(out, in, "start:", "start");
 
-            /* 3) Loop contínuo até stop() */
+            /* 3) Loop contínuo ou por quantidade (dinâmico) */
             int contador = 0;
-            while (running.get()) {
+            while (running.get() && (qtyAlvo == null || contador < qtyAlvo)) {
                 contador++;
 
                 long t0 = System.currentTimeMillis();
-                cb.accept("➡ Início da marcação #" + contador);
+                if (cb != null) {
+                    cb.accept("➡ Início da marcação #" + contador);
+                }
 
                 sendAndReturn(out, in, "trimark", "trimark");
 
                 /* espera terminar a marcação */
-                while (getSysStatus(out, in).isMarking) {
+                while (getSysStatus(out, in).isMarking()) { // ⭐ () no accessor
                     Thread.sleep(100);
                 }
                 long duracao = System.currentTimeMillis() - t0;
@@ -112,27 +129,42 @@ public final class ContinuousPrinter implements Runnable {
                     Thread.sleep(delay);
                 }
 
-                cb.accept(String.format(
-                        "✅ Marca #%d concluída – gravação %d ms | ciclo %d ms",
-                        contador, duracao, System.currentTimeMillis() - t0));
+                if (cb != null) {
+                    cb.accept(String.format(
+                            "✅ Marca #%d concluída – gravação %d ms | ciclo %d ms",
+                            contador, duracao, System.currentTimeMillis() - t0));
+                }
 
                 /* checa erros/avisos entre ciclos */
                 SysStatus st = getSysStatus(out, in);
-                if (st.err > 0) {
+                if (st.err() > 0) { // ⭐ accessor
                     sendAndReturn(out, in, "stop:", "stop");
-                    throw new IOException("Erro da impressora (err=" + st.err + ')');
+                    throw new IOException("Erro da impressora (err=" + st.err() + ')');
                 }
             }
 
-            /* 4) Usuário apertou STOP → envia comando “stop:” */
+            // Se saiu por atingir a quantidade, informa
+            if (qtyAlvo != null && cb != null) { // ⭐
+                cb.accept("✅ Lote de " + qtyAlvo + " peças concluído");
+            }
+
+            /* 4) Sempre enviar STOP ao sair do loop */
             sendAndReturn(out, in, "stop:", "stop");
-            cb.accept("🛑 Impressão interrompida pelo usuário");
+            if (cb != null) {
+                cb.accept("🛑 Impressão interrompida");
+            }
 
         } catch (InterruptedException ie) {
-            Thread.currentThread().interrupt();                  // mantém o status
-            cb.accept("🛑 Thread interrompida");
+            Thread.currentThread().interrupt();
+            if (cb != null) {
+                cb.accept("🛑 Thread interrompida");
+            }
         } catch (IOException ioe) {
-            cb.accept("⛔ Falha: " + ioe.getMessage());
+            if (cb != null) {
+                cb.accept("⛔ Falha: " + ioe.getMessage());
+            }
+        } finally {
+            running.set(false); // ⭐ garante estado consistente ao terminar
         }
     }
 
@@ -193,9 +225,7 @@ public final class ContinuousPrinter implements Runnable {
     }
 
     private static byte[] frame(String payload) {
-        //byte[] data = payload.getBytes(StandardCharsets.US_ASCII);
-        //byte[] data = payload.getBytes(StandardCharsets.ISO_8859_1);
-        byte[] data = payload.getBytes(Charset.forName("Cp1252"));
+        byte[] data = payload.getBytes(StandardCharsets.US_ASCII);
         byte xor = 0;
         for (byte b : data) {
             xor ^= b;
