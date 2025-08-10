@@ -20,6 +20,7 @@ public class PrinterService {
     private static final Logger logger = LogManager.getLogger(PrinterService.class);
     private final LaserDriver laserDriver = new LaserDriver();
     private final Map<String, ContinuousPrinter> jobs = new ConcurrentHashMap<>();
+    private final HistoricoImpressaoService historicoSrv = new HistoricoImpressaoService();
 
     public ObservableList<Printer> listarTodos() {
         ObservableList<Printer> lista = FXCollections.observableArrayList();
@@ -166,7 +167,8 @@ public class PrinterService {
             Integer quantidade, // opcional
             int espacamentoMs,
             Map<String, String> vars,
-            Consumer<String> logCallback) {
+            Consumer<String> cb) {
+
         final String k = key(pr);
 
         ContinuousPrinter existing = jobs.get(k);
@@ -174,52 +176,59 @@ public class PrinterService {
             throw new IllegalStateException("Já existe um job em execução para " + k);
         }
 
-        Consumer<String> cb = (logCallback != null) ? logCallback : (s) -> {
-        };
-        ContinuousPrinter job = new ContinuousPrinter(pr, template, espacamentoMs, vars, cb);
+        ContinuousPrinter job = (quantidade != null && quantidade > 0)
+                ? new ContinuousPrinter(pr, template, espacamentoMs, vars, cb, quantidade)
+                : new ContinuousPrinter(pr, template, espacamentoMs, vars, cb);
 
         jobs.put(k, job);
 
         if (quantidade != null && quantidade > 0) {
             job.start(quantidade);
-            cb.accept("▶ Iniciando lote de " + quantidade + " peça(s) em " + k);
-            logger.info("Iniciando lote ({} peças) em {}", quantidade, k);
+            if (cb != null) {
+                cb.accept("▶ Iniciando lote de " + quantidade + " peça(s) em " + k);
+            }
+
         } else {
             job.start();
-            cb.accept("▶ Iniciando impressão contínua em " + k);
-            logger.info("Iniciando impressão contínua em {}", k);
-        }
-
-        // watcher para auto-limpeza do mapa quando o job terminar
-        new Thread(() -> {
-            try {
-                while (job.isRunning()) {
-                    Thread.sleep(250);
-                }
-            } catch (InterruptedException ignored) {
-                Thread.currentThread().interrupt();
-            } finally {
-                jobs.remove(k, job);
-                cb.accept("ℹ Job finalizado em " + k);
-                logger.info("Job finalizado e removido do mapa: {}", k);
+            if (cb != null) {
+                cb.accept("▶ Iniciando impressão contínua em " + k);
             }
-        }, "job-watch-" + k).start();
+        }
     }
 
-    public void pararImpressao(Printer pr, Consumer<String> logCallback) {
+    public void pararImpressao(Printer pr, Consumer<String> cb,
+            String modeloParaHistorico, String skuParaHistorico) {
         final String k = key(pr);
         ContinuousPrinter job = jobs.get(k);
-        if (job == null || !job.isRunning()) {
-            if (logCallback != null) {
-                logCallback.accept("ℹ Nenhum job ativo em " + k);
+        if (job == null) {
+            if (cb != null) {
+                cb.accept("ℹ Nenhum job conhecido para " + k);
             }
             return;
         }
-        job.stop(); // ContinuousPrinter envia "stop:" ao sair
-        if (logCallback != null) {
-            logCallback.accept("⏹ STOP solicitado em " + k);
+
+        if (job.isRunning()) {
+            job.stop();
+            try {
+                while (job.isRunning()) {
+                    Thread.sleep(150);
+                }
+            } catch (InterruptedException ignored) {
+                Thread.currentThread().interrupt();
+            }
         }
-        logger.info("STOP solicitado em {}", k);
+
+        int produzidas = job.getProducedCount();
+        if (produzidas > 0 && skuParaHistorico != null && modeloParaHistorico !=null) {
+            historicoSrv.salvarHistorico(
+                    modeloParaHistorico, skuParaHistorico, produzidas, k
+            );
+        }
+        jobs.remove(k);
+
+        if (cb != null) {
+            cb.accept("🛑 Impressão finalizada em " + k + " | Produzidas: " + produzidas);
+        }
     }
 
     public boolean isExecutando(Printer pr) {

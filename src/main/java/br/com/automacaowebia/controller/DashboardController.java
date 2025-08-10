@@ -53,7 +53,6 @@ import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
-import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
@@ -183,7 +182,9 @@ public class DashboardController implements Initializable {
     private Button btnStop;
 
     @FXML
-    private Button btnPrint;
+    private Button btnStartZpl;
+    @FXML
+    private Button btnStopZpl;
 
     @FXML
     private TextField txtKey;
@@ -848,10 +849,8 @@ public class DashboardController implements Initializable {
             return;
         }
 
-        // quantidade é OPCIONAL: <=0 ou null ⇒ contínuo
         Integer qty = (qtdImpressao != null && qtdImpressao > 0) ? qtdImpressao : null;
 
-        // impressora “fresh” do banco
         Printer pr = printerService.buscarPorId(prSelecionada.getId());
         if (pr == null) {
             appendLog("⚠ Impressora não encontrada na base.");
@@ -883,25 +882,73 @@ public class DashboardController implements Initializable {
 
     @FXML
     public void onStop() {
-        Printer prSelecionada = cmbImpressora.getSelectionModel().getSelectedItem();
-        if (prSelecionada == null) {
-            appendLog("ℹ Selecione a impressora para parar.");
-            return;
-        }
-        Printer pr = printerService.buscarPorId(prSelecionada.getId());
-        if (pr == null) {
-            appendLog("⚠ Impressora não encontrada na base.");
-            return;
-        }
+        try {
+            Printer prSelecionada = cmbImpressora.getSelectionModel().getSelectedItem();
+            if (prSelecionada == null) {
+                appendLog("ℹ Selecione a impressora para parar.");
+                return;
+            }
+            Printer pr = printerService.buscarPorId(prSelecionada.getId());
+            if (pr == null) {
+                appendLog("⚠ Impressora não encontrada na base.");
+                return;
+            }
 
-        printerService.pararImpressao(pr, line -> appendLog(line));
+            // 2) Modelo/SKU vindos do grid (varsData)
+            Map<String, String> mapVars = varsData.stream()
+                    .collect(Collectors.toMap(
+                            VarItem::getKey,
+                            VarItem::getValue,
+                            (a, b) -> b,
+                            LinkedHashMap::new));
 
-        barStatus.setVisible(false);
-        if (btnStart != null) {
-            btnStart.setDisable(false);
-        }
-        if (btnStop != null) {
-            btnStop.setDisable(true);
+           
+
+            barStatus.setVisible(true);
+            if (btnStop != null) {
+                btnStop.setDisable(true);
+            }
+
+            Task<Void> stopTask = new Task<>() {
+                @Override
+                protected Void call() {
+                    printerService.pararImpressao(pr, DashboardController.this::appendLog, null, null);
+                    return null;
+                }
+            };
+
+            stopTask.setOnSucceeded(ev -> {
+                barStatus.setVisible(false);
+                if (btnStart != null) {
+                    btnStart.setDisable(false);
+                }
+                if (btnStop != null) {
+                    btnStop.setDisable(true);
+                }
+            });
+
+            stopTask.setOnFailed(ev -> {
+                barStatus.setVisible(false);
+                if (btnStart != null) {
+                    btnStart.setDisable(false);
+                }
+                if (btnStop != null) {
+                    btnStop.setDisable(true);
+                }
+                appendLog("✖ Erro ao parar: " + stopTask.getException().getMessage());
+            });
+
+            new Thread(stopTask, "stop-monitor").start();
+
+        } catch (Exception ex) {
+            appendLog("✖ Erro ao parar: " + ex.getMessage());
+            barStatus.setVisible(false);
+            if (btnStart != null) {
+                btnStart.setDisable(false);
+            }
+            if (btnStop != null) {
+                btnStop.setDisable(true);
+            }
         }
     }
 
@@ -1154,93 +1201,167 @@ public class DashboardController implements Initializable {
     }
 
     @FXML
-    private void onPrint(ActionEvent e) {
-
-        String templateNomeUI = comboTemplate.getSelectionModel().getSelectedItem();
-        Printer prSelecionada = comboPrinter.getSelectionModel().getSelectedItem();
-
-        /* ---------- validações numéricas já existentes ---------- */
-        int qtdImpressao, espacamento;
+    public void onStartOperacional() {
         try {
-            qtdImpressao = Integer.parseInt(txtQuantidade.getText().trim());
-            espacamento = Integer.parseInt(txtIntervalo.getText().trim());
-        } catch (NumberFormatException ex) {
-            appendLog("⚠ Quantidade e intervalo precisam ser numéricos.");
-            return;
-        }
-        if (qtdImpressao <= 0) {
-            appendLog("⚠ Informe uma quantidade > 0.");
-            return;
-        }
-        if (espacamento < 200) {
-            appendLog("⚠ Intervalo mínimo é 200 ms.");
-            return;
-        }
+            String templateNomeUI = comboTemplate.getSelectionModel().getSelectedItem();
+            Printer prSelecionada = comboPrinter.getSelectionModel().getSelectedItem();
 
-        if (templateNomeUI == null || templateNomeUI.isBlank() || prSelecionada == null) {
-            appendLog("⚠ Selecione template e impressora.");
-            return;
-        }
-
-        TemplateZPL tpl = templateService.getTemplateByNome(templateNomeUI);
-        if (tpl == null) {
-            appendLog("⚠ Template não encontrado no banco.");
-            return;
-        }
-        String templateImpressora = tpl.getTemplateImpressora();   // ← ex.: HELLO.ncfm
-        if (templateImpressora == null || templateImpressora.isBlank()) {
-            appendLog("⚠ Campo template_impressora vazio para esse template.");
-            return;
-        }
-
-        Map<String, String> mapVars = buildMapVars(tpl.getId());
-        if (mapVars.isEmpty()) {
-            appendLog("⚠ Nenhum blueprint ativo para este template.");
-            return;
-        }
-
-        /* ---------- impressora atualizada ---------- */
-        Printer pr = printerService.buscarPorId(prSelecionada.getId());
-        if (pr == null) {
-            appendLog("⚠ Impressora não encontrada na base.");
-            return;
-        }
-
-        /* ---------- UI ---------- */
-        barPrint.setVisible(true);
-        botaoDesabilitado.set(true);
-
-        /* ---------- cópia final para o Task ---------- */
-        final int delayMs = espacamento;
-        final int qtd = qtdImpressao;
-
-        Task<Void> job = new Task<>() {
-            @Override
-            protected Void call() throws Exception {
-                printerService.imprimir(
-                        pr,
-                        templateImpressora, // ← usa o valor certo!
-                        qtd,
-                        line -> appendLog(line),
-                        delayMs,
-                        mapVars);
-                return null;
+            if (templateNomeUI == null || templateNomeUI.isBlank() || prSelecionada == null) {
+                appendLog("⚠ Selecione template e impressora.");
+                return;
             }
-        };
 
-        job.setOnSucceeded(ev -> {
+            TemplateZPL tpl = templateService.getTemplateByNome(templateNomeUI);
+            if (tpl == null) {
+                appendLog("⚠ Template não encontrado no banco.");
+                return;
+            }
+
+            String templateImpressora = tpl.getTemplateImpressora();
+            if (templateImpressora == null || templateImpressora.isBlank()) {
+                appendLog("⚠ Campo template_impressora vazio para esse template.");
+                return;
+            }
+            templateImpressora = normalizarNomeArquivo(templateImpressora);
+
+            Map<String, String> mapVars = buildMapVars(tpl.getId());
+            if (mapVars.isEmpty()) {
+                appendLog("⚠ Nenhum blueprint ativo para este template.");
+                return;
+            }
+
+            Integer qty = null;
+            String qtdTxt = txtQuantidade.getText();
+            if (qtdTxt != null && !qtdTxt.isBlank()) {
+                try {
+                    int q = Integer.parseInt(qtdTxt.trim());
+                    if (q > 0) {
+                        qty = q;
+                    }
+                } catch (NumberFormatException ignore) {
+                    // deixa como contínuo
+                }
+            }
+
+            int espacamento = getIntervaloMs(); // garante >= 200
+
+            Printer pr = printerService.buscarPorId(prSelecionada.getId());
+            if (pr == null) {
+                appendLog("⚠ Impressora não encontrada na base.");
+                return;
+            }
+
+            printerService.iniciarImpressao(
+                    pr,
+                    templateImpressora,
+                    qty,
+                    espacamento,
+                    mapVars,
+                    this::appendLog
+            );
+
+            barPrint.setVisible(true);
+            barPrint.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+            if (btnStartZpl != null) {
+                btnStartZpl.setDisable(true);
+            }
+            if (btnStopZpl != null) {
+                btnStopZpl.setDisable(false);
+            }
+
+        } catch (IllegalStateException dup) {
+            appendLog("ℹ Já existe um job em execução para essa impressora.");
+        } catch (Exception ex) {
+            appendLog("✖ Erro ao iniciar: " + ex.getMessage());
+        }
+    }
+
+    @FXML
+    public void onStopOperacional() {
+        try {
+
+            Printer prSelecionada = comboPrinter.getSelectionModel().getSelectedItem();
+            if (prSelecionada == null) {
+                appendLog("ℹ Selecione a impressora para parar.");
+                return;
+            }
+            Printer pr = printerService.buscarPorId(prSelecionada.getId());
+            if (pr == null) {
+                appendLog("⚠ Impressora não encontrada na base.");
+                return;
+            }
+
+            final String modeloHist;
+            final String skuHist;
+            {
+                String m = null, s = null;
+                String templateNomeUI = comboTemplate.getSelectionModel().getSelectedItem();
+                if (templateNomeUI != null && !templateNomeUI.isBlank()) {
+                    TemplateZPL tpl = templateService.getTemplateByNome(templateNomeUI);
+                    if (tpl != null) {
+                        ProdutoLabelData d = produtoLabelDataService.findByTemplateId(tpl.getId());
+                        if (d != null) {
+                            m = (d.descReduzida() != null && !d.descReduzida().isBlank())
+                                    ? d.descReduzida()
+                                    : d.descCompleta();
+                            s = d.sku();
+                        }
+                    }
+                }
+                modeloHist = m;
+                skuHist = s;
+            }
+
+            barPrint.setVisible(true);
+            barPrint.setProgress(ProgressIndicator.INDETERMINATE_PROGRESS);
+            if (btnStopZpl != null) {
+                btnStopZpl.setDisable(true);
+            }
+
+            Task<Void> stopTask = new Task<>() {
+                @Override
+                protected Void call() {
+                    printerService.pararImpressao(pr, DashboardController.this::appendLog, modeloHist, skuHist);
+                    return null;
+                }
+            };
+
+            stopTask.setOnSucceeded(ev -> {
+                barPrint.setVisible(false);
+                barPrint.setProgress(0);
+                if (btnStartZpl != null) {
+                    btnStartZpl.setDisable(false);
+                }
+                if (btnStopZpl != null) {
+                    btnStopZpl.setDisable(true);
+                }
+            });
+
+            stopTask.setOnFailed(ev -> {
+                barPrint.setVisible(false);
+                barPrint.setProgress(0);
+                if (btnStartZpl != null) {
+                    btnStartZpl.setDisable(false);
+                }
+                if (btnStopZpl != null) {
+                    btnStopZpl.setDisable(true);
+                }
+                appendLog("✖ Erro ao parar: " + stopTask.getException().getMessage());
+            });
+
+            new Thread(stopTask, "stop-operacional").start();
+
+        } catch (Exception ex) {
+            appendLog("✖ Erro ao parar: " + ex.getMessage());
             barPrint.setVisible(false);
-            botaoDesabilitado.set(false);   // libera o botão
-            appendLog("✔ Impressão concluída com sucesso.");
-        });
-
-        job.setOnFailed(ev -> {
-            barPrint.setVisible(false);
-            botaoDesabilitado.set(false);   // libera mesmo em erro
-            appendLog("✖ Falha: " + job.getException().getMessage());
-        });
-
-        new Thread(job, "print-job").start();
+            barPrint.setProgress(0);
+            if (btnStartZpl != null) {
+                btnStartZpl.setDisable(false);
+            }
+            if (btnStopZpl != null) {
+                btnStopZpl.setDisable(true);
+            }
+        }
     }
 
     private Map<String, String> buildMapVars(long templateId) {
@@ -1627,6 +1748,14 @@ public class DashboardController implements Initializable {
         }
         barStatus.setVisible(false);
 
+        if (btnStopZpl != null) {
+            btnStopZpl.setDisable(true);
+        }
+        if (btnStartZpl != null) {
+            btnStartZpl.setDisable(false);
+        }
+
+        barPrint.managedProperty().bind(barPrint.visibleProperty());
         // campos numéricos
         configurarSpinnerQtd();
         configurarSpinnerTmp();
@@ -1641,7 +1770,6 @@ public class DashboardController implements Initializable {
         carredarDadosDash();
         configurarSelecaoTemplate();
 
-        btnPrint.disableProperty().bind(botaoDesabilitado);
         configurarComboPrinter();
         iniciarListenerTemplate();
         barPrint.setVisible(false);

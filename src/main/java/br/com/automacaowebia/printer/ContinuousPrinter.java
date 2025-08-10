@@ -7,12 +7,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.Socket;
 import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 import org.apache.logging.log4j.LogManager;
@@ -33,6 +33,8 @@ public final class ContinuousPrinter implements Runnable {
 
     private final AtomicBoolean running = new AtomicBoolean(false);
     private Thread worker;
+
+    private final AtomicInteger produced = new AtomicInteger(0);
 
     private volatile Integer qtyAlvo = null;
 
@@ -58,7 +60,7 @@ public final class ContinuousPrinter implements Runnable {
         this.qtyAlvo = (qty != null && qty > 0) ? qty : null;
     }
 
-    public synchronized void start() { // ⭐
+    public synchronized void start() {
         start(null);
     }
 
@@ -70,6 +72,7 @@ public final class ContinuousPrinter implements Runnable {
             return;
         }
         this.qtyAlvo = (qty != null && qty > 0) ? qty : null;
+        produced.set(0);
         running.set(true);
         worker = new Thread(this, "laser-job");
         worker.start();
@@ -123,16 +126,19 @@ public final class ContinuousPrinter implements Runnable {
                 while (getSysStatus(out, in).isMarking()) { // ⭐ () no accessor
                     Thread.sleep(100);
                 }
+
+                produced.incrementAndGet();
+
                 long duracao = System.currentTimeMillis() - t0;
                 long delay = espacamentoMs - duracao;
                 if (delay > 0) {
                     Thread.sleep(delay);
                 }
 
-                if (cb != null) {
+                if (cb != null) {           
                     cb.accept(String.format(
                             "✅ Marca #%d concluída – gravação %d ms | ciclo %d ms",
-                            contador, duracao, System.currentTimeMillis() - t0));
+                            produced.get(), duracao, System.currentTimeMillis() - t0));
                 }
 
                 /* checa erros/avisos entre ciclos */
@@ -285,5 +291,9 @@ public final class ContinuousPrinter implements Runnable {
 
     public boolean isRunning() {
         return running.get();
+    }
+
+    public int getProducedCount() {
+        return produced.get();
     }
 }

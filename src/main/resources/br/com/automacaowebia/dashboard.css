@@ -142,3 +142,14 @@
 #startButton:hover {
     -fx-background-color: linear-gradient(to bottom right, #388E3C, #2E7D32); /* hover verde só no Start */
 }
+
+#startButton:hover,      /* start do monitor, se tiver */
+#startZplButton:hover {  /* start da tela de impressão */
+    -fx-background-color: linear-gradient(to bottom right, #388E3C, #2E7D32);
+}
+
+/* (Opcional) Hover vermelho só para Stop */
+#stopButton:hover,
+#stopZplButton:hover {
+    -fx-background-color: linear-gradient(to bottom right, #C62828, #B71C1C);
+}

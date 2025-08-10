@@ -439,22 +439,30 @@
                                     <Separator />
                                     <VBox spacing="6">
                                         <Label styleClass="label-bold" text="Log de impressão" />
-                                        <TextArea fx:id="txtLogPrint" editable="false" prefHeight="150.0" prefWidth="780.0" styleClass="log-area" wrapText="true" />
+                                        <TextArea fx:id="txtLogPrint" editable="false" prefHeight="201.0" prefWidth="780.0" styleClass="log-area" wrapText="true" />
                                     </VBox>
                                     <Separator />
                                     <!--  BARRA DE PROGRESSO + BOTÃO IMPRIMIR -->
                                     <HBox alignment="CENTER_RIGHT" spacing="10">
-                                        <ProgressBar fx:id="barPrint" prefHeight="20" prefWidth="430.0" progress="0.0" visible="false" />
-                                        <Button fx:id="btnPrint" onAction="#onPrint" prefHeight="36" prefWidth="120" styleClass="print" text="Imprimir">
+                                        <ProgressBar fx:id="barPrint" prefHeight="20" prefWidth="430.0" progress="-1.0" visible="false" />
+
+                                        <Button id="startZplButton" fx:id="btnStartZpl" onAction="#onStartOperacional" prefHeight="25.0" prefWidth="120" styleClass="print" text="Iniciar">
                                             <graphic>
-                                                <FontAwesomeIconView fill="WHITE" glyphName="PRINT" size="18" />
+                                                <FontAwesomeIconView fill="WHITE" glyphName="PLAY" size="18" />
+                                            </graphic>
+                                        </Button>
+
+                                        <!-- STOP Operacional -->
+                                        <Button id="stopZplButton" fx:id="btnStopZpl" disable="true" onAction="#onStopOperacional" prefHeight="19.0" prefWidth="120" styleClass="print" text="Parar">
+                                            <graphic>
+                                                <FontAwesomeIconView fill="WHITE" glyphName="STOP" size="18" />
                                             </graphic>
                                         </Button>
                                     </HBox>
                                 </VBox>
                             </children>
                         </AnchorPane>
-                        <AnchorPane fx:id="monitor_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639" prefWidth="820" stylesheets="@dashboard.css" visible="true">
+                        <AnchorPane fx:id="monitor_pane" layoutX="-1.0" layoutY="55.0" prefHeight="639" prefWidth="820" stylesheets="@dashboard.css" visible="false">
 
                             <children>
                                 <VBox alignment="TOP_LEFT" prefHeight="639" prefWidth="820" spacing="11.0">
