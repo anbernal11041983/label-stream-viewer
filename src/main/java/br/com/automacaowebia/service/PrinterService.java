@@ -2,11 +2,9 @@ package br.com.automacaowebia.service;
 
 import br.com.automacaowebia.config.Database;
 import br.com.automacaowebia.model.Printer;
+import br.com.automacaowebia.printer.ContinuousPrinter;
 import br.com.automacaowebia.printer.LaserDriver;
 import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.charset.StandardCharsets;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import org.apache.logging.log4j.LogManager;
@@ -14,12 +12,14 @@ import org.apache.logging.log4j.Logger;
 
 import java.sql.*;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Consumer;
 
 public class PrinterService {
 
     private static final Logger logger = LogManager.getLogger(PrinterService.class);
     private final LaserDriver laserDriver = new LaserDriver();
+        private final Map<String, ContinuousPrinter> jobs = new ConcurrentHashMap<>();
 
     public ObservableList<Printer> listarTodos() {
         ObservableList<Printer> lista = FXCollections.observableArrayList();
@@ -67,40 +67,6 @@ public class PrinterService {
         if (logCallback != null) {
             logCallback.accept("✔ Teste de impressão enviado a " + pr.getIp() + ":" + pr.getPorta());
         }
-    }
-
-    private static byte[] frame(String payload) {
-        byte[] data = payload.getBytes(StandardCharsets.US_ASCII);
-        byte xor = 0;
-        for (byte b : data) {
-            xor ^= b;
-        }
-
-        return ByteBuffer.allocate(data.length + 4)
-                .put((byte) 0x02) // STX byte 1
-                .put((byte) 0x05) // STX byte 2
-                .put(data) // payload ASCII
-                .put((byte) 0x03) // ETX
-                .put(xor) // checksum
-                .array();
-    }
-
-    /**
-     * Lê a resposta e valida se começou com STX de ACK (0x02 0x06)
-     */
-    private static void waitAck(InputStream in, String etapa) throws IOException {
-        byte[] buf = in.readNBytes(16);
-        if (buf.length < 2 || buf[0] != 0x02 || buf[1] != 0x06) {
-            throw new IOException("Sem ACK em " + etapa + ", resposta=" + toHex(buf));
-        }
-    }
-
-    private static String toHex(byte[] bytes) {
-        var sb = new StringBuilder();
-        for (byte b : bytes) {
-            sb.append(String.format("%02X ", b));
-        }
-        return sb.toString().trim();
     }
 
     private void inserir(Printer printer) {
@@ -189,5 +155,46 @@ public class PrinterService {
         }
 
         return null;
+    }
+    
+    private static String key(Printer pr) {
+        return pr.getIp() + ":" + pr.getPorta();
+    }
+
+    public void iniciarImpressao(Printer pr,
+            String template,
+            Integer quantidade, // opcional
+            int espacamentoMs,
+            Map<String, String> vars,
+            Consumer<String> logCallback) {
+
+        final String k = key(pr);
+
+        // evita 2 starts simultâneos na mesma impressora
+        ContinuousPrinter existing = jobs.get(k);
+        if (existing != null && existing.isRunning()) { // requer o getter no ContinuousPrinter
+            throw new IllegalStateException("Já existe um job em execução para " + k);
+        }
+
+        // cria o job conforme a presença (ou não) de quantidade
+        ContinuousPrinter job = (quantidade != null && quantidade > 0)
+                ? new ContinuousPrinter(pr, template, espacamentoMs, vars, logCallback, quantidade)
+                : new ContinuousPrinter(pr, template, espacamentoMs, vars, logCallback);
+
+        jobs.put(k, job);
+
+        if (quantidade != null && quantidade > 0) {
+            job.start(quantidade);
+            if (logCallback != null) {
+                logCallback.accept("▶ Iniciando lote de " + quantidade + " peça(s) em " + k);
+            }
+            logger.info("Iniciando lote ({} peças) em {}", quantidade, k);
+        } else {
+            job.start();
+            if (logCallback != null) {
+                logCallback.accept("▶ Iniciando impressão contínua em " + k);
+            }
+            logger.info("Iniciando impressão contínua em {}", k);
+        }
     }
 }

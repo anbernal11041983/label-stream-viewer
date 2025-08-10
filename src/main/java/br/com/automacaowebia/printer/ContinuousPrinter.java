@@ -283,4 +283,7 @@ public final class ContinuousPrinter implements Runnable {
                 .collect(Collectors.toList());
     }
 
+    public boolean isRunning() {
+        return running.get();
+    }
 }
